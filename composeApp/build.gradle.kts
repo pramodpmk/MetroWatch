@@ -45,6 +45,8 @@ kotlin {
             implementation(project(":core:navigation"))
             implementation(project(":feature:timings"))
             implementation(project(":feature:station"))
+            implementation(project(":feature:fare"))
+            implementation(project(":feature:home"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

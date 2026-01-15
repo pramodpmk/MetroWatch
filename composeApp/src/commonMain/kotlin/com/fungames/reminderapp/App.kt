@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.fungames.core.station.navigation.stationsGraph
+import com.fungames.fare.navigation.fareGraph
 import com.fungames.feature.timings.navigation.TimingRoutes
 import com.fungames.feature.timings.navigation.timingsGraph
 import com.fungames.reminderapp.navigation.appGraph
@@ -37,6 +38,8 @@ fun App() {
             timingsGraph(navController)
 
             stationsGraph(navController)
+
+            fareGraph(navController)
 
             // Feature: Reminders (local to app module for now)
             composable<Screen.AddReminder> {
