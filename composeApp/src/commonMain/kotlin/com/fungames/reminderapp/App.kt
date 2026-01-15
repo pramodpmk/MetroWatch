@@ -1,27 +1,22 @@
 package com.fungames.reminderapp
 
-import TrainTimingScreen
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.fungames.core.station.navigation.stationsGraph
+import com.fungames.feature.timings.navigation.TimingRoutes
+import com.fungames.feature.timings.navigation.timingsGraph
+import com.fungames.reminderapp.navigation.appGraph
 import com.fungames.reminderapp.presentation.add_reminder.AddReminderScreen
+import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-sealed class Screen {
-    data object Home : Screen()
-    data object AddReminder : Screen()
+@Serializable
+sealed interface Screen {
+    @Serializable
+    data object AddReminder : Screen
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,30 +24,28 @@ sealed class Screen {
 @Preview
 fun App() {
     MaterialTheme {
-        var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+        val navController = rememberNavController()
 
-        when (currentScreen) {
-            is Screen.Home -> {
-                Scaffold(
-                    topBar = { TopAppBar(title = { Text("Reminder App") }) },
-                    floatingActionButton = {
-                        FloatingActionButton(onClick = { currentScreen = Screen.AddReminder }) {
-                            Icon(Icons.Default.Add, contentDescription = "Add Reminder")
-                        }
-                    }
-                ) { paddingValues ->
-                    Box(
-                        modifier = Modifier.fillMaxSize().padding(paddingValues),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        TrainTimingScreen()
-                    }
-                }
+        NavHost(
+            navController = navController,
+            startDestination = TimingRoutes.Timings
+        ) {
+
+            appGraph(navController = navController)
+
+            // Feature: Timings
+            timingsGraph(navController)
+
+            stationsGraph(navController)
+
+            // Feature: Reminders (local to app module for now)
+            composable<Screen.AddReminder> {
+                AddReminderScreen(
+                    onReminderSaved = { navController.popBackStack() }
+                )
             }
 
-            is Screen.AddReminder -> {
-                AddReminderScreen(onReminderSaved = { currentScreen = Screen.Home })
-            }
         }
+
     }
 }

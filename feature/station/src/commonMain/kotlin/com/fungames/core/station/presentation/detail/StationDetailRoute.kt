@@ -3,32 +3,28 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.fungames.feature.timings.navigation.TimingRoutes
-import com.fungames.feature.timings.presentation.TimingTableViewModel
+import com.fungames.core.station.presentation.StationViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun TrainTimingScreen(
+fun StationDetailRoute(
     navHostController: NavHostController,
-    viewModel: TimingTableViewModel = koinViewModel()
+    viewModel: StationViewModel = koinViewModel()
 ) {
-    val timingState = viewModel.timingTableState.collectAsState()
-
     Column {
-        DisplayText("Train Timing Screen ${timingState.value}")
+        DisplayText("Station Detail Screen")
         Spacer(Modifier.height(60.dp))
         Button(onClick = {
             //viewModel.userIntent()
-            navHostController.navigate(TimingRoutes.TimingDetail)
+            navHostController.popBackStack()
         }) {
-            DisplayText("Refresh")
+            DisplayText("Back")
         }
 
     }

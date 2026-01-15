@@ -31,4 +31,6 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":core:ui")
 include(":core:data")
+include(":core:navigation")
 include(":feature:timings")
+include(":feature:station")

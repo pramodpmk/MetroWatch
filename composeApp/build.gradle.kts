@@ -12,8 +12,8 @@ plugins {
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     
@@ -40,6 +40,12 @@ kotlin {
             implementation(libs.sqldelight.driver.native)
         }
         commonMain.dependencies {
+            implementation(project(":core:ui"))
+            implementation(project(":core:data"))
+            implementation(project(":core:navigation"))
+            implementation(project(":feature:timings"))
+            implementation(project(":feature:station"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -47,6 +53,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.navigation.compose)
 
             implementation(libs.ktor.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -60,12 +67,10 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
 
             implementation(libs.kotlinx.coroutines.core)
-
-            implementation(project(":core:ui"))
-            implementation(project(":core:data"))
-            implementation(project(":feature:timings"))
+            implementation(libs.kotlinx.serialization.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

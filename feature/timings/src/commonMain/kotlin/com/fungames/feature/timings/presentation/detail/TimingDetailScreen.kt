@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.fungames.core.navigation.Route
 import com.fungames.feature.timings.navigation.TimingRoutes
 import com.fungames.feature.timings.presentation.TimingTableViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -15,20 +16,26 @@ import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun TrainTimingScreen(
+fun TrainTimingDetail(
     navHostController: NavHostController,
     viewModel: TimingTableViewModel = koinViewModel()
 ) {
-    val timingState = viewModel.timingTableState.collectAsState()
+
+    val routingEffectState = viewModel.stationRoutingEffect.collectAsState(null)
+
+    LaunchedEffect(key1 = routingEffectState.value) {
+        routingEffectState.value?.let { route ->
+            navHostController.navigate(Route.StationList)
+        }
+    }
 
     Column {
-        DisplayText("Train Timing Screen ${timingState.value}")
+        DisplayText("Timing Detail Screen")
         Spacer(Modifier.height(60.dp))
         Button(onClick = {
-            //viewModel.userIntent()
-            navHostController.navigate(TimingRoutes.TimingDetail)
+            viewModel.userIntent()
         }) {
-            DisplayText("Refresh")
+            DisplayText("Back")
         }
 
     }

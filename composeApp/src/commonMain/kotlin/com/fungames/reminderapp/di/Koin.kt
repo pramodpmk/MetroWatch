@@ -1,10 +1,16 @@
 package com.fungames.reminderapp.di
 
+import com.fungames.core.station.di.stationModule
+import com.fungames.feature.timings.di.timingsModule
 import com.fungames.reminderapp.data.DatabaseDriverFactory
 import org.koin.core.context.startKoin
 
 fun initKoin(databaseDriverFactory: DatabaseDriverFactory) {
     startKoin {
-        modules(appModule(databaseDriverFactory))
+        modules(
+            appModule(databaseDriverFactory),
+            timingsModule,
+            stationModule
+        )
     }
 }
