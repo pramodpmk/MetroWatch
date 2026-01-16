@@ -13,6 +13,9 @@ sealed interface Route {
     data object StationList : Route
 
     @Serializable
+    data object StationDetail : Route
+
+    @Serializable
     data object FareCalculation : Route
 
     @Serializable

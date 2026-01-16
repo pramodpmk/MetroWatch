@@ -9,6 +9,8 @@ import com.fungames.core.station.navigation.stationsGraph
 import com.fungames.fare.navigation.fareGraph
 import com.fungames.feature.timings.navigation.TimingRoutes
 import com.fungames.feature.timings.navigation.timingsGraph
+import com.fungames.home.navigation.HomeRoutes
+import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
 import com.fungames.reminderapp.presentation.add_reminder.AddReminderScreen
 import kotlinx.serialization.Serializable
@@ -29,7 +31,7 @@ fun App() {
 
         NavHost(
             navController = navController,
-            startDestination = TimingRoutes.Timings
+            startDestination = HomeRoutes.HomePage
         ) {
 
             appGraph(navController = navController)
@@ -40,6 +42,8 @@ fun App() {
             stationsGraph(navController)
 
             fareGraph(navController)
+
+            homeGraph(navController)
 
             // Feature: Reminders (local to app module for now)
             composable<Screen.AddReminder> {

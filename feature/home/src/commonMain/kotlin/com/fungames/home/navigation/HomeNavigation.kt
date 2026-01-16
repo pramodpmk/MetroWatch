@@ -5,6 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
 
 sealed interface HomeRoutes {
@@ -13,8 +15,9 @@ sealed interface HomeRoutes {
 
 }
 
+@OptIn(KoinExperimentalAPI::class)
 fun NavGraphBuilder.homeGraph(navController: NavHostController) {
     composable<HomeRoutes.HomePage> {
-        HomeRoute(navController)
+        HomeRoute(navController, koinViewModel())
     }
 }
