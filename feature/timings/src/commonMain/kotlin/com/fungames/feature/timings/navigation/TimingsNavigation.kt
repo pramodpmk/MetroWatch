@@ -5,6 +5,7 @@ import TrainTimingScreen
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.fungames.core.navigation.Route
 import kotlinx.serialization.Serializable
 
 
@@ -18,12 +19,15 @@ sealed interface TimingRoutes {
 
 fun NavGraphBuilder.timingsGraph(
     navController: NavHostController,
-    onNavigate: () -> Unit
+    onNavigate: (Route) -> Unit
 ) {
     composable<TimingRoutes.Timings> {
         TrainTimingScreen(navController)
     }
     composable<TimingRoutes.TimingDetail> {
-        TrainTimingDetail(navController)
+        TrainTimingDetail(
+            navController,
+            onNavigate
+        )
     }
 }

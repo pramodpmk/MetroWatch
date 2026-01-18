@@ -18,6 +18,7 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun TrainTimingDetail(
     navHostController: NavHostController,
+    onNavigate: (Route) -> Unit,
     viewModel: TimingTableViewModel = koinViewModel()
 ) {
 
@@ -25,7 +26,7 @@ fun TrainTimingDetail(
 
     LaunchedEffect(key1 = routingEffectState.value) {
         routingEffectState.value?.let { route ->
-            navHostController.navigate(Route.StationDetail)
+            onNavigate(Route.StationDetail)
         }
     }
 

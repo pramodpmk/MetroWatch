@@ -63,11 +63,10 @@ fun TabHost(
                 BottomTab.FARE -> FareRoutes.CalculateFare
             BottomTab.SETTINGS -> FareRoutes.CalculateFare
         }
-    ) {
-        timingsGraph(navController, {
-            appNavHostController.navigate(Route.StationDetail)
+    ) { // Screens directly tied to bottom navigation goes here
+        timingsGraph(navController, { target ->
+            appNavHostController.navigate(target)
         })
-        stationsGraph(navController)
         homeGraph(navController)
         fareGraph(navController)
     }
@@ -81,10 +80,16 @@ fun RootNavHost() {
         navController = navController,
         startDestination = HomeDestination.Tabs
     ) {
+        // All screens displayed over (without) bottom navigation goes here
         composable<HomeDestination.Tabs> {
             HomeScaffold(navController)
         }
-
+        stationsGraph(navController)
+        homeGraph(navController)
+        timingsGraph(navController, { target ->
+            navController.navigate(target)
+        })
+        fareGraph(navController)
         appGraph(navController)
     }
 }
