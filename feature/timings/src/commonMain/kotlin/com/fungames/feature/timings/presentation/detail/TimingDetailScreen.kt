@@ -25,7 +25,7 @@ fun TrainTimingDetail(
 
     LaunchedEffect(key1 = routingEffectState.value) {
         routingEffectState.value?.let { route ->
-            navHostController.navigate(Route.StationList)
+            navHostController.navigate(Route.StationDetail)
         }
     }
 

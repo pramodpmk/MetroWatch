@@ -27,7 +27,7 @@ fun HomeScreen(homeStateFlow: StateFlow<HomePageUi>) {
 
     AppScaffold(
         toolBar = { HomeToolBar(homeState.value.locationText) },
-        bottomBar = { HomeBottomBar() }, // TODO : Bottom bar to include n app module
+        bottomBar = {  }, // TODO : Bottom bar to include n app module
     ) {
         Column(
             modifier = Modifier.fillMaxSize()

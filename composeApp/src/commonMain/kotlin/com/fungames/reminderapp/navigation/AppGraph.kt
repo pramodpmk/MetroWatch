@@ -22,10 +22,10 @@ fun NavGraphBuilder.appGraph(
         }
     }
 
-    composable<Route.StationList> {
+    composable<Route.StationDetail> {
         LaunchedEffect(Unit) {
-            navController.navigate(StationRoutes.StationList) {
-                popUpTo<Route.StationList> {
+            navController.navigate(StationRoutes.StationDetails) {
+                popUpTo<Route.StationDetail> {
                     inclusive = true
                 }
             }

@@ -21,3 +21,11 @@ sealed interface Route {
     @Serializable
     data object Home : Route
 }
+
+@Serializable
+sealed interface HomeDestination {
+
+    /** Shell destination that hosts bottom navigation */
+    @Serializable
+    data object Tabs : HomeDestination
+}

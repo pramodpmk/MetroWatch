@@ -16,7 +16,10 @@ sealed interface TimingRoutes {
 
 }
 
-fun NavGraphBuilder.timingsGraph(navController: NavHostController) {
+fun NavGraphBuilder.timingsGraph(
+    navController: NavHostController,
+    onNavigate: () -> Unit
+) {
     composable<TimingRoutes.Timings> {
         TrainTimingScreen(navController)
     }

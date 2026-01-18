@@ -13,13 +13,3 @@ fun HomeToolBar(
         DisplayText(text = text)
     }
 }
-
-@Composable
-fun HomeBottomBar() {
-    Row {
-        DisplayText(text = "Home", modifier = Modifier.weight(1f))
-        DisplayText(text = "Timing", modifier = Modifier.weight(1f))
-        DisplayText(text = "Fare", modifier = Modifier.weight(1f))
-        DisplayText(text = "Settings", modifier = Modifier.weight(1f))
-    }
-}
