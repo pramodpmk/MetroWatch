@@ -2,10 +2,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.android.lint)
-    //alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -14,7 +10,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "com.fungames.core.station"
+        namespace = "com.fungames.domain"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -35,7 +31,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "stationKit"
+    val xcfName = "domainKit"
 
     iosX64 {
         binaries.framework {
@@ -61,35 +57,27 @@ kotlin {
     // common to share sources between related targets.
     // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
     sourceSets {
-        commonMain.dependencies {
-            implementation(project(":core:ui"))
-            implementation(project(":core:data"))
-            implementation(project(":core:navigation"))
-            implementation(project(":core:domain"))
-
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.navigation.compose)
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.kotlinx.serialization.json)
+        commonMain {
+            dependencies {
+                implementation(libs.kotlin.stdlib)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                // Add KMP dependencies here
+            }
         }
 
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
         }
 
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
+        androidMain {
+            dependencies {
+                // Add Android-specific dependencies here. Note that this source set depends on
+                // commonMain by default and will correctly pull the Android artifacts of any KMP
+                // dependencies declared in commonMain.
+            }
         }
 
         getByName("androidDeviceTest") {
