@@ -64,9 +64,15 @@ fun TabHost(
             BottomTab.SETTINGS -> FareRoutes.CalculateFare
         }
     ) { // Screens directly tied to bottom navigation goes here
-        timingsGraph(navController, { target ->
-            appNavHostController.navigate(target)
-        })
+        timingsGraph(
+            navController,
+            onNavigate = { target ->
+                // Use appNavHostController for root-level routes (like StationPicker)
+                // that are defined in RootNavHost, not in tab-level navigation
+                appNavHostController.navigate(target)
+            }
+        )
+        stationsGraph(navController)
         homeGraph(navController)
         fareGraph(navController)
     }

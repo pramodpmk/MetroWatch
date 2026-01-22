@@ -28,7 +28,7 @@ fun TrainTimingScreen(
             //viewModel.userIntent()
             navHostController.navigate(TimingRoutes.TimingDetail)
         }) {
-            DisplayText("Refresh")
+            DisplayText("Open Detail")
         }
 
     }
