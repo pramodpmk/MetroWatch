@@ -5,6 +5,7 @@ import StationListRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.fungames.core.navigation.StationPickerResult
 import com.fungames.core.station.presentation.picker.StationPickerRoute
 import kotlinx.serialization.Serializable
 
@@ -19,14 +20,21 @@ sealed interface StationRoutes {
 
 }
 
-fun NavGraphBuilder.stationsGraph(navController: NavHostController) {
+fun NavGraphBuilder.stationsGraph(
+    navController: NavHostController,
+    onStationPickerResult: ((StationPickerResult) -> Unit)? = null
+) {
     composable<StationRoutes.StationList> {
         StationListRoute(navController)
     }
     composable<StationRoutes.StationDetails> {
         StationDetailRoute(navController)
     }
-    composable<StationRoutes.StationPicker> {
-        StationPickerRoute(navHostController = navController)
+    composable<StationRoutes.StationPicker> { backStackEntry ->
+        StationPickerRoute(
+            navHostController = navController,
+            backStackEntry = backStackEntry,
+            onStationPickerResult = onStationPickerResult
+        )
     }
 }

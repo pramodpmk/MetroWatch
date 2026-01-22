@@ -81,6 +81,10 @@ fun TabHost(
 @Composable
 fun RootNavHost() {
     val navController = rememberNavController()
+    // Navigation-scoped result callback registry (CMP-safe, no global state)
+    val resultCallbacks = remember {
+        mutableMapOf<String, (Any) -> Unit>()
+    }
 
     NavHost(
         navController = navController,
@@ -90,11 +94,26 @@ fun RootNavHost() {
         composable<HomeDestination.Tabs> {
             HomeScaffold(navController)
         }
-        stationsGraph(navController)
+        stationsGraph(navController) { result ->
+            // Find and invoke the callback for the parent entry
+            // Get the previous entry (parent) from back stack
+            val previousEntry = navController.previousBackStackEntry
+            previousEntry?.let { entry ->
+                resultCallbacks[entry.id]?.invoke(result)
+                resultCallbacks.remove(entry.id) // One-time event, remove after use
+            }
+        }
         homeGraph(navController)
-        timingsGraph(navController, { target ->
-            navController.navigate(target)
-        })
+        timingsGraph(
+            navController,
+            onNavigate = { target ->
+                navController.navigate(target)
+            },
+            onRegisterResultCallback = { entryId, callback ->
+                // Register callback for this navigation entry (navigation-scoped)
+                resultCallbacks[entryId] = callback
+            }
+        )
         fareGraph(navController)
         appGraph(navController)
     }

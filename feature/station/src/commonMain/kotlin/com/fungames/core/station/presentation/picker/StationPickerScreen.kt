@@ -101,7 +101,7 @@ fun StationPickerScreen(
                                 station = station,
                                 onClick = {
                                     onStationSelected(station)
-                                    navHostController.popBackStack()
+                                    // Navigation back is handled in StationPickerRoute
                                 }
                             )
                         }
