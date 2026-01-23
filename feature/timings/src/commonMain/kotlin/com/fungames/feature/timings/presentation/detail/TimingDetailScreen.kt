@@ -3,6 +3,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,10 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import com.fungames.core.navigation.NavigationResultHandler
+import com.fungames.core.navigation.LocalNavigationResults
 import com.fungames.core.navigation.Route
-import com.fungames.core.navigation.StationPickerResult
-import com.fungames.feature.timings.navigation.TimingRoutes
+import com.fungames.core.navigation.result.NavigationKeys
 import com.fungames.feature.timings.presentation.TimingTableViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -30,27 +30,30 @@ fun TrainTimingDetail(
     onRegisterResultCallback: ((String, (Any) -> Unit) -> Unit)? = null,
     viewModel: TimingTableViewModel = koinViewModel()
 ) {
-    // State to hold the selected station result (one-time event)
-    var selectedStation by remember { mutableStateOf<StationPickerResult?>(null) }
-
+    val navigationResults = LocalNavigationResults.current
     val routingEffectState = viewModel.stationRoutingEffect.collectAsState(null)
-
-    // Register result callback for this navigation entry (CMP-safe, navigation-scoped)
-    LaunchedEffect(backStackEntry.id) {
-        onRegisterResultCallback?.invoke(backStackEntry.id) { result ->
-            when (result) {
-                is StationPickerResult -> {
-                    // One-time event: store result
-                    selectedStation = result
-                    println("Selected station: ${result.name}")
-                }
+    var selectedStation by remember {
+        mutableStateOf("")
+    }
+    LaunchedEffect(Unit) {
+        navigationResults
+            .consume<String>(NavigationKeys.STATION_PICKER_RESULT)
+            ?.let {
+                println("StationPickerResult>>>$it")
+                selectedStation = it
             }
-        }
     }
 
     LaunchedEffect(key1 = routingEffectState.value) {
         routingEffectState.value?.let { route ->
             onNavigate(Route.StationPicker)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            println("onDispose>>>TimingDetailScreen")
+            navigationResults.clearResult(NavigationKeys.STATION_PICKER_RESULT)
         }
     }
 
@@ -60,7 +63,7 @@ fun TrainTimingDetail(
         
         // Display selected station result (one-time event)
         selectedStation?.let { station ->
-            DisplayText("Selected Station: ${station.name} (ID: ${station.id})")
+            DisplayText("Selected Station: ${station}")
             Spacer(Modifier.height(8.dp))
         }
         

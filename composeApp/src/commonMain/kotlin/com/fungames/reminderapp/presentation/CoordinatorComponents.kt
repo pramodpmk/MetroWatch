@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,7 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.fungames.core.navigation.BottomTab
 import com.fungames.core.navigation.HomeDestination
-import com.fungames.core.navigation.Route
+import com.fungames.core.navigation.NavigationResults
 import com.fungames.core.station.navigation.stationsGraph
 import com.fungames.fare.navigation.FareRoutes
 import com.fungames.fare.navigation.fareGraph
@@ -31,6 +32,7 @@ import com.fungames.feature.timings.navigation.timingsGraph
 import com.fungames.home.navigation.HomeRoutes
 import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
+
 
 @Composable
 fun TabHost(
@@ -94,15 +96,7 @@ fun RootNavHost() {
         composable<HomeDestination.Tabs> {
             HomeScaffold(navController)
         }
-        stationsGraph(navController) { result ->
-            // Find and invoke the callback for the parent entry
-            // Get the previous entry (parent) from back stack
-            val previousEntry = navController.previousBackStackEntry
-            previousEntry?.let { entry ->
-                resultCallbacks[entry.id]?.invoke(result)
-                resultCallbacks.remove(entry.id) // One-time event, remove after use
-            }
-        }
+        stationsGraph(navController)
         homeGraph(navController)
         timingsGraph(
             navController,

@@ -3,6 +3,10 @@ package com.fungames.reminderapp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import com.fungames.core.navigation.LocalNavigationResults
+import com.fungames.core.navigation.NavigationResults
 import com.fungames.fare.navigation.FareRoutes
 import com.fungames.feature.timings.navigation.TimingRoutes
 import com.fungames.home.navigation.HomeRoutes
@@ -27,35 +31,14 @@ val TopLevelRoutes = setOf(
 @Composable
 @Preview
 fun App() {
+
+    val navigationResults = remember { NavigationResults() }
     MaterialTheme {
 
-        RootNavHost()
-        /*val navController = rememberNavController()
-
-        NavHost(
-            navController = navController,
-            startDestination = HomeRoutes.HomePage
+        CompositionLocalProvider(
+            LocalNavigationResults provides navigationResults
         ) {
-
-            appGraph(navController = navController)
-
-            // Feature: Timings
-            timingsGraph(navController)
-
-            stationsGraph(navController)
-
-            fareGraph(navController)
-
-            homeGraph(navController)
-
-            // Feature: Reminders (local to app module for now)
-            composable<Screen.AddReminder> {
-                AddReminderScreen(
-                    onReminderSaved = { navController.popBackStack() }
-                )
-            }
-
-        }*/
-
+            RootNavHost()
+        }
     }
 }
