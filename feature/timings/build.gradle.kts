@@ -31,6 +31,7 @@ kotlin {
             implementation(project(":core:ui"))
             implementation(project(":core:data"))
             implementation(project(":core:navigation"))
+            implementation(project(":feature:fare"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

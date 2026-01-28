@@ -1,3 +1,5 @@
+package com.fungames.fare.presentation
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -16,16 +18,5 @@ fun CalculateFareRoute(
     navHostController: NavHostController,
     viewModel: FareViewModel = koinViewModel()
 ) {
-
-    Column {
-        DisplayText("Fare Screen")
-        Spacer(Modifier.height(60.dp))
-        Button(onClick = {
-            //viewModel.userIntent()
-            navHostController.popBackStack()
-        }) {
-            DisplayText("Detail")
-        }
-
-    }
+    FareCalculatorScreen(viewModel)
 }

@@ -1,6 +1,6 @@
 package com.fungames.fare.navigation
 
-import CalculateFareRoute
+import com.fungames.fare.presentation.CalculateFareRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
