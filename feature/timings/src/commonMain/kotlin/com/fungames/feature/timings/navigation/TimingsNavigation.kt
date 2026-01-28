@@ -20,7 +20,6 @@ sealed interface TimingRoutes {
 fun NavGraphBuilder.timingsGraph(
     navController: NavHostController,
     onNavigate: (Route) -> Unit,
-    onRegisterResultCallback: ((String, (Any) -> Unit) -> Unit)? = null
 ) {
     composable<TimingRoutes.Timings> {
         TrainTimingScreen(navController)
@@ -28,9 +27,7 @@ fun NavGraphBuilder.timingsGraph(
     composable<TimingRoutes.TimingDetail> { backStackEntry ->
         TrainTimingDetail(
             navController,
-            backStackEntry,
             onNavigate,
-            onRegisterResultCallback
         )
     }
 }

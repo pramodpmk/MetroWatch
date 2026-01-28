@@ -102,10 +102,6 @@ fun RootNavHost() {
             navController,
             onNavigate = { target ->
                 navController.navigate(target)
-            },
-            onRegisterResultCallback = { entryId, callback ->
-                // Register callback for this navigation entry (navigation-scoped)
-                resultCallbacks[entryId] = callback
             }
         )
         fareGraph(navController)

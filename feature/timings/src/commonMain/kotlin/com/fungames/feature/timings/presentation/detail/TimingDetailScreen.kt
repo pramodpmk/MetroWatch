@@ -5,7 +5,6 @@ import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,17 +24,15 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun TrainTimingDetail(
     navHostController: NavHostController,
-    backStackEntry: NavBackStackEntry,
     onNavigate: (Route) -> Unit,
-    onRegisterResultCallback: ((String, (Any) -> Unit) -> Unit)? = null,
     viewModel: TimingTableViewModel = koinViewModel()
 ) {
     val navigationResults = LocalNavigationResults.current
-    val routingEffectState = viewModel.stationRoutingEffect.collectAsState(null)
     var selectedStation by remember {
         mutableStateOf("")
     }
-    LaunchedEffect(Unit) {
+
+    LaunchedEffect(navigationResults.version) {
         navigationResults
             .consume<String>(NavigationKeys.STATION_PICKER_RESULT)
             ?.let {
@@ -44,8 +41,8 @@ fun TrainTimingDetail(
             }
     }
 
-    LaunchedEffect(key1 = routingEffectState.value) {
-        routingEffectState.value?.let { route ->
+    LaunchedEffect(key1 = Unit) {
+        viewModel.stationRoutingEffect.collect { state ->
             onNavigate(Route.StationPicker)
         }
     }
