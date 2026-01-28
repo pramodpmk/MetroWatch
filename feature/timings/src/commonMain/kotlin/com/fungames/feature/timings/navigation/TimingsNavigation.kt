@@ -1,6 +1,6 @@
 package com.fungames.feature.timings.navigation
 
-import TrainTimingDetail
+import com.fungames.feature.timings.presentation.detail.TrainTimingDetail
 import TrainTimingScreen
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
