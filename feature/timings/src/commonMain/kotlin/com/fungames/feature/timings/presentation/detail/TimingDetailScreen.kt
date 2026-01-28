@@ -1,6 +1,8 @@
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -16,6 +18,7 @@ import androidx.navigation.NavHostController
 import com.fungames.core.navigation.LocalNavigationResults
 import com.fungames.core.navigation.Route
 import com.fungames.core.navigation.result.NavigationKeys
+import com.fungames.fare.presentation.FareCalculatorScreen
 import com.fungames.feature.timings.presentation.TimingTableViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -54,7 +57,9 @@ fun TrainTimingDetail(
         }
     }
 
-    Column {
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
         DisplayText("Timing Detail Screen")
         Spacer(Modifier.height(16.dp))
         
@@ -63,6 +68,8 @@ fun TrainTimingDetail(
             DisplayText("Selected Station: ${station}")
             Spacer(Modifier.height(8.dp))
         }
+
+        FareCalculatorScreen()
         
         Spacer(Modifier.height(60.dp))
         Button(onClick = {
