@@ -1,6 +1,6 @@
 package com.fungames.core.station.presentation.list
 
-import DisplayText
+import com.fungames.core.ui.components.DisplayText
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

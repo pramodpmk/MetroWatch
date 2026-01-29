@@ -1,6 +1,6 @@
 package com.fungames.core.ui.components
 
-import DisplayText
+import com.fungames.core.ui.components.DisplayText
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable

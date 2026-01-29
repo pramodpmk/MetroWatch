@@ -1,6 +1,6 @@
 package com.fungames.home.presentation
 
-import DisplayText
+import com.fungames.core.ui.components.DisplayText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
