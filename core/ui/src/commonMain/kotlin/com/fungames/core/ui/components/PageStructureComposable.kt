@@ -8,16 +8,15 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun AppScaffold(
-    toolBar: @Composable () -> Unit,
-    bottomBar: @Composable () -> Unit,
-    content: @Composable () -> Unit,
+    toolBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
+    content: @Composable (androidx.compose.foundation.layout.PaddingValues) -> Unit,
 ) {
     Scaffold(
         topBar = toolBar,
         bottomBar = bottomBar,
-    ) {
-        paddingValues ->
-        content()
+    ) { paddingValues ->
+        content(paddingValues)
     }
 }
 

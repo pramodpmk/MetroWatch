@@ -26,17 +26,19 @@ class HomeViewModel : ViewModel() {
     private fun loadHomePage() {
         viewModelScope.launch {
             val locationUseCase = flow {
-                emit("Kadavanthra")
+                emit("Downtown Area")
             }
             val nearestStationUseCase = flow {
                 emit(
                     NearestStation(
                         id = 1,
-                        stationName = "Kadavanthra",
-                        stationCode = "KAD",
-                        distanceToStation = "100m",
+                        stationName = "Central Station",
+                        stationCode = "CEN",
+                        distanceToStation = "0.8 km away",
                         nextTrainTo = "",
-                        nextTrainTime = "",
+                        nextTrainTime = "3 min",
+                        line = "Blue Line",
+                        platform = "Platform 2",
                         locationLatitude = 0,
                         locationLongitude = 0
                     )
@@ -87,7 +89,8 @@ class HomeViewModel : ViewModel() {
                 _homeState.value.copy(
                     locationText = location,
                     nearestStation = nearest,
-                    stationList = stations
+                    stationList = stations,
+                    pageState = PageState.Success
                 )
             }.collect { state ->
                 _homeState.value = state
