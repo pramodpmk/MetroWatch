@@ -18,6 +18,7 @@ fun HomeRoute(
     }
 
     HomeScreen(
-        homeStateFlow = viewModel.homeState
+        homeStateFlow = viewModel.homeState,
+        onIntent = { intent -> viewModel.userIntent(intent) }
     )
 }
