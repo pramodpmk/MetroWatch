@@ -78,7 +78,12 @@ fun TabHost(
         )
         stationsGraph(navController)
         homeGraph(navController)
-        fareGraph(navController)
+        fareGraph(
+            navController,
+            onNavigate = { target ->
+                appNavHostController.navigate(target)
+            }
+        )
         settingsGraph(navController)
     }
 }
@@ -107,7 +112,12 @@ fun RootNavHost() {
                 navController.navigate(target)
             }
         )
-        fareGraph(navController)
+        fareGraph(
+            navController,
+            onNavigate = { target ->
+                navController.navigate(target)
+            }
+        )
         settingsGraph(navController)
         appGraph(navController)
     }

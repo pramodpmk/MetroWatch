@@ -1,30 +1,48 @@
 package com.fungames.fare.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fungames.core.navigation.LocalNavigationResults
+import com.fungames.core.navigation.Route
+import com.fungames.core.navigation.result.NavigationKeys
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun FareCalculatorScreen(
+    onNavigate: (Route) -> Unit,
     viewModel: FareViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val navigationResults = LocalNavigationResults.current
+
+    LaunchedEffect(navigationResults.version) {
+        navigationResults
+            .consume<String>(NavigationKeys.STATION_PICKER_RESULT)
+            ?.let { stationName ->
+                viewModel.updateStation(stationName)
+            }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            navigationResults.clearResult(NavigationKeys.STATION_PICKER_RESULT)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -34,9 +52,22 @@ fun FareCalculatorScreen(
     ) {
         FareCalculationCard(
             uiState = uiState,
+            onDepartureClick = {
+                viewModel.setPickingDeparture(true)
+                onNavigate(Route.StationPicker)
+            },
+            onArrivalClick = {
+                viewModel.setPickingDeparture(false)
+                onNavigate(Route.StationPicker)
+            },
             onSwapStations = { viewModel.swapStations() },
             onCalculateFare = { viewModel.calculateFare() }
         )
+
+        if (uiState.isLoading) {
+            Spacer(modifier = Modifier.height(24.dp))
+            CircularProgressIndicator(color = Color(0xFF00838F))
+        }
 
         if (uiState.showDetails) {
             Spacer(modifier = Modifier.height(24.dp))
@@ -48,6 +79,8 @@ fun FareCalculatorScreen(
 @Composable
 fun FareCalculationCard(
     uiState: FareUiState,
+    onDepartureClick: () -> Unit,
+    onArrivalClick: () -> Unit,
     onSwapStations: () -> Unit,
     onCalculateFare: () -> Unit
 ) {
@@ -131,7 +164,7 @@ fun FareCalculationCard(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF512DA8), // Purple-ish
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f).clickable { onDepartureClick() }
                     )
 
                     IconButton(onClick = onSwapStations) {
@@ -147,7 +180,7 @@ fun FareCalculationCard(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF512DA8),
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f).clickable { onArrivalClick() },
                         textAlign = androidx.compose.ui.text.style.TextAlign.End
                     )
                 }
@@ -230,19 +263,6 @@ fun FareDetailsSection(uiState: FareUiState) {
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                OutlinedButton(
-                    onClick = { /* TODO */ },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF00838F))
-                ) {
-                    Text(text = "BOOK TICKET", color = Color(0xFF00838F), fontWeight = FontWeight.Bold)
-                }
             }
         }
     }

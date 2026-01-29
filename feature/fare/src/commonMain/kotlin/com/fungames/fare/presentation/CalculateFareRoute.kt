@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.fungames.core.navigation.Route
 import com.fungames.fare.presentation.FareViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -16,7 +17,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun CalculateFareRoute(
     navHostController: NavHostController,
+    onNavigate: (Route) -> Unit,
     viewModel: FareViewModel = koinViewModel()
 ) {
-    FareCalculatorScreen(viewModel)
+    FareCalculatorScreen(onNavigate, viewModel)
 }
