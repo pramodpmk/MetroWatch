@@ -2,6 +2,8 @@ package com.fungames.fare.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fungames.domain.DomainState
+import com.fungames.fare.domain.CalculateFareUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,12 +13,16 @@ import kotlinx.coroutines.launch
 data class FareUiState(
     val departureStation: String = "SEEPZ",
     val arrivalStation: String = "CSMI Airport-T1",
-    val distance: String = "6.26km",
-    val fare: String = "₹30.00",
-    val showDetails: Boolean = false
+    val distance: String = "",
+    val fare: String = "",
+    val showDetails: Boolean = false,
+    val isLoading: Boolean = false,
+    val isPickingDeparture: Boolean = true
 )
 
-class FareViewModel : ViewModel() {
+class FareViewModel(
+    private val calculateFareUseCase: CalculateFareUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FareUiState())
     val uiState: StateFlow<FareUiState> = _uiState.asStateFlow()
@@ -31,7 +37,30 @@ class FareViewModel : ViewModel() {
     }
 
     fun calculateFare() {
-        _uiState.update { it.copy(showDetails = true) }
+        val currentState = _uiState.value
+        viewModelScope.launch {
+            calculateFareUseCase(currentState.departureStation, currentState.arrivalStation).collect { result ->
+                when (result) {
+                    is DomainState.Loading -> {
+                        _uiState.update { it.copy(isLoading = true, showDetails = false) }
+                    }
+                    is DomainState.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                distance = result.data.distance,
+                                fare = result.data.fare,
+                                showDetails = true
+                            )
+                        }
+                    }
+                    is DomainState.Error -> {
+                        _uiState.update { it.copy(isLoading = false) }
+                        // Handle error if needed
+                    }
+                }
+            }
+        }
     }
 
     fun swapStations() {
@@ -43,4 +72,17 @@ class FareViewModel : ViewModel() {
         }
     }
 
+    fun setPickingDeparture(isDeparture: Boolean) {
+        _uiState.update { it.copy(isPickingDeparture = isDeparture) }
+    }
+
+    fun updateStation(name: String) {
+        _uiState.update { state ->
+            if (state.isPickingDeparture) {
+                state.copy(departureStation = name)
+            } else {
+                state.copy(arrivalStation = name)
+            }
+        }
+    }
 }
