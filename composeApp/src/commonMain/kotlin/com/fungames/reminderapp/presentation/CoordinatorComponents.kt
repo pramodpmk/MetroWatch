@@ -2,6 +2,7 @@ package com.fungames.reminderapp.presentation
 
 import com.fungames.core.ui.components.DisplayText
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
@@ -144,7 +145,8 @@ fun HomeScaffold(
                     )
                 }
             }
-        }
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { padding ->
         TabHost(
             modifier = Modifier.padding(padding),
