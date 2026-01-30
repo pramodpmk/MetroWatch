@@ -222,7 +222,7 @@ fun ActionGrid(
     onActionClick: (String) -> Unit
 ) {
     val actions = listOf(
-        ActionItemData("Station List", Icons.Default.Map, Color(0xFF536DFE)),
+        ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
         ActionItemData("Plan Trip", Icons.Default.Navigation, Color(0xFF00C853)),
         ActionItemData("Timing Table", Icons.Default.Schedule, Color(0xFFD500F9)),
         ActionItemData("Fare Calculator", Icons.Default.Calculate, Color(0xFFFF6D00)),

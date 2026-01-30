@@ -1,10 +1,10 @@
 package com.fungames.core.station.navigation
 
-import StationDetailRoute
-import StationListRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.fungames.core.station.presentation.detail.StationDetailRoute
+import com.fungames.core.station.presentation.list.StationListRoute
 import com.fungames.core.station.presentation.picker.StationPickerRoute
 import kotlinx.serialization.Serializable
 

@@ -24,19 +24,22 @@ class StationViewModel(
 
     private fun stationList() {
         viewModelScope.launch {
+            _stationListState.value = _stationListState.value.copy(isLoading = true)
             stationListUseCase().collect { state ->
                 when(state) {
                     is DomainState.Success -> {
-                        _stationListState.value = stationListState.value.copy(
+                        _stationListState.value = _stationListState.value.copy(
                             list = state.data,
+                            filteredList = state.data,
                             isLoading = false,
                             isError = false
                         )
                     }
                     is DomainState.Error -> {
-                        _stationListState.value = stationListState.value.copy(
+                        _stationListState.value = _stationListState.value.copy(
                             isLoading = false,
-                            isError = true
+                            isError = true,
+                            errorMessage = "Failed to load stations"
                         )
                     }
                     else -> {
@@ -45,6 +48,21 @@ class StationViewModel(
                 }
             }
         }
+    }
+
+    fun onSearchQueryChange(query: String) {
+        val filtered = if (query.isBlank()) {
+            _stationListState.value.list
+        } else {
+            _stationListState.value.list.filter {
+                it.name.contains(query, ignoreCase = true) ||
+                        it.code.contains(query, ignoreCase = true)
+            }
+        }
+        _stationListState.value = _stationListState.value.copy(
+            searchQuery = query,
+            filteredList = filtered
+        )
     }
 
 
