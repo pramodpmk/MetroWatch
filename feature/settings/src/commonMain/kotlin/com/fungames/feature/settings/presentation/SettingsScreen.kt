@@ -2,26 +2,26 @@ package com.fungames.feature.settings.presentation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material.icons.outlined.Verified
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,78 +29,82 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.fungames.core.ui.components.AppScaffold
-import com.fungames.core.ui.components.DisplayText
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen() {
     val uriHandler = LocalUriHandler.current
 
     AppScaffold(
-        toolBar = { SettingsToolBar() },
-        bottomBar = {  },
-        content = {
+        toolBar = {
+            MediumTopAppBar(
+                title = { Text("Settings") },
+                windowInsets = WindowInsets.statusBars
+            )
+        },
+        bottomBar = { },
+        content = { paddingValues ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp)
             ) {
-                Spacer(Modifier.height(64.dp))
+                SettingsSection(title = "Support") {
+                    SettingsItem(
+                        title = "Give Feedback",
+                        icon = Icons.Outlined.Email,
+                        onClick = { uriHandler.openUri("mailto:feedback@example.com") }
+                    )
+                    SettingsItem(
+                        title = "Rate Us",
+                        icon = Icons.Outlined.Star,
+                        onClick = { uriHandler.openUri("https://play.google.com/store/apps/details?id=com.fungames.reminderapp") }
+                    )
+                    SettingsItem(
+                        title = "Share App",
+                        icon = Icons.Outlined.Share,
+                        onClick = {
+                            uriHandler.openUri("https://example.com/share?text=Check out this app!")
+                        }
+                    )
+                }
 
-                SettingsItem(
-                    title = "Give Feedback",
-                    icon = Icons.Outlined.Email,
-                    onClick = { uriHandler.openUri("mailto:feedback@example.com") }
-                )
-                SettingsItem(
-                    title = "Policy & Guidelines",
-                    icon = Icons.Outlined.Lock,
-                    onClick = { uriHandler.openUri("https://example.com/policy") }
-                )
-                SettingsItem(
-                    title = "Rate Us",
-                    icon = Icons.Outlined.Star,
-                    onClick = { uriHandler.openUri("https://play.google.com/store/apps/details?id=com.fungames.reminderapp") }
-                )
-                SettingsItem(
-                    title = "Share App",
-                    icon = Icons.Outlined.Share,
-                    onClick = {
-                        // For now, use uriHandler to "share" via a link or just a placeholder
-                        // Ideally this would trigger a platform share sheet
-                        uriHandler.openUri("https://example.com/share?text=Check out this app!")
-                    }
-                )
-
-                Spacer(Modifier.height(16.dp))
-                HorizontalDivider()
-                Spacer(Modifier.height(16.dp))
-
-                SettingsItem(
-                    title = "About Us",
-                    icon = Icons.Outlined.Info,
-                    onClick = { uriHandler.openUri("https://example.com/about") }
-                )
-
-                ListItem(
-                    headlineContent = { Text("Version") },
-                    supportingContent = { Text("1.0.0") },
-                    leadingContent = { Icon(Icons.Outlined.Info, contentDescription = null) }
-                )
+                SettingsSection(title = "Information") {
+                    SettingsItem(
+                        title = "Policy & Guidelines",
+                        icon = Icons.Outlined.Lock,
+                        onClick = { uriHandler.openUri("https://example.com/policy") }
+                    )
+                    SettingsItem(
+                        title = "About Us",
+                        icon = Icons.Outlined.Info,
+                        onClick = { uriHandler.openUri("https://example.com/about") }
+                    )
+                    ListItem(
+                        headlineContent = { Text("Version") },
+                        supportingContent = { Text("1.0.0") },
+                        leadingContent = { Icon(Icons.Outlined.Verified, contentDescription = null) }
+                    )
+                }
             }
         }
     )
 }
 
 @Composable
-fun SettingsToolBar() {
-    Row(modifier = Modifier
-        .windowInsetsPadding(WindowInsets.statusBars)
-        .padding(16.dp)) {
-        DisplayText(
-            text = "Settings",
-            style = MaterialTheme.typography.headlineMedium
+fun SettingsSection(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
+        content()
     }
 }
 
@@ -113,6 +117,12 @@ fun SettingsItem(
     ListItem(
         headlineContent = { Text(title) },
         leadingContent = { Icon(icon, contentDescription = null) },
+        trailingContent = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null
+            )
+        },
         modifier = Modifier.clickable(onClick = onClick)
     )
 }
