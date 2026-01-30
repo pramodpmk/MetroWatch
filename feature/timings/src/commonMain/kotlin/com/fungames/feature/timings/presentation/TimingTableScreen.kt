@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.fungames.core.ui.components.DisplayText
 import com.fungames.feature.timings.navigation.TimingRoutes
 import com.fungames.feature.timings.presentation.TimingTableViewModel
 import org.koin.compose.viewmodel.koinViewModel

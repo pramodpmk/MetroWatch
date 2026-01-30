@@ -47,6 +47,7 @@ kotlin {
             implementation(project(":feature:station"))
             implementation(project(":feature:fare"))
             implementation(project(":feature:home"))
+            implementation(project(":feature:settings"))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

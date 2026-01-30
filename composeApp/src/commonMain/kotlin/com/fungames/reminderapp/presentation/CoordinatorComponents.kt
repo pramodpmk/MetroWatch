@@ -1,6 +1,6 @@
 package com.fungames.reminderapp.presentation
 
-import DisplayText
+import com.fungames.core.ui.components.DisplayText
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -27,6 +27,8 @@ import com.fungames.core.navigation.NavigationResults
 import com.fungames.core.station.navigation.stationsGraph
 import com.fungames.fare.navigation.FareRoutes
 import com.fungames.fare.navigation.fareGraph
+import com.fungames.feature.settings.navigation.SettingsRoutes
+import com.fungames.feature.settings.navigation.settingsGraph
 import com.fungames.feature.timings.navigation.TimingRoutes
 import com.fungames.feature.timings.navigation.timingsGraph
 import com.fungames.home.navigation.HomeRoutes
@@ -63,7 +65,7 @@ fun TabHost(
             BottomTab.TIMINGS -> TimingRoutes.Timings
             BottomTab.HOME -> HomeRoutes.HomePage
                 BottomTab.FARE -> FareRoutes.CalculateFare
-            BottomTab.SETTINGS -> FareRoutes.CalculateFare
+            BottomTab.SETTINGS -> SettingsRoutes.Settings
         }
     ) { // Screens directly tied to bottom navigation goes here
         timingsGraph(
@@ -76,7 +78,13 @@ fun TabHost(
         )
         stationsGraph(navController)
         homeGraph(navController)
-        fareGraph(navController)
+        fareGraph(
+            navController,
+            onNavigate = { target ->
+                appNavHostController.navigate(target)
+            }
+        )
+        settingsGraph(navController)
     }
 }
 
@@ -104,7 +112,13 @@ fun RootNavHost() {
                 navController.navigate(target)
             }
         )
-        fareGraph(navController)
+        fareGraph(
+            navController,
+            onNavigate = { target ->
+                navController.navigate(target)
+            }
+        )
+        settingsGraph(navController)
         appGraph(navController)
     }
 }

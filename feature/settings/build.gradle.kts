@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
@@ -9,7 +11,7 @@ plugins {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
@@ -19,7 +21,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "FeatureHome"
+            baseName = "FeatureSettings"
             isStatic = true
         }
     }
@@ -33,7 +35,6 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -47,17 +48,19 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
         }
 
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-            // Added for Android Studio Preview support
-            implementation(compose.uiTooling)
         }
     }
 }
 
 android {
-    namespace = "com.fungames.home"
+    namespace = "com.fungames.feature.settings"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
