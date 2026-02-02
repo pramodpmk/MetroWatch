@@ -78,7 +78,9 @@ fun TabHost(
             }
         )
         stationsGraph(navController)
-        homeGraph(navController)
+        homeGraph(navController) {
+            appNavHostController.navigate(it)
+        }
         fareGraph(
             navController,
             onNavigate = { target ->
@@ -106,7 +108,9 @@ fun RootNavHost() {
             HomeScaffold(navController)
         }
         stationsGraph(navController)
-        homeGraph(navController)
+        homeGraph(navController) {
+
+        }
         timingsGraph(
             navController,
             onNavigate = { target ->
