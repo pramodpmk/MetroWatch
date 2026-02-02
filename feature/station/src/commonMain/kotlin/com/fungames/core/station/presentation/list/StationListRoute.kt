@@ -24,7 +24,7 @@ fun StationListRoute(
             viewModel.onSearchQueryChange(query)
         },
         onStationClick = { station ->
-            navHostController.navigate(StationRoutes.StationDetails)
+            navHostController.navigate(StationRoutes.StationDetails(station.id))
         }
     )
 }
