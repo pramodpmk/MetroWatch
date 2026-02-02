@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import com.fungames.core.station.domain.Station
 fun StationListScreen(
     stationListState: StationListUi,
     navHostController: NavHostController,
+    onSearchQueryChange: (String) -> Unit = {},
     onStationClick: (Station) -> Unit = {}
 ) {
     Scaffold(
@@ -36,26 +38,65 @@ fun StationListScreen(
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-            if (stationListState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(androidx.compose.ui.Alignment.Center))
-            } else if (stationListState.isError) {
-                DisplayText(
-                    text = stationListState.errorMessage,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.align(androidx.compose.ui.Alignment.Center).padding(16.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            // Search Bar
+            OutlinedTextField(
+                value = stationListState.searchQuery,
+                onValueChange = onSearchQueryChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                placeholder = { DisplayText("Search stations...") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search"
+                    )
+                },
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
                 )
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(stationListState.list) { station ->
-                        StationItem(
-                            station = station,
-                            onClick = { onStationClick(station) }
-                        )
+            )
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (stationListState.isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(androidx.compose.ui.Alignment.Center))
+                } else if (stationListState.isError) {
+                    DisplayText(
+                        text = stationListState.errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(androidx.compose.ui.Alignment.Center).padding(16.dp)
+                    )
+                } else if (stationListState.filteredList.isEmpty()) {
+                    DisplayText(
+                        text = if (stationListState.searchQuery.isBlank()) {
+                            "No stations available"
+                        } else {
+                            "No stations found"
+                        },
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .align(androidx.compose.ui.Alignment.Center)
+                            .padding(16.dp)
+                    )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(stationListState.filteredList) { station ->
+                            StationItem(
+                                station = station,
+                                onClick = { onStationClick(station) }
+                            )
+                        }
                     }
                 }
             }
