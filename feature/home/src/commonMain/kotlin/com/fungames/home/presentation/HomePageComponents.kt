@@ -3,6 +3,9 @@ package com.fungames.home.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,6 +37,7 @@ fun HomeToolBar(
         modifier = Modifier
             .fillMaxWidth()
             .background(BrandBlue)
+            .windowInsetsPadding(WindowInsets.statusBars)
             .padding(16.dp)
     ) {
         Row(
@@ -218,7 +222,7 @@ fun ActionGrid(
     onActionClick: (String) -> Unit
 ) {
     val actions = listOf(
-        ActionItemData("Station List", Icons.Default.Map, Color(0xFF536DFE)),
+        ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
         ActionItemData("Plan Trip", Icons.Default.Navigation, Color(0xFF00C853)),
         ActionItemData("Timing Table", Icons.Default.Schedule, Color(0xFFD500F9)),
         ActionItemData("Fare Calculator", Icons.Default.Calculate, Color(0xFFFF6D00)),

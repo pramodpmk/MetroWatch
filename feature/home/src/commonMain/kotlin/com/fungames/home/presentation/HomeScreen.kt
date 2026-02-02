@@ -51,7 +51,7 @@ fun HomeScreen(
                 ActionGrid(
                     onActionClick = { label ->
                         when (label) {
-                            "Station List" -> onIntent(HomePageIntent.ViewAllStations)
+                            "Stations" -> onIntent(HomePageIntent.ViewAllStations)
                             "Fare Calculator" -> onIntent(HomePageIntent.FareCalculation)
                             "Timing Table" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
