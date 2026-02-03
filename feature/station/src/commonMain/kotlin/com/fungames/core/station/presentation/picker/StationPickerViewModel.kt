@@ -61,7 +61,8 @@ class StationPickerViewModel(
             } else {
                 currentState.allStations.filter { station ->
                     station.name.contains(query, ignoreCase = true) ||
-                            station.code.contains(query, ignoreCase = true)
+                            (station.nameMl?.contains(query, ignoreCase = true) ?: false) ||
+                            (station.nameHi?.contains(query, ignoreCase = true) ?: false)
                 }
             }
             currentState.copy(

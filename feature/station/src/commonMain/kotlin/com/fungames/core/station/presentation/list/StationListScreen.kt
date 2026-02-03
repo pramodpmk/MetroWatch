@@ -125,7 +125,7 @@ private fun StationItem(
             )
             Spacer(modifier = Modifier.height(4.dp))
             DisplayText(
-                text = "Code: ${station.code}",
+                text = "ID: ${station.id}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -1,16 +1,21 @@
-package com.fungames.core.station.domain
+package com.fungames.core.data.db
 
-data class Station(
-    val id: String,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "stations")
+data class StationEntity(
+    @PrimaryKey val id: String,
+
     val nameEn: String,
     val nameMl: String?,
     val nameHi: String?,
+
     val latitude: Double,
     val longitude: Double,
+
     val lineId: String,
     val sequence: Int,
+
     val wheelchairAccessible: Boolean
-) {
-    // Helper property for UI compatibility
-    val name: String get() = nameEn
-}
+)

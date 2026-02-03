@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.sqldelight)
     alias(libs.plugins.kotlinx.serialization)
 }
 
@@ -32,12 +31,11 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.sqldelight.driver.android)
+            implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.sqldelight.driver.native)
         }
         commonMain.dependencies {
             implementation(project(":core:ui"))
@@ -62,8 +60,6 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.auth)
-
-            implementation(libs.sqldelight.coroutines.extensions)
 
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor)
@@ -110,12 +106,4 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-}
-
-sqldelight {
-  databases {
-    create("AppDatabase") {
-      packageName.set("com.fungames.reminderapp.db")
-    }
-  }
 }
