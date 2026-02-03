@@ -63,7 +63,7 @@ class StationViewModel(
         }
     }
 
-    fun loadStation(id: Int) {
+    fun loadStation(id: String) {
         viewModelScope.launch {
             _stationDetailState.value = _stationDetailState.value.copy(isLoading = true)
             stationListUseCase().collect { state ->
@@ -103,7 +103,8 @@ class StationViewModel(
         } else {
             _stationListState.value.list.filter {
                 it.name.contains(query, ignoreCase = true) ||
-                        it.code.contains(query, ignoreCase = true)
+                        (it.nameMl?.contains(query, ignoreCase = true) ?: false) ||
+                        (it.nameHi?.contains(query, ignoreCase = true) ?: false)
             }
         }
         _stationListState.value = _stationListState.value.copy(

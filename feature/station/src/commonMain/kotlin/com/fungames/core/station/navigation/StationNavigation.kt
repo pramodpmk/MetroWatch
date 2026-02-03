@@ -13,7 +13,7 @@ sealed interface StationRoutes {
     @Serializable
     data object StationList : StationRoutes
     @Serializable
-    data class StationDetails(val stationId: Int) : StationRoutes
+    data class StationDetails(val stationId: String) : StationRoutes
     @Serializable
     data object StationPicker : StationRoutes
 
