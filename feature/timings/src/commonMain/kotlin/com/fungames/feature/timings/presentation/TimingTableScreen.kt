@@ -19,13 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.fungames.core.ui.components.AppScaffold
+import com.fungames.core.ui.components.BrandToolBar
 import com.fungames.core.ui.components.DisplayText
+import com.fungames.core.ui.theme.BrandBlue
+import com.fungames.core.ui.theme.LightBlueBg
 import com.fungames.feature.timings.navigation.TimingRoutes
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-
-val TimingOrange = Color(0xFFE47B33)
-val TimingLightOrange = Color(0xFFFFF4ED)
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -72,30 +72,10 @@ fun TrainTimingScreen(
 
 @Composable
 fun TimingToolBar() {
-    Surface(
-        color = TimingOrange,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.statusBars)
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Schedule,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            DisplayText(
-                text = "Metro Timing",
-                color = Color.White,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-    }
+    BrandToolBar(
+        title = "Metro Timing",
+        navigationIcon = Icons.Default.Schedule
+    )
 }
 
 @Composable
@@ -115,13 +95,13 @@ fun SearchTimingCard(onClick: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(TimingLightOrange, CircleShape),
+                    .background(LightBlueBg, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.DirectionsSubway,
                     contentDescription = null,
-                    tint = TimingOrange,
+                    tint = BrandBlue,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -170,7 +150,7 @@ fun TimingCard(timing: TimingInfo) {
                     text = timing.timing,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = TimingOrange
+                        color = BrandBlue
                     )
                 )
             }
@@ -178,7 +158,7 @@ fun TimingCard(timing: TimingInfo) {
             Icon(
                 imageVector = Icons.Default.Schedule,
                 contentDescription = null,
-                tint = TimingLightOrange.copy(alpha = 0.5f),
+                tint = LightBlueBg.copy(alpha = 0.5f),
                 modifier = Modifier.size(40.dp)
             )
         }

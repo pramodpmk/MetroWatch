@@ -20,44 +20,24 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fungames.core.ui.components.BrandToolBar
 import com.fungames.core.ui.components.DisplayText
 import com.fungames.core.ui.components.RowGrid
-
-val BrandBlue = Color(0xFF4B00FF)
-val LightBlueBg = Color(0xFFE8F0FF)
-val NearestStationLabelColor = Color(0xFF6200EE)
-val NextTrainGreen = Color(0xFF00C853)
+import com.fungames.core.ui.theme.BrandBlue
+import com.fungames.core.ui.theme.LightBlueBg
+import com.fungames.core.ui.theme.NearestStationLabelColor
+import com.fungames.core.ui.theme.NextTrainGreen
 
 @Composable
 fun HomeToolBar(
     text: String,
     onLocationClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(BrandBlue)
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .padding(16.dp)
+    BrandToolBar(
+        title = "MetroTime",
+        navigationIcon = Icons.Default.DirectionsSubway
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.DirectionsSubway,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            DisplayText(
-                text = "MetroTime",
-                color = Color.White,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-
+        Spacer(modifier = Modifier.height(16.dp))
         Surface(
             modifier = Modifier
                 .fillMaxWidth()

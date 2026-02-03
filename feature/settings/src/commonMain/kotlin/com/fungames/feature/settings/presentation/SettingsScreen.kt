@@ -29,6 +29,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.fungames.core.ui.components.AppScaffold
+import com.fungames.core.ui.components.BrandToolBar
+import com.fungames.core.ui.theme.BrandBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,9 +39,8 @@ fun SettingsScreen() {
 
     AppScaffold(
         toolBar = {
-            MediumTopAppBar(
-                title = { Text("Settings") },
-                windowInsets = WindowInsets.statusBars
+            BrandToolBar(
+                title = "Settings"
             )
         },
         bottomBar = { },
@@ -101,7 +102,7 @@ fun SettingsSection(
         Text(
             text = title,
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
+            color = BrandBlue,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         content()
@@ -116,7 +117,7 @@ fun SettingsItem(
 ) {
     ListItem(
         headlineContent = { Text(title) },
-        leadingContent = { Icon(icon, contentDescription = null) },
+        leadingContent = { Icon(icon, contentDescription = null, tint = BrandBlue) },
         trailingContent = {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
