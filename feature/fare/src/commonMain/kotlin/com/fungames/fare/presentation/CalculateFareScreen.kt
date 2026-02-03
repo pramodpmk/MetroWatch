@@ -21,6 +21,11 @@ import androidx.compose.ui.unit.sp
 import com.fungames.core.navigation.LocalNavigationResults
 import com.fungames.core.navigation.Route
 import com.fungames.core.navigation.result.NavigationKeys
+import com.fungames.core.ui.components.AppScaffold
+import com.fungames.core.ui.components.BrandToolBar
+import com.fungames.core.ui.theme.BrandBlue
+import com.fungames.core.ui.theme.LightBlueBg
+import com.fungames.core.ui.theme.NearestStationLabelColor
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
@@ -47,35 +52,43 @@ fun FareCalculatorScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        FareCalculationCard(
-            uiState = uiState,
-            onDepartureClick = {
-                viewModel.setPickingDeparture(true)
-                onNavigate(Route.StationPicker)
-            },
-            onArrivalClick = {
-                viewModel.setPickingDeparture(false)
-                onNavigate(Route.StationPicker)
-            },
-            onSwapStations = { viewModel.swapStations() },
-            onCalculateFare = { viewModel.calculateFare() }
-        )
-
-        if (uiState.isLoading) {
-            Spacer(modifier = Modifier.height(24.dp))
-            CircularProgressIndicator(color = Color(0xFF00838F))
+    AppScaffold(
+        toolBar = {
+            BrandToolBar(
+                title = "Fare Calculator"
+            )
         }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            FareCalculationCard(
+                uiState = uiState,
+                onDepartureClick = {
+                    viewModel.setPickingDeparture(true)
+                    onNavigate(Route.StationPicker)
+                },
+                onArrivalClick = {
+                    viewModel.setPickingDeparture(false)
+                    onNavigate(Route.StationPicker)
+                },
+                onSwapStations = { viewModel.swapStations() },
+                onCalculateFare = { viewModel.calculateFare() }
+            )
 
-        if (uiState.showDetails) {
-            Spacer(modifier = Modifier.height(24.dp))
-            FareDetailsSection(uiState = uiState)
+            if (uiState.isLoading) {
+                Spacer(modifier = Modifier.height(24.dp))
+                CircularProgressIndicator(color = BrandBlue)
+            }
+
+            if (uiState.showDetails) {
+                Spacer(modifier = Modifier.height(24.dp))
+                FareDetailsSection(uiState = uiState)
+            }
         }
     }
 }
@@ -91,7 +104,7 @@ fun FareCalculationCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE0F7F9)), // Light cyan
+        colors = CardDefaults.cardColors(containerColor = LightBlueBg),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column {
@@ -111,7 +124,7 @@ fun FareCalculationCard(
                     ) {
                         Text(
                             text = "CALCULATE FARE",
-                            color = Color(0xFF00838F),
+                            color = BrandBlue,
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp
                         )
@@ -124,7 +137,7 @@ fun FareCalculationCard(
                     modifier = Modifier
                         .padding(top = 12.dp, end = 12.dp),
                     shape = RoundedCornerShape(20.dp),
-                    color = Color(0xFF009688) // Primary teal
+                    color = NearestStationLabelColor
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -167,7 +180,7 @@ fun FareCalculationCard(
                         text = uiState.departureStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF512DA8), // Purple-ish
+                        color = BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onDepartureClick() }
                     )
 
@@ -175,7 +188,7 @@ fun FareCalculationCard(
                         Icon(
                             imageVector = Icons.Default.SwapHoriz,
                             contentDescription = "Swap",
-                            tint = Color(0xFF00838F)
+                            tint = BrandBlue
                         )
                     }
 
@@ -183,7 +196,7 @@ fun FareCalculationCard(
                         text = uiState.arrivalStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF512DA8),
+                        color = BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onArrivalClick() },
                         textAlign = androidx.compose.ui.text.style.TextAlign.End
                     )
@@ -197,7 +210,7 @@ fun FareCalculationCard(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00838F))
+                    colors = ButtonDefaults.buttonColors(containerColor = BrandBlue)
                 ) {
                     Text(text = "CALCULATE FARE", color = Color.White, fontWeight = FontWeight.Bold)
                 }
@@ -213,7 +226,7 @@ fun FareDetailsSection(uiState: FareUiState) {
             text = "FARE & JOURNEY DETAILS",
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF00838F),
+            color = BrandBlue,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 

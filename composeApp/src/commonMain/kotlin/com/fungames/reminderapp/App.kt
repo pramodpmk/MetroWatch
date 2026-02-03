@@ -1,7 +1,7 @@
 package com.fungames.reminderapp
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
+import com.fungames.core.ui.theme.MetroTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -33,7 +33,7 @@ val TopLevelRoutes = setOf(
 fun App() {
 
     val navigationResults = remember { NavigationResults() }
-    MaterialTheme {
+    MetroTheme {
 
         CompositionLocalProvider(
             LocalNavigationResults provides navigationResults
