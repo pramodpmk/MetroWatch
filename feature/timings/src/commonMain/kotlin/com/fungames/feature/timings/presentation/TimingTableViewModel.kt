@@ -1,28 +1,24 @@
 package com.fungames.feature.timings.presentation
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.fungames.core.navigation.Route
-import com.fungames.feature.timings.navigation.TimingRoutes
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+
+data class TimingInfo(
+    val title: String,
+    val timing: String
+)
 
 class TimingTableViewModel : ViewModel() {
 
-    private val _timingTableState = MutableStateFlow<String>("")
-    val timingTableState: StateFlow<String> = _timingTableState
-    private val _stationRoutingEffect = MutableSharedFlow<Int>()
-    val stationRoutingEffect: SharedFlow<Int> = _stationRoutingEffect
+    private val _timingTableState = MutableStateFlow<List<TimingInfo>>(emptyList())
+    val timingTableState: StateFlow<List<TimingInfo>> = _timingTableState
 
-
-    fun userIntent() {
-        viewModelScope.launch {
-            //_timingTableState.value = "Latest"
-            _stationRoutingEffect.emit(1)
-        }
+    init {
+        _timingTableState.value = listOf(
+            TimingInfo("Monday to Saturday", "06:00 AM - 10:00 PM"),
+            TimingInfo("Sunday", "08:00 AM - 10:00 PM"),
+            TimingInfo("Public Holidays", "08:00 AM - 10:00 PM")
+        )
     }
-
 }
