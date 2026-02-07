@@ -36,6 +36,7 @@ class StationListUseCase(
             longitude = 76.3547,
             lineId = "LINE1",
             sequence = 1,
+            mode = "METRO",
             wheelchairAccessible = true
         ),
         Station(
@@ -47,6 +48,7 @@ class StationListUseCase(
             longitude = 76.3347,
             lineId = "LINE1",
             sequence = 2,
+            mode = "METRO",
             wheelchairAccessible = true
         ),
         Station(
@@ -58,6 +60,7 @@ class StationListUseCase(
             longitude = 76.3247,
             lineId = "LINE1",
             sequence = 3,
+            mode = "METRO",
             wheelchairAccessible = true
         )
     )

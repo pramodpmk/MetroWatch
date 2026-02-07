@@ -17,5 +17,7 @@ data class StationEntity(
     val lineId: String,
     val sequence: Int,
 
+    val mode: String,
+
     val wheelchairAccessible: Boolean
 )
