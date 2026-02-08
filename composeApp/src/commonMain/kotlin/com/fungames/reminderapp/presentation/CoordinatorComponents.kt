@@ -35,6 +35,8 @@ import com.fungames.feature.timings.navigation.timingsGraph
 import com.fungames.home.navigation.HomeRoutes
 import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
+import com.fungames.core.navigation.Route
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
@@ -101,8 +103,20 @@ fun RootNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = HomeDestination.Tabs
+        startDestination = Route.Splash
     ) {
+        composable<Route.Splash> {
+            SplashScreen(
+                viewModel = koinViewModel(),
+                onSyncComplete = {
+                    navController.navigate(HomeDestination.Tabs) {
+                        popUpTo(Route.Splash) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
         // All screens displayed over (without) bottom navigation goes here
         composable<HomeDestination.Tabs> {
             HomeScaffold(navController)
