@@ -23,6 +23,9 @@ sealed interface Route {
 
     @Serializable
     data object StationPicker : Route
+
+    @Serializable
+    data object Splash : Route
 }
 
 @Serializable
