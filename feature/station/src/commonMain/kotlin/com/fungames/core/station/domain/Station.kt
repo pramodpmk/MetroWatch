@@ -9,6 +9,7 @@ data class Station(
     val longitude: Double,
     val lineId: String,
     val sequence: Int,
+    val mode: String,
     val wheelchairAccessible: Boolean
 ) {
     // Helper property for UI compatibility

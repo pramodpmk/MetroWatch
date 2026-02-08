@@ -34,6 +34,7 @@ class StationRepositoryImpl(
         longitude = longitude,
         lineId = lineId,
         sequence = sequence,
+        mode = mode,
         wheelchairAccessible = wheelchairAccessible
     )
 
@@ -46,6 +47,7 @@ class StationRepositoryImpl(
         longitude = longitude,
         lineId = lineId,
         sequence = sequence,
+        mode = mode,
         wheelchairAccessible = wheelchairAccessible
     )
 }
