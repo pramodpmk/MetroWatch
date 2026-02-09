@@ -14,6 +14,9 @@ interface StationDao {
     @Query("SELECT * FROM stations")
     suspend fun getAllStationsList(): List<StationEntity>
 
+    @Query("SELECT id FROM stations WHERE nameEn = :name")
+    suspend fun getStationIdByName(name: String): String?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStations(stations: List<StationEntity>)
 
