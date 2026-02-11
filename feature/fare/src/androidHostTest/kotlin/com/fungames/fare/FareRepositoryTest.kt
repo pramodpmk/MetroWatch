@@ -20,6 +20,19 @@ class FareRepositoryTest {
                 else -> null
             }
         }
+        override suspend fun getStationByName(name: String): StationEntity? {
+            return when (name) {
+                "Station A" -> StationEntity("idA", "Station A", null, null, 0.0, 0.0, "L1", 1, "metro", true)
+                "Station B" -> StationEntity("idB", "Station B", null, null, 0.0, 0.0, "L1", 2, "metro", true)
+                else -> null
+            }
+        }
+        override suspend fun getStationsByLine(lineId: String): List<StationEntity> {
+            return listOf(
+                StationEntity("idA", "Station A", null, null, 0.0, 0.0, "L1", 1, "metro", true),
+                StationEntity("idB", "Station B", null, null, 0.0, 0.0, "L1", 2, "metro", true)
+            )
+        }
         override suspend fun insertStations(stations: List<StationEntity>) {}
         override suspend fun deleteAllStations() {}
     }

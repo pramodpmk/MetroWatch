@@ -17,6 +17,12 @@ interface StationDao {
     @Query("SELECT id FROM stations WHERE nameEn = :name")
     suspend fun getStationIdByName(name: String): String?
 
+    @Query("SELECT * FROM stations WHERE nameEn = :name")
+    suspend fun getStationByName(name: String): StationEntity?
+
+    @Query("SELECT * FROM stations WHERE lineId = :lineId")
+    suspend fun getStationsByLine(lineId: String): List<StationEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStations(stations: List<StationEntity>)
 

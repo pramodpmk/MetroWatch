@@ -10,10 +10,29 @@ class FareRepositoryImpl(
     private val configDao: ConfigDao
 ) : FareRepository {
     override suspend fun getFareDetails(departureName: String, arrivalName: String): FareDetails? {
-        val departureId = stationDao.getStationIdByName(departureName) ?: return null
-        val arrivalId = stationDao.getStationIdByName(arrivalName) ?: return null
+        val departureStation = stationDao.getStationByName(departureName) ?: return null
+        val arrivalStation = stationDao.getStationByName(arrivalName) ?: return null
 
-        val distanceKm = configDao.getDistance(departureId, arrivalId) ?: return null
+        if (departureStation.lineId != arrivalStation.lineId) {
+            return null
+        }
+
+        val allStationsOnLine = stationDao.getStationsByLine(departureStation.lineId)
+            .sortedBy { it.sequence }
+
+        val startSeq = minOf(departureStation.sequence, arrivalStation.sequence)
+        val endSeq = maxOf(departureStation.sequence, arrivalStation.sequence)
+
+        val stationsInRange = allStationsOnLine.filter { it.sequence in startSeq..endSeq }
+
+        var distanceKm = 0.0
+        for (i in 0 until stationsInRange.size - 1) {
+            val s1 = stationsInRange[i]
+            val s2 = stationsInRange[i+1]
+            val stepDistance = configDao.getDistance(s1.id, s2.id) ?: return null
+            distanceKm += stepDistance
+        }
+
         val slabs = configDao.getFareSlabs()
 
         val matchingSlab = slabs.find { distanceKm >= it.minKm && distanceKm <= it.maxKm }
@@ -22,7 +41,7 @@ class FareRepositoryImpl(
 
         return matchingSlab?.let {
             FareDetails(
-                distance = "${distanceKm} km",
+                distance = "$distanceKm km",
                 fare = "₹${it.fare}"
             )
         }
