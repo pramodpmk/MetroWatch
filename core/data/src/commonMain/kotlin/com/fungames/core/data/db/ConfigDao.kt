@@ -17,6 +17,9 @@ interface ConfigDao {
     @Query("SELECT * FROM fare_slabs ORDER BY minKm ASC")
     suspend fun getFareSlabs(): List<FareSlabEntity>
 
+    @Query("SELECT * FROM timetables WHERE mode = :mode LIMIT 1")
+    suspend fun getTimetableByMode(mode: String): TimetableEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConfigVersion(version: ConfigVersionEntity)
 
