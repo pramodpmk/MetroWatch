@@ -11,6 +11,12 @@ interface ConfigDao {
     @Query("SELECT * FROM config_version WHERE id = 0")
     suspend fun getConfigVersion(): ConfigVersionEntity?
 
+    @Query("SELECT km FROM distances WHERE (`from` = :fromId AND `to` = :toId) OR (`from` = :toId AND `to` = :fromId) LIMIT 1")
+    suspend fun getDistance(fromId: String, toId: String): Double?
+
+    @Query("SELECT * FROM fare_slabs ORDER BY minKm ASC")
+    suspend fun getFareSlabs(): List<FareSlabEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConfigVersion(version: ConfigVersionEntity)
 

@@ -1,15 +1,23 @@
 package com.fungames.fare.domain
 
 import com.fungames.domain.DomainState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class CalculateFareUseCase {
+class CalculateFareUseCase(
+    private val fareRepository: FareRepository
+) {
     operator fun invoke(departure: String, arrival: String): Flow<DomainState<FareDetails>> = flow {
         emit(DomainState.Loading)
-        // Mock API call with delay
-        delay(2000)
-        emit(DomainState.Success(FareDetails(distance = "10.5 km", fare = "₹45.00")))
+        try {
+            val fareDetails = fareRepository.getFareDetails(departure, arrival)
+            if (fareDetails != null) {
+                emit(DomainState.Success(fareDetails))
+            } else {
+                emit(DomainState.Error("Could not calculate fare for the selected stations"))
+            }
+        } catch (e: Exception) {
+            emit(DomainState.Error(e.message ?: "An unknown error occurred", e))
+        }
     }
 }
