@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
+import androidx.navigation.NavHostController
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +34,7 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun FareCalculatorScreen(
+    navController: NavHostController,
     onNavigate: (Route) -> Unit,
     viewModel: FareViewModel = koinViewModel()
 ) {
@@ -55,7 +58,9 @@ fun FareCalculatorScreen(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Fare Calculator"
+                title = "Fare Calculator",
+                navigationIcon = Icons.Default.ArrowBack,
+                onNavigationClick = { navController.popBackStack() }
             )
         }
     ) { paddingValues ->

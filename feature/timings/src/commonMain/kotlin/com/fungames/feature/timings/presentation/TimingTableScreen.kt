@@ -37,7 +37,7 @@ fun TrainTimingScreen(
 
     AppScaffold(
         toolBar = {
-            TimingToolBar()
+            TimingToolBar(onBackClick = { navHostController.popBackStack() })
         }
     ) { paddingValues ->
         LazyColumn(
@@ -71,10 +71,11 @@ fun TrainTimingScreen(
 }
 
 @Composable
-fun TimingToolBar() {
+fun TimingToolBar(onBackClick: () -> Unit) {
     BrandToolBar(
         title = "Metro Timing",
-        navigationIcon = Icons.Default.Schedule
+        navigationIcon = Icons.Default.ArrowBack,
+        onNavigationClick = onBackClick
     )
 }
 
