@@ -76,7 +76,11 @@ fun TabHost(
             onNavigate = { target ->
                 // Use appNavHostController for root-level routes (like StationPicker)
                 // that are defined in RootNavHost, not in tab-level navigation
-                appNavHostController.navigate(target)
+                appNavHostController.navigate(target) {
+                    popUpTo(Route.Home) {
+                        inclusive = true
+                    }
+                }
             }
         )
         stationsGraph(navController)
@@ -86,7 +90,11 @@ fun TabHost(
         fareGraph(
             navController,
             onNavigate = { target ->
-                appNavHostController.navigate(target)
+                appNavHostController.navigate(target) {
+                    popUpTo(Route.Home) {
+                        inclusive = true
+                    }
+                }
             }
         )
         settingsGraph(navController)

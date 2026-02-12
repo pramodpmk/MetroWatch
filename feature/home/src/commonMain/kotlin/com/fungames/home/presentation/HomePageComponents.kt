@@ -207,10 +207,33 @@ fun ActionGrid(
         ActionItemData("Timing Table", Icons.Default.Schedule, Color(0xFFD500F9)),
         ActionItemData("Fare Calculator", Icons.Default.Calculate, Color(0xFFFF6D00)),
         ActionItemData("Places", Icons.Default.Place, Color(0xFFFF4081)),
-        ActionItemData("Contact", Icons.Default.Call, Color(0xFF00BFA5)),
-        ActionItemData("Saved Routes", Icons.Default.Bookmark, Color(0xFF7C4DFF)),
-        ActionItemData("Alerts", Icons.Default.Notifications, Color(0xFFFF5252)),
-        ActionItemData("Settings", Icons.Default.Settings, Color(0xFF78909C))
+        ActionItemData("Contact", Icons.Default.Call, Color(0xFF00BFA5))
+    )
+
+    RowGrid(
+        items = actions,
+        columns = 3,
+        horizontalSpacing = 16.dp,
+        verticalSpacing = 16.dp,
+        modifier = Modifier.padding(16.dp)
+    ) { action ->
+        ActionItem(
+            action = action,
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onActionClick(action.label) }
+        )
+    }
+}
+
+@Composable
+fun WaterMetroActionGrid(
+    onActionClick: (String) -> Unit
+) {
+    val actions = listOf(
+        ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
+        ActionItemData("Plan Trip", Icons.Default.Navigation, Color(0xFF00C853)),
+        ActionItemData("Timing Table", Icons.Default.Schedule, Color(0xFFD500F9)),
+        ActionItemData("Fare Calculator", Icons.Default.Calculate, Color(0xFFFF6D00))
     )
 
     RowGrid(
