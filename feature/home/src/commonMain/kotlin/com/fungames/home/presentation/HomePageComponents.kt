@@ -204,10 +204,10 @@ fun ActionGrid(
     val actions = listOf(
         ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
         ActionItemData("Plan Trip", Icons.Default.Navigation, Color(0xFF00C853)),
-        ActionItemData("Timing Table", Icons.Default.Schedule, Color(0xFFD500F9)),
-        ActionItemData("Fare Calculator", Icons.Default.Calculate, Color(0xFFFF6D00)),
+        ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
+        ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00)),
         ActionItemData("Places", Icons.Default.Place, Color(0xFFFF4081)),
-        ActionItemData("Contact", Icons.Default.Call, Color(0xFF00BFA5))
+        ActionItemData("Parking", Icons.Default.LocalParking, Color(0xFF00BFA5))
     )
 
     RowGrid(
@@ -232,8 +232,8 @@ fun WaterMetroActionGrid(
     val actions = listOf(
         ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
         ActionItemData("Plan Trip", Icons.Default.Navigation, Color(0xFF00C853)),
-        ActionItemData("Timing Table", Icons.Default.Schedule, Color(0xFFD500F9)),
-        ActionItemData("Fare Calculator", Icons.Default.Calculate, Color(0xFFFF6D00))
+        ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
+        ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00))
     )
 
     RowGrid(

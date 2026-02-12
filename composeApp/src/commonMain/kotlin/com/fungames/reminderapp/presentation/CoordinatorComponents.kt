@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -36,6 +38,7 @@ import com.fungames.home.navigation.HomeRoutes
 import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
 import com.fungames.core.navigation.Route
+import com.fungames.core.station.navigation.StationRoutes
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -48,10 +51,12 @@ fun TabHost(
 ) {
     val homeController = rememberNavController()
     val settingsController = rememberNavController()
+    val contactsController = rememberNavController()
     val navControllers = remember {
         linkedMapOf<BottomTab, NavHostController>(
             BottomTab.HOME to homeController,
-            BottomTab.SETTINGS to settingsController
+            BottomTab.CONTACTS to settingsController,
+            BottomTab.SETTINGS to contactsController,
         )
     }
 
@@ -62,6 +67,7 @@ fun TabHost(
         navController = navController,
         startDestination = when (tab) {
             BottomTab.HOME -> HomeRoutes.HomePage
+            BottomTab.CONTACTS -> StationRoutes.Contacts
             BottomTab.SETTINGS -> SettingsRoutes.Settings
         }
     ) { // Screens directly tied to bottom navigation goes here
@@ -138,7 +144,13 @@ fun HomeScaffold(
                     NavigationBarItem(
                         selected = selectedTab == tab,
                         onClick = { selectedTab = tab },
-                        icon = { Icon(Icons.Outlined.AccountBox, null) },
+                        icon = {
+                            when(tab) {
+                                BottomTab.HOME -> Icon(Icons.Outlined.Home, null)
+                                BottomTab.CONTACTS -> Icon(Icons.Outlined.AccountBox, null)
+                            else -> Icon(Icons.Outlined.Settings, null)
+                            }
+                               },
                         label = { DisplayText(tab.label) }
                     )
                 }
