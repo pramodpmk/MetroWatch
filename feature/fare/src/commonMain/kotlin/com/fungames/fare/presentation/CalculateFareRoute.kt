@@ -20,5 +20,5 @@ fun CalculateFareRoute(
     onNavigate: (Route) -> Unit,
     viewModel: FareViewModel = koinViewModel()
 ) {
-    FareCalculatorScreen(onNavigate, viewModel)
+    FareCalculatorScreen(navHostController, onNavigate, viewModel)
 }

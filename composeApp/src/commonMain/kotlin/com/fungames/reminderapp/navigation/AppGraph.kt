@@ -15,9 +15,11 @@ fun NavGraphBuilder.appGraph(
     navController: NavHostController
 ) {
     composable<Route.Timings> {
-        navController.navigate(TimingRoutes.Timings) {
-            popUpTo<Route.Timings> {
-                inclusive = true
+        LaunchedEffect(Unit) {
+            navController.navigate(TimingRoutes.Timings) {
+                popUpTo<Route.Timings> {
+                    inclusive = true
+                }
             }
         }
     }
@@ -45,7 +47,7 @@ fun NavGraphBuilder.appGraph(
     composable<Route.FareCalculation> {
         LaunchedEffect(Unit) {
             navController.navigate(FareRoutes.CalculateFare) {
-                popUpTo<FareRoutes.CalculateFare> {
+                popUpTo<Route.FareCalculation> {
                     inclusive = true
                 }
             }
@@ -55,7 +57,7 @@ fun NavGraphBuilder.appGraph(
     composable<Route.Home> {
         LaunchedEffect(Unit) {
             navController.navigate(HomeRoutes.HomePage) {
-                popUpTo<HomeRoutes.HomePage> {
+                popUpTo<Route.Home> {
                     inclusive = true
                 }
             }

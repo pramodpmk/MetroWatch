@@ -47,14 +47,10 @@ fun TabHost(
     tab: BottomTab
 ) {
     val homeController = rememberNavController()
-    val timingController = rememberNavController()
-    val fareController = rememberNavController()
     val settingsController = rememberNavController()
     val navControllers = remember {
         linkedMapOf<BottomTab, NavHostController>(
             BottomTab.HOME to homeController,
-            BottomTab.TIMINGS to timingController,
-            BottomTab.FARE to fareController,
             BottomTab.SETTINGS to settingsController
         )
     }
@@ -65,38 +61,14 @@ fun TabHost(
         modifier = modifier,
         navController = navController,
         startDestination = when (tab) {
-            BottomTab.TIMINGS -> TimingRoutes.Timings
             BottomTab.HOME -> HomeRoutes.HomePage
-                BottomTab.FARE -> FareRoutes.CalculateFare
             BottomTab.SETTINGS -> SettingsRoutes.Settings
         }
     ) { // Screens directly tied to bottom navigation goes here
-        timingsGraph(
-            navController,
-            onNavigate = { target ->
-                // Use appNavHostController for root-level routes (like StationPicker)
-                // that are defined in RootNavHost, not in tab-level navigation
-                appNavHostController.navigate(target) {
-                    popUpTo(Route.Home) {
-                        inclusive = true
-                    }
-                }
-            }
-        )
         stationsGraph(navController)
         homeGraph(navController) {
             appNavHostController.navigate(it)
         }
-        fareGraph(
-            navController,
-            onNavigate = { target ->
-                appNavHostController.navigate(target) {
-                    popUpTo(Route.Home) {
-                        inclusive = true
-                    }
-                }
-            }
-        )
         settingsGraph(navController)
     }
 }
