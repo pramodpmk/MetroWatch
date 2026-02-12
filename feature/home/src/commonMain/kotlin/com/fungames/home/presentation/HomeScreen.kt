@@ -58,8 +58,8 @@ fun HomeScreen(
                     onActionClick = { label ->
                         when (label) {
                             "Stations" -> onIntent(HomePageIntent.ViewAllStations)
-                            "Fare Calculator" -> onIntent(HomePageIntent.FareCalculation)
-                            "Timing Table" -> onIntent(HomePageIntent.Timings)
+                            "Fare" -> onIntent(HomePageIntent.FareCalculation)
+                            "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
                             // Add more mappings as intents are added
                         }
@@ -75,8 +75,8 @@ fun HomeScreen(
                     onActionClick = { label ->
                         when (label) {
                             "Stations" -> onIntent(HomePageIntent.ViewAllStations)
-                            "Fare Calculator" -> onIntent(HomePageIntent.FareCalculation)
-                            "Timing Table" -> onIntent(HomePageIntent.Timings)
+                            "Fare" -> onIntent(HomePageIntent.FareCalculation)
+                            "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
                             // Add more mappings as intents are added
                         }
