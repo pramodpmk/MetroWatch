@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.fungames.core.navigation.Route
 import com.fungames.core.station.navigation.StationRoutes
 import com.fungames.fare.navigation.FareRoutes
+import com.fungames.trip.navigation.TripRoutes
 import com.fungames.feature.timings.navigation.TimingRoutes
 import com.fungames.home.navigation.HomeRoutes
 
@@ -48,6 +49,16 @@ fun NavGraphBuilder.appGraph(
         LaunchedEffect(Unit) {
             navController.navigate(FareRoutes.CalculateFare) {
                 popUpTo<Route.FareCalculation> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.PlanTrip> {
+        LaunchedEffect(Unit) {
+            navController.navigate(TripRoutes.PlanTrip) {
+                popUpTo<Route.PlanTrip> {
                     inclusive = true
                 }
             }

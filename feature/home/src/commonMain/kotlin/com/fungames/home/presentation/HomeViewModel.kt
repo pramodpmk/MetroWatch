@@ -120,6 +120,11 @@ class HomeViewModel : ViewModel() {
                     _homeNavigationEffect.emit(Route.FareCalculation)
                 }
 
+                is HomePageIntent.PlanTrip -> {
+                    // Emit redirection effect
+                    _homeNavigationEffect.emit(Route.PlanTrip)
+                }
+
                 is HomePageIntent.Timings -> {
                     // Emit redirection effect
                     _homeNavigationEffect.emit(Route.Timings)

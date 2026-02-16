@@ -39,6 +39,7 @@ import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
 import com.fungames.core.navigation.Route
 import com.fungames.core.station.navigation.StationRoutes
+import com.fungames.trip.navigation.tripGraph
 import com.fungames.core.ui.BackPressHandler
 import com.fungames.core.ui.getTimeMillis
 import com.fungames.core.ui.rememberPlatformActions
@@ -115,6 +116,12 @@ fun RootNavHost() {
 
         }
         timingsGraph(
+            navController,
+            onNavigate = { target ->
+                navController.navigate(target)
+            }
+        )
+        tripGraph(
             navController,
             onNavigate = { target ->
                 navController.navigate(target)

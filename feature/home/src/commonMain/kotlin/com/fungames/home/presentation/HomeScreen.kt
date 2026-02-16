@@ -58,6 +58,7 @@ fun HomeScreen(
                     onActionClick = { label ->
                         when (label) {
                             "Stations" -> onIntent(HomePageIntent.ViewAllStations)
+                            "Plan Trip" -> onIntent(HomePageIntent.PlanTrip)
                             "Fare" -> onIntent(HomePageIntent.FareCalculation)
                             "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
@@ -75,6 +76,7 @@ fun HomeScreen(
                     onActionClick = { label ->
                         when (label) {
                             "Stations" -> onIntent(HomePageIntent.ViewAllStations)
+                            "Plan Trip" -> onIntent(HomePageIntent.PlanTrip)
                             "Fare" -> onIntent(HomePageIntent.FareCalculation)
                             "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)

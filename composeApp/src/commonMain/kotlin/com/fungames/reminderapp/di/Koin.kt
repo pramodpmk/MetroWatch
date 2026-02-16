@@ -5,6 +5,7 @@ import com.fungames.core.station.di.stationModule
 import com.fungames.fare.di.fareModule
 import com.fungames.feature.settings.di.settingsModule
 import com.fungames.feature.timings.di.timingsModule
+import com.fungames.trip.di.tripModule
 import com.fungames.home.di.homeModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
@@ -18,6 +19,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
             timingsModule,
             stationModule,
             fareModule,
+            tripModule,
             homeModule,
             settingsModule
         )

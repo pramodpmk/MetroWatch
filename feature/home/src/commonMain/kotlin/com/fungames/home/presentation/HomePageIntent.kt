@@ -10,6 +10,8 @@ sealed interface HomePageIntent {
 
     object FareCalculation : HomePageIntent
 
+    object PlanTrip : HomePageIntent
+
     object Timings : HomePageIntent
 
     object Settings: HomePageIntent
