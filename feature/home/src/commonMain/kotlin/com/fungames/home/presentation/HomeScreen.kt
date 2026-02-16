@@ -61,7 +61,7 @@ fun HomeScreen(
                             "Fare" -> onIntent(HomePageIntent.FareCalculation)
                             "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
-                            // Add more mappings as intents are added
+                            "Plan Trip" -> onIntent(HomePageIntent.PlanTrip)
                         }
                     }
                 )
@@ -78,7 +78,7 @@ fun HomeScreen(
                             "Fare" -> onIntent(HomePageIntent.FareCalculation)
                             "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
-                            // Add more mappings as intents are added
+                            "Plan Trip" -> onIntent(HomePageIntent.PlanTrip)
                         }
                     }
                 )

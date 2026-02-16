@@ -14,4 +14,6 @@ sealed interface HomePageIntent {
 
     object Settings: HomePageIntent
 
+    object PlanTrip : HomePageIntent
+
 }

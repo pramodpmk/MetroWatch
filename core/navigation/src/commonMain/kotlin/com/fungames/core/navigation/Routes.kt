@@ -25,6 +25,9 @@ sealed interface Route {
     data object StationPicker : Route
 
     @Serializable
+    data object PlanTrip : Route
+
+    @Serializable
     data object Splash : Route
 }
 

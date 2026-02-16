@@ -64,6 +64,16 @@ fun NavGraphBuilder.appGraph(
         }
     }
 
+    composable<Route.PlanTrip> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.PlanTrip) {
+                popUpTo<Route.PlanTrip> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
     composable<Route.StationPicker> {
         LaunchedEffect(Unit) {
             navController.navigate(StationRoutes.StationPicker) {

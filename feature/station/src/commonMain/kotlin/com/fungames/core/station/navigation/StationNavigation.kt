@@ -3,10 +3,12 @@ package com.fungames.core.station.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.fungames.core.navigation.Route
 import com.fungames.core.station.presentation.contact.ContactsRoute
 import com.fungames.core.station.presentation.detail.StationDetailRoute
 import com.fungames.core.station.presentation.list.StationListRoute
 import com.fungames.core.station.presentation.picker.StationPickerRoute
+import com.fungames.core.station.presentation.plantrip.PlanTripRoute
 import kotlinx.serialization.Serializable
 
 
@@ -19,6 +21,8 @@ sealed interface StationRoutes {
     data object StationPicker : StationRoutes
     @Serializable
     data object Contacts : StationRoutes
+    @Serializable
+    data object PlanTrip : StationRoutes
 
 }
 
@@ -41,5 +45,16 @@ fun NavGraphBuilder.stationsGraph(
     }
     composable<StationRoutes.Contacts> {
         ContactsRoute(navController)
+    }
+    composable<StationRoutes.PlanTrip> {
+        PlanTripRoute(
+            navHostController = navController,
+            onNavigate = { route ->
+                when (route) {
+                    is Route.StationPicker -> navController.navigate(StationRoutes.StationPicker)
+                    else -> {}
+                }
+            }
+        )
     }
 }

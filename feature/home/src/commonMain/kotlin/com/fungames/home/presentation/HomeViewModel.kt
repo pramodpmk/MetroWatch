@@ -128,6 +128,10 @@ class HomeViewModel : ViewModel() {
                 is HomePageIntent.Settings -> {
                     // Emit redirection effect
                 }
+
+                is HomePageIntent.PlanTrip -> {
+                    _homeNavigationEffect.emit(Route.PlanTrip)
+                }
             }
         }
     }
