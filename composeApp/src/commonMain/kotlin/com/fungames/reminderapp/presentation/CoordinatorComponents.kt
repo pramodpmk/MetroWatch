@@ -39,6 +39,9 @@ import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
 import com.fungames.core.navigation.Route
 import com.fungames.core.station.navigation.StationRoutes
+import com.fungames.core.ui.BackPressHandler
+import com.fungames.core.ui.getTimeMillis
+import com.fungames.core.ui.rememberPlatformActions
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -55,8 +58,8 @@ fun TabHost(
     val navControllers = remember {
         linkedMapOf<BottomTab, NavHostController>(
             BottomTab.HOME to homeController,
-            BottomTab.CONTACTS to settingsController,
-            BottomTab.SETTINGS to contactsController,
+            BottomTab.CONTACTS to contactsController,
+            BottomTab.SETTINGS to settingsController,
         )
     }
 
@@ -135,6 +138,23 @@ fun HomeScaffold(
     val tabs = remember { BottomTab.entries.toList() }
     var selectedTab by rememberSaveable {
         mutableStateOf(BottomTab.HOME)
+    }
+
+    val platformActions = rememberPlatformActions()
+    var lastBackPressTime by remember { mutableStateOf(0L) }
+
+    BackPressHandler(enabled = true) {
+        if (selectedTab != BottomTab.HOME) {
+            selectedTab = BottomTab.HOME
+        } else {
+            val currentTime = getTimeMillis()
+            if (currentTime - lastBackPressTime < 2000) {
+                platformActions.exitApp()
+            } else {
+                lastBackPressTime = currentTime
+                platformActions.showToast("Press back again to quit")
+            }
+        }
     }
 
     Scaffold(
