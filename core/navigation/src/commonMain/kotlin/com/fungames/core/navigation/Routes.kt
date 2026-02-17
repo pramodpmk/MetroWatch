@@ -28,6 +28,18 @@ sealed interface Route {
     data object PlanTrip : Route
 
     @Serializable
+    data object WaterMetroStations : Route
+
+    @Serializable
+    data object WaterMetroRoutes : Route
+
+    @Serializable
+    data object Parking : Route
+
+    @Serializable
+    data object Contacts : Route
+
+    @Serializable
     data object Splash : Route
 }
 

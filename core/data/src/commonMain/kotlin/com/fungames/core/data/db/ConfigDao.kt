@@ -47,13 +47,73 @@ interface ConfigDao {
     @Query("DELETE FROM stations")
     suspend fun deleteAllStations()
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWaterMetroRoutes(routes: List<WaterMetroRouteEntity>)
+
+    @Query("DELETE FROM water_metro_routes")
+    suspend fun deleteAllWaterMetroRoutes()
+
+    @Query("SELECT * FROM water_metro_routes")
+    suspend fun getWaterMetroRoutes(): List<WaterMetroRouteEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWaterMetroStations(stations: List<WaterMetroStationEntity>)
+
+    @Query("DELETE FROM water_metro_stations")
+    suspend fun deleteAllWaterMetroStations()
+
+    @Query("SELECT * FROM water_metro_stations")
+    suspend fun getWaterMetroStations(): List<WaterMetroStationEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertParkingRates(rates: List<ParkingRateEntity>)
+
+    @Query("DELETE FROM parking_rates")
+    suspend fun deleteAllParkingRates()
+
+    @Query("SELECT * FROM parking_rates")
+    suspend fun getParkingRates(): List<ParkingRateEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertParkingPasses(passes: List<ParkingPassEntity>)
+
+    @Query("DELETE FROM parking_passes")
+    suspend fun deleteAllParkingPasses()
+
+    @Query("SELECT * FROM parking_passes")
+    suspend fun getParkingPasses(): List<ParkingPassEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertParkingInfo(info: ParkingInfoEntity)
+
+    @Query("DELETE FROM parking_info")
+    suspend fun deleteAllParkingInfo()
+
+    @Query("SELECT * FROM parking_info LIMIT 1")
+    suspend fun getParkingInfo(): ParkingInfoEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertContacts(contacts: List<ContactEntity>)
+
+    @Query("DELETE FROM contacts")
+    suspend fun deleteAllContacts()
+
+    @Query("SELECT * FROM contacts")
+    suspend fun getContacts(): List<ContactEntity>
+
     @Transaction
     suspend fun updateConfig(
         version: ConfigVersionEntity,
         stations: List<StationEntity>,
         distances: List<DistanceEntity>,
         fareSlabs: List<FareSlabEntity>,
-        timetables: List<TimetableEntity>
+        timetables: List<TimetableEntity>,
+        waterMetroRoutes: List<WaterMetroRouteEntity>,
+        waterMetroStations: List<WaterMetroStationEntity>,
+        parkingRates: List<ParkingRateEntity>,
+        parkingPasses: List<ParkingPassEntity>,
+        parkingInfo: ParkingInfoEntity?,
+        contacts: List<ContactEntity>
     ) {
         deleteAllStations()
         insertStations(stations)
@@ -66,6 +126,24 @@ interface ConfigDao {
 
         deleteAllTimetables()
         insertTimetables(timetables)
+
+        deleteAllWaterMetroRoutes()
+        insertWaterMetroRoutes(waterMetroRoutes)
+
+        deleteAllWaterMetroStations()
+        insertWaterMetroStations(waterMetroStations)
+
+        deleteAllParkingRates()
+        insertParkingRates(parkingRates)
+
+        deleteAllParkingPasses()
+        insertParkingPasses(parkingPasses)
+
+        deleteAllParkingInfo()
+        parkingInfo?.let { insertParkingInfo(it) }
+
+        deleteAllContacts()
+        insertContacts(contacts)
 
         insertConfigVersion(version)
     }

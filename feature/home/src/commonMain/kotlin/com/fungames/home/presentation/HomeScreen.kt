@@ -62,6 +62,8 @@ fun HomeScreen(
                             "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
                             "Plan Trip" -> onIntent(HomePageIntent.PlanTrip)
+                            "Parking" -> onIntent(HomePageIntent.Parking)
+                            "Contacts" -> onIntent(HomePageIntent.Contacts)
                         }
                     }
                 )
@@ -74,11 +76,10 @@ fun HomeScreen(
                 WaterMetroActionGrid(
                     onActionClick = { label ->
                         when (label) {
-                            "Stations" -> onIntent(HomePageIntent.ViewAllStations)
+                            "Stations" -> onIntent(HomePageIntent.WaterMetroStations)
+                            "Routes" -> onIntent(HomePageIntent.WaterMetroRoutes)
                             "Fare" -> onIntent(HomePageIntent.FareCalculation)
                             "Timing" -> onIntent(HomePageIntent.Timings)
-                            "Settings" -> onIntent(HomePageIntent.Settings)
-                            "Plan Trip" -> onIntent(HomePageIntent.PlanTrip)
                         }
                     }
                 )

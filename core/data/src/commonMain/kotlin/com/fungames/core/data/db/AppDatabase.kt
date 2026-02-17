@@ -9,9 +9,15 @@ import androidx.room.RoomDatabase
         DistanceEntity::class,
         FareSlabEntity::class,
         TimetableEntity::class,
-        ConfigVersionEntity::class
+        ConfigVersionEntity::class,
+        WaterMetroRouteEntity::class,
+        WaterMetroStationEntity::class,
+        ParkingRateEntity::class,
+        ParkingPassEntity::class,
+        ParkingInfoEntity::class,
+        ContactEntity::class
     ],
-    version = 2
+    version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun stationDao(): StationDao

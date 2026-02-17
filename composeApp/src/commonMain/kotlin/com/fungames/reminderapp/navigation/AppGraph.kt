@@ -83,4 +83,44 @@ fun NavGraphBuilder.appGraph(
             }
         }
     }
+
+    composable<Route.WaterMetroStations> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.WaterMetroStations) {
+                popUpTo<Route.WaterMetroStations> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.WaterMetroRoutes> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.WaterMetroRoutes) {
+                popUpTo<Route.WaterMetroRoutes> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.Parking> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.Parking) {
+                popUpTo<Route.Parking> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.Contacts> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.Contacts) {
+                popUpTo<Route.Contacts> {
+                    inclusive = true
+                }
+            }
+        }
+    }
 }

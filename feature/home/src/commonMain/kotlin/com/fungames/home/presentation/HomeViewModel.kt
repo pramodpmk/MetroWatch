@@ -132,6 +132,22 @@ class HomeViewModel : ViewModel() {
                 is HomePageIntent.PlanTrip -> {
                     _homeNavigationEffect.emit(Route.PlanTrip)
                 }
+
+                is HomePageIntent.WaterMetroStations -> {
+                    _homeNavigationEffect.emit(Route.WaterMetroStations)
+                }
+
+                is HomePageIntent.WaterMetroRoutes -> {
+                    _homeNavigationEffect.emit(Route.WaterMetroRoutes)
+                }
+
+                is HomePageIntent.Parking -> {
+                    _homeNavigationEffect.emit(Route.Parking)
+                }
+
+                is HomePageIntent.Contacts -> {
+                    _homeNavigationEffect.emit(Route.Contacts)
+                }
             }
         }
     }
