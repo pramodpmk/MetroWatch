@@ -34,3 +34,54 @@ data class ConfigVersionEntity(
     val version: String,
     val updatedAt: String? = null
 )
+
+@Entity(tableName = "water_metro_routes")
+data class WaterMetroRouteEntity(
+    @PrimaryKey val id: Int,
+    val name: String,
+    val stations: String, // Comma separated
+    val duration: String?,
+    val startDate: String?,
+    val status: String?,
+    val isOperational: Boolean
+)
+
+@Entity(tableName = "water_metro_stations")
+data class WaterMetroStationEntity(
+    @PrimaryKey val name: String
+)
+
+@Entity(tableName = "parking_rates", primaryKeys = ["vehicleType", "isCommuter"])
+data class ParkingRateEntity(
+    val vehicleType: String, // fourWheelers, twoWheelers, buses, tempo
+    val isCommuter: Boolean,
+    val firstTwoHours: Int,
+    val everyExtraHour: Int,
+    val note: String? = null
+)
+
+@Entity(tableName = "parking_passes", primaryKeys = ["vehicleType", "isCommuter", "passType"])
+data class ParkingPassEntity(
+    val vehicleType: String,
+    val isCommuter: Boolean,
+    val passType: String, // monthly, weekly
+    val rate: Int,
+    val validityNote: String? = null
+)
+
+@Entity(tableName = "parking_info")
+data class ParkingInfoEntity(
+    @PrimaryKey val id: Int = 0,
+    val effectiveFrom: String,
+    val applicableFor: String,
+    val currency: String,
+    val notes: String // Comma separated
+)
+
+@Entity(tableName = "contacts")
+data class ContactEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val category: String,
+    val name: String,
+    val value: String
+)

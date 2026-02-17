@@ -16,4 +16,11 @@ sealed interface HomePageIntent {
 
     object PlanTrip : HomePageIntent
 
+    object WaterMetroStations : HomePageIntent
+
+    object WaterMetroRoutes : HomePageIntent
+
+    object Parking : HomePageIntent
+
+    object Contacts : HomePageIntent
 }
