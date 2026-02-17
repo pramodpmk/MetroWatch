@@ -14,6 +14,9 @@ import com.fungames.core.data.db.StationEntity
 import com.fungames.core.data.db.TimetableEntity
 import com.fungames.core.data.db.WaterMetroRouteEntity
 import com.fungames.core.data.db.WaterMetroStationEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
 class SyncRepository(
@@ -23,7 +26,7 @@ class SyncRepository(
 ) {
     private val configDao = database.configDao()
 
-    suspend fun syncConfig() {
+    suspend fun syncConfig() = withContext(Dispatchers.IO) {
         try {
             val remoteVersionInfo = configApi.getVersion()
             val localVersionInfo = configDao.getConfigVersion()

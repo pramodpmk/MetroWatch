@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.fungames.core.station.domain.StationListUseCase
 import com.fungames.core.station.presentation.list.StationListUi
 import com.fungames.domain.DomainState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.fungames.core.station.domain.Station
 
 data class StationDetailUi(
@@ -98,19 +100,23 @@ class StationViewModel(
     }
 
     fun onSearchQueryChange(query: String) {
-        val filtered = if (query.isBlank()) {
-            _stationListState.value.list
-        } else {
-            _stationListState.value.list.filter {
-                it.name.contains(query, ignoreCase = true) ||
-                        (it.nameMl?.contains(query, ignoreCase = true) ?: false) ||
-                        (it.nameHi?.contains(query, ignoreCase = true) ?: false)
+        viewModelScope.launch {
+            val filtered = withContext(Dispatchers.Default) {
+                if (query.isBlank()) {
+                    _stationListState.value.list
+                } else {
+                    _stationListState.value.list.filter {
+                        it.name.contains(query, ignoreCase = true) ||
+                                (it.nameMl?.contains(query, ignoreCase = true) ?: false) ||
+                                (it.nameHi?.contains(query, ignoreCase = true) ?: false)
+                    }
+                }
             }
+            _stationListState.value = _stationListState.value.copy(
+                searchQuery = query,
+                filteredList = filtered
+            )
         }
-        _stationListState.value = _stationListState.value.copy(
-            searchQuery = query,
-            filteredList = filtered
-        )
     }
 
 

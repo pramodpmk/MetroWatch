@@ -1,8 +1,11 @@
 package com.fungames.feature.timings.domain
 
 import com.fungames.domain.DomainState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class CalculateTimingsUseCase(
     private val timingsRepository: TimingsRepository
@@ -19,5 +22,5 @@ class CalculateTimingsUseCase(
         } catch (e: Exception) {
             emit(DomainState.Error(e.message ?: "An unknown error occurred", e))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }

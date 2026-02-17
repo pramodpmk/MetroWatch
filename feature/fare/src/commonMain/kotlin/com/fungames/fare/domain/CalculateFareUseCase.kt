@@ -1,8 +1,11 @@
 package com.fungames.fare.domain
 
 import com.fungames.domain.DomainState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class CalculateFareUseCase(
     private val fareRepository: FareRepository
@@ -19,5 +22,5 @@ class CalculateFareUseCase(
         } catch (e: Exception) {
             emit(DomainState.Error(e.message ?: "An unknown error occurred", e))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }

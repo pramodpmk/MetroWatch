@@ -2,8 +2,11 @@ package com.fungames.core.station.domain
 
 import com.fungames.domain.BaseUseCase
 import com.fungames.domain.DomainState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class StationListUseCase(
     private val stationRepository: StationRepository
@@ -23,7 +26,7 @@ class StationListUseCase(
             } catch (e: Exception) {
                 emit(DomainState.Error(message = e.message ?: "Unknown error", throwable = e))
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     private fun getInitialStations() = listOf(

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fungames.core.station.domain.StationListUseCase
 import com.fungames.domain.DomainState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StationPickerViewModel(
     private val stationListUseCase: StationListUseCase
@@ -55,20 +57,25 @@ class StationPickerViewModel(
     }
 
     fun onSearchQueryChange(query: String) {
-        _stationPickerState.update { currentState ->
-            val filtered = if (query.isBlank()) {
-                currentState.allStations
-            } else {
-                currentState.allStations.filter { station ->
-                    station.name.contains(query, ignoreCase = true) ||
-                            (station.nameMl?.contains(query, ignoreCase = true) ?: false) ||
-                            (station.nameHi?.contains(query, ignoreCase = true) ?: false)
+        viewModelScope.launch {
+            val currentState = _stationPickerState.value
+            val filtered = withContext(Dispatchers.Default) {
+                if (query.isBlank()) {
+                    currentState.allStations
+                } else {
+                    currentState.allStations.filter { station ->
+                        station.name.contains(query, ignoreCase = true) ||
+                                (station.nameMl?.contains(query, ignoreCase = true) ?: false) ||
+                                (station.nameHi?.contains(query, ignoreCase = true) ?: false)
+                    }
                 }
             }
-            currentState.copy(
-                searchQuery = query,
-                filteredStations = filtered
-            )
+            _stationPickerState.update {
+                it.copy(
+                    searchQuery = query,
+                    filteredStations = filtered
+                )
+            }
         }
     }
 }

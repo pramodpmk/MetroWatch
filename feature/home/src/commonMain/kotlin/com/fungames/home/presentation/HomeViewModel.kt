@@ -3,6 +3,8 @@ package com.fungames.home.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fungames.core.navigation.Route
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,6 +12,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
@@ -80,7 +83,6 @@ class HomeViewModel : ViewModel() {
                     )
                 )
             }
-            delay(2000L)
             combine(
                 locationUseCase,
                 nearestStationUseCase,
@@ -92,7 +94,7 @@ class HomeViewModel : ViewModel() {
                     stationList = stations,
                     pageState = PageState.Success
                 )
-            }.collect { state ->
+            }.flowOn(Dispatchers.IO).collect { state ->
                 _homeState.value = state
             }
         }
