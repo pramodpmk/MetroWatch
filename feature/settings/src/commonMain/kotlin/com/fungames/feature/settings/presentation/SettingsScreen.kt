@@ -28,13 +28,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import com.fungames.core.navigation.Route
 import com.fungames.core.ui.components.AppScaffold
 import com.fungames.core.ui.components.BrandToolBar
 import com.fungames.core.ui.theme.BrandBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    onNavigate: (Route) -> Unit = {}
+) {
     val uriHandler = LocalUriHandler.current
 
     AppScaffold(
@@ -76,6 +79,18 @@ fun SettingsScreen() {
                         title = "Policy & Guidelines",
                         icon = Icons.Outlined.Lock,
                         onClick = { uriHandler.openUri("https://example.com/policy") }
+                    )
+                    SettingsItem(
+                        title = "Terms & Conditions",
+                        icon = Icons.Outlined.Lock,
+                        onClick = {
+                            onNavigate(
+                                Route.WebView(
+                                    title = "Terms & Conditions",
+                                    url = "https://example.com/terms"
+                                )
+                            )
+                        }
                     )
                     SettingsItem(
                         title = "About Us",

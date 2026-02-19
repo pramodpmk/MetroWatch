@@ -37,11 +37,13 @@ import com.fungames.feature.timings.navigation.timingsGraph
 import com.fungames.home.navigation.HomeRoutes
 import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
+import androidx.navigation.toRoute
 import com.fungames.core.navigation.Route
 import com.fungames.core.station.navigation.StationRoutes
 import com.fungames.core.ui.BackPressHandler
 import com.fungames.core.ui.getTimeMillis
 import com.fungames.core.ui.rememberPlatformActions
+import com.fungames.core.ui.components.WebViewScreen
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -78,7 +80,9 @@ fun TabHost(
         homeGraph(navController) {
             appNavHostController.navigate(it)
         }
-        settingsGraph(navController)
+        settingsGraph(navController) {
+            appNavHostController.navigate(it)
+        }
     }
 }
 
@@ -126,7 +130,17 @@ fun RootNavHost() {
                 navController.navigate(target)
             }
         )
-        settingsGraph(navController)
+        settingsGraph(navController) { target ->
+            navController.navigate(target)
+        }
+        composable<Route.WebView> { backStackEntry ->
+            val webView = backStackEntry.toRoute<Route.WebView>()
+            WebViewScreen(
+                title = webView.title,
+                url = webView.url,
+                onBack = { navController.popBackStack() }
+            )
+        }
         appGraph(navController)
     }
 }
