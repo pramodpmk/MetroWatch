@@ -11,10 +11,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.fungames.core.ui.components.AppScaffold
 import com.fungames.core.ui.components.DisplayText
+import com.fungames.home.location.rememberLocationPermissionLauncher
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -23,12 +24,16 @@ fun HomeScreen(
     homeStateFlow: StateFlow<HomePageUi>,
     onIntent: (HomePageIntent) -> Unit
 ) {
-
     val homeState = homeStateFlow.collectAsState()
+
+    val launchLocation = rememberLocationPermissionLauncher(
+        onLocation = { lat, lon -> onIntent(HomePageIntent.LocationGranted(lat, lon)) },
+        onDenied = { onIntent(HomePageIntent.LocationDenied) }
+    )
 
     AppScaffold(
         toolBar = { },
-        bottomBar = { }, // Bottom bar to included in app module
+        bottomBar = { },
     ) { paddingValues ->
         if (homeState.value.pageState == PageState.Loading) {
             androidx.compose.foundation.layout.Box(
@@ -46,13 +51,15 @@ fun HomeScreen(
             ) {
                 HomeToolBar(
                     text = homeState.value.locationText,
-                    onLocationClick = { onIntent(HomePageIntent.ClickedOnLocation) }
+                    onLocationClick = { launchLocation() }
                 )
 
-                NearestStationSection(
-                    station = homeState.value.nearestStation,
-                    onStationClick = { onIntent(HomePageIntent.ClickOnStation(homeState.value.nearestStation)) }
-                )
+                if (homeState.value.nearestStationAvailable) {
+                    NearestStationSection(
+                        station = homeState.value.nearestStation,
+                        onStationClick = { onIntent(HomePageIntent.ClickOnStation(homeState.value.nearestStation)) }
+                    )
+                }
 
                 ActionGrid(
                     onActionClick = { label ->
@@ -83,7 +90,6 @@ fun HomeScreen(
                         }
                     }
                 )
-
             }
         }
     }
@@ -92,6 +98,5 @@ fun HomeScreen(
 @Composable
 @Preview
 fun PreviewHome() {
-    val viewModel = HomeViewModel()
-    HomeScreen(viewModel.homeState) {}
+    HomeScreen(MutableStateFlow(HomePageUi.initData().copy(pageState = PageState.Success))) {}
 }

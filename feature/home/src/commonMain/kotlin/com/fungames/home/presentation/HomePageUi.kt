@@ -5,10 +5,11 @@ data class HomePageUi(
     val locationLatitude: Double,
     val locationLongitude: Double,
     val nearestStation: NearestStation,
+    val nearestStationAvailable: Boolean,
     val stationList: List<NearestStation>,
     val pageState: PageState
 ) {
-    
+
     companion object {
 
         fun initData() = HomePageUi(
@@ -27,6 +28,7 @@ data class HomePageUi(
                 locationLatitude = 0,
                 locationLongitude = 0
             ),
+            nearestStationAvailable = false,
             stationList = emptyList(),
             pageState = PageState.Loading
         )

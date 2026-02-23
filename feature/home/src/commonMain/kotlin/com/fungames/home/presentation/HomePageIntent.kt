@@ -4,9 +4,13 @@ sealed interface HomePageIntent {
 
     data class ClickOnStation(val station: NearestStation) : HomePageIntent
 
-    object ClickedOnLocation: HomePageIntent
+    object ClickedOnLocation : HomePageIntent
 
-    object ViewAllStations: HomePageIntent
+    data class LocationGranted(val lat: Double, val lon: Double) : HomePageIntent
+
+    object LocationDenied : HomePageIntent
+
+    object ViewAllStations : HomePageIntent
 
     object FareCalculation : HomePageIntent
 
