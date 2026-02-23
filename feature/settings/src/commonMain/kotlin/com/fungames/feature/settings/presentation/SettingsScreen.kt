@@ -58,7 +58,7 @@ fun SettingsScreen(
                     SettingsItem(
                         title = "Give Feedback",
                         icon = Icons.Outlined.Email,
-                        onClick = { uriHandler.openUri("mailto:feedback@example.com") }
+                        onClick = { uriHandler.openUri("inbox.metrowatch@gmail.com") }
                     )
                     SettingsItem(
                         title = "Rate Us",
@@ -78,7 +78,14 @@ fun SettingsScreen(
                     SettingsItem(
                         title = "Policy & Guidelines",
                         icon = Icons.Outlined.Lock,
-                        onClick = { uriHandler.openUri("https://example.com/policy") }
+                        onClick = {
+                            onNavigate(
+                                Route.WebView(
+                                    title = "Policy & Guidelines",
+                                    url = "https://dk9nc3xontwyb.cloudfront.net/privacy"
+                                )
+                            )
+                        }
                     )
                     SettingsItem(
                         title = "Terms & Conditions",
@@ -87,7 +94,7 @@ fun SettingsScreen(
                             onNavigate(
                                 Route.WebView(
                                     title = "Terms & Conditions",
-                                    url = "https://example.com/terms"
+                                    url = "https://dk9nc3xontwyb.cloudfront.net/tnC"
                                 )
                             )
                         }
@@ -95,7 +102,7 @@ fun SettingsScreen(
                     SettingsItem(
                         title = "About Us",
                         icon = Icons.Outlined.Info,
-                        onClick = { uriHandler.openUri("https://example.com/about") }
+                        onClick = { uriHandler.openUri("https://dk9nc3xontwyb.cloudfront.net/aboutUs") }
                     )
                     ListItem(
                         headlineContent = { Text("Version") },
