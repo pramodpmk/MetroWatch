@@ -58,7 +58,13 @@ fun SettingsScreen(
                     SettingsItem(
                         title = "Give Feedback",
                         icon = Icons.Outlined.Email,
-                        onClick = { uriHandler.openUri("inbox.metrowatch@gmail.com") }
+                        onClick = {
+                            try {
+                                uriHandler.openUri("mailto:inbox.metrowatch@gmail.com")
+                            } catch (_: Exception) {
+                                // No mail app installed — silently ignore
+                            }
+                        }
                     )
                     SettingsItem(
                         title = "Rate Us",
