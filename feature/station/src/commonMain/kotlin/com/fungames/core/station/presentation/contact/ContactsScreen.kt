@@ -84,7 +84,7 @@ fun ContactItem(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         ListItem(
-            headlineContent = { DisplayText(contact.name) },
+            headlineContent = { DisplayText(contact.displayName) },
             supportingContent = { DisplayText(contact.value) },
             trailingContent = {
                 Row {
