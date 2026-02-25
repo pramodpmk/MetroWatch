@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import com.fungames.core.data.toSentenceCase
 
 class SyncRepository(
     private val database: AppDatabase,
@@ -95,7 +96,7 @@ class SyncRepository(
                 waterMetroRoutes.add(
                     WaterMetroRouteEntity(
                         id = it.id,
-                        name = it.name,
+                        name = it.name.toSentenceCase(),
                         stations = it.stations.joinToString(","),
                         duration = it.duration,
                         startDate = it.start_date,
@@ -108,7 +109,7 @@ class SyncRepository(
                 waterMetroRoutes.add(
                     WaterMetroRouteEntity(
                         id = it.id,
-                        name = it.name,
+                        name = it.name.toSentenceCase(),
                         stations = "",
                         duration = null,
                         startDate = null,
@@ -120,7 +121,7 @@ class SyncRepository(
         }
 
         val waterMetroStations = dto.waterMetro?.kochi_water_metro?.operational_stations?.map {
-            WaterMetroStationEntity(name = it)
+            WaterMetroStationEntity(name = it.toSentenceCase())
         } ?: emptyList()
 
         val parkingRates = mutableListOf<ParkingRateEntity>()
@@ -130,7 +131,7 @@ class SyncRepository(
         dto.parking?.let { p ->
             parkingInfo = ParkingInfoEntity(
                 effectiveFrom = p.effectiveFrom,
-                applicableFor = p.applicableFor,
+                applicableFor = p.applicableFor.toSentenceCase(),
                 currency = p.currency,
                 notes = p.notes.joinToString("|")
             )
@@ -189,13 +190,13 @@ class SyncRepository(
 
         val contacts = mutableListOf<ContactEntity>()
         dto.contacts?.ernakulam_phone_registry?.let { reg ->
-            reg.emergency.forEach { contacts.add(ContactEntity(category = "Emergency", name = it.key, value = it.value)) }
-            reg.government_offices.forEach { contacts.add(ContactEntity(category = "Government offices", name = it.key, value = it.value)) }
-            reg.police.forEach { contacts.add(ContactEntity(category = "Police", name = it.key, value = it.value)) }
-            reg.utilities.forEach { contacts.add(ContactEntity(category = "Utilities", name = it.key, value = it.value)) }
-            reg.hospitals.forEach { contacts.add(ContactEntity(category = "Hospitals", name = it.key, value = it.value)) }
-            reg.transport.forEach { contacts.add(ContactEntity(category = "Transport", name = it.key, value = it.value)) }
-            reg.websites.forEach { contacts.add(ContactEntity(category = "Websites", name = it.key, value = it.value)) }
+            reg.emergency.forEach { contacts.add(ContactEntity(category = "Emergency", name = it.key.toSentenceCase(), value = it.value)) }
+            reg.government_offices.forEach { contacts.add(ContactEntity(category = "Government offices", name = it.key.toSentenceCase(), value = it.value)) }
+            reg.police.forEach { contacts.add(ContactEntity(category = "Police", name = it.key.toSentenceCase(), value = it.value)) }
+            reg.utilities.forEach { contacts.add(ContactEntity(category = "Utilities", name = it.key.toSentenceCase(), value = it.value)) }
+            reg.hospitals.forEach { contacts.add(ContactEntity(category = "Hospitals", name = it.key.toSentenceCase(), value = it.value)) }
+            reg.transport.forEach { contacts.add(ContactEntity(category = "Transport", name = it.key.toSentenceCase(), value = it.value)) }
+            reg.websites.forEach { contacts.add(ContactEntity(category = "Websites", name = it.key.toSentenceCase(), value = it.value)) }
         }
 
         configDao.updateConfig(

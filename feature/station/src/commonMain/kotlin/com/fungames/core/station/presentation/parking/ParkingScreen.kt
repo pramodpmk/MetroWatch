@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import com.fungames.core.ui.components.AppScaffold
 import com.fungames.core.ui.components.BrandToolBar
 import com.fungames.core.ui.components.DisplayText
+import com.fungames.core.data.toSentenceCase
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -139,12 +140,12 @@ fun ParkingRateItem(rate: com.fungames.core.station.domain.ParkingRate, currency
         Column(modifier = Modifier.padding(16.dp)) {
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 DisplayText(
-                    text = rate.vehicleType.replaceFirstChar { it.uppercase() },
+                    text = rate.vehicleType.toSentenceCase(),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
                 Badge(containerColor = if (rate.isCommuter) Color(0xFFE8F5E9) else Color(0xFFE3F2FD)) {
                     DisplayText(
-                        text = if (rate.isCommuter) "Commuter" else "Non-Commuter",
+                        text = if (rate.isCommuter) "Commuter" else "Non-commuter",
                         color = if (rate.isCommuter) Color(0xFF2E7D32) else Color(0xFF1976D2),
                         modifier = Modifier.padding(4.dp)
                     )
@@ -170,7 +171,7 @@ fun ParkingPassItem(pass: com.fungames.core.station.domain.ParkingPass, currency
         Column(modifier = Modifier.padding(16.dp)) {
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 DisplayText(
-                    text = "${pass.passType.replaceFirstChar { it.uppercase() }} Pass",
+                    text = "${pass.passType.toSentenceCase()} pass",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
                 DisplayText(
@@ -179,8 +180,8 @@ fun ParkingPassItem(pass: com.fungames.core.station.domain.ParkingPass, currency
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            DisplayText("Vehicle: ${pass.vehicleType.replaceFirstChar { it.uppercase() }}")
-            DisplayText("User: ${if (pass.isCommuter) "Commuter" else "Non-Commuter"}")
+            DisplayText("Vehicle: ${pass.vehicleType.toSentenceCase()}")
+            DisplayText("User: ${if (pass.isCommuter) "Commuter" else "Non-commuter"}")
             pass.validityNote?.let {
                 Spacer(modifier = Modifier.height(4.dp))
                 DisplayText(it, style = MaterialTheme.typography.labelSmall, color = Color.Gray)

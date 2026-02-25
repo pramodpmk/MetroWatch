@@ -62,7 +62,7 @@ class TripRepositoryImpl(
         val intermediateStationCount = if (stationsInRange.size > 2) stationsInRange.size - 2 else 0
 
         // Line name
-        val lineName = departureStation.lineId.ifBlank { "Blue Line" }
+        val lineName = departureStation.lineId.ifBlank { "Blue line" }
 
         return TripDetails(
             distance = "$totalDistanceKm km",
