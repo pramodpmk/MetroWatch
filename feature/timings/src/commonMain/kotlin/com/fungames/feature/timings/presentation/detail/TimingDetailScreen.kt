@@ -57,7 +57,7 @@ fun TrainTimingDetail(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Train Timings",
+                title = "Train timings",
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = { navHostController.popBackStack() }
             )
@@ -104,7 +104,7 @@ fun TrainTimingDetail(
 
                 Column(modifier = Modifier.fillMaxWidth()) {
                     DisplayText(
-                        text = "AVAILABLE TRAINS",
+                        text = "Available trains",
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.sp
@@ -147,7 +147,7 @@ fun TimingCalculationCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "FIND TIMINGS",
+                        text = "Find timings",
                         color = BrandBlue,
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp
@@ -160,8 +160,8 @@ fun TimingCalculationCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "FROM", fontSize = 10.sp, color = Color.Gray)
-                    Text(text = "TO", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "From", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "To", fontSize = 10.sp, color = Color.Gray)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -207,7 +207,7 @@ fun TimingCalculationCard(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = BrandBlue)
                 ) {
-                    Text(text = "CALCULATE TIMINGS", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(text = "Calculate timings", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -267,7 +267,7 @@ fun TrainTimingItem(timing: TrainTiming) {
                         text = timing.departureTime,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
-                    DisplayText(text = "DEPARTURE", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                    DisplayText(text = "Departure", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
                 }
 
                 Icon(
@@ -282,7 +282,7 @@ fun TrainTimingItem(timing: TrainTiming) {
                         text = timing.arrivalTime,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
-                    DisplayText(text = "ARRIVAL", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                    DisplayText(text = "Arrival", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
                 }
             }
         }

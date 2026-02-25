@@ -102,7 +102,7 @@ fun NearestStationSection(
         ) {
             Column {
                 DisplayText(
-                    text = "Nearest Station",
+                    text = "Nearest station",
                     color = NearestStationLabelColor,
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium)
                 )
@@ -156,7 +156,7 @@ fun NearestStationSection(
                 modifier = Modifier.weight(1f)
             )
             InfoCard(
-                label = "Next Train",
+                label = "Next train",
                 value = station.nextTrainTime,
                 valueColor = NextTrainGreen,
                 modifier = Modifier.weight(1f)
@@ -203,7 +203,7 @@ fun ActionGrid(
 ) {
     val actions = listOf(
         ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
-        ActionItemData("Plan Trip", Icons.Default.Navigation, Color(0xFF00C853)),
+        ActionItemData("Plan trip", Icons.Default.Navigation, Color(0xFF00C853)),
         ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
         ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00)),
         ActionItemData("Contacts", Icons.Default.Phone, Color(0xFFFF4081)),

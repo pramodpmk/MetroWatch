@@ -34,7 +34,7 @@ fun WaterMetroStationsScreen(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Water Metro Stations",
+                title = "Water metro stations",
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = { navController.popBackStack() }
             )

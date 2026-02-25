@@ -68,7 +68,7 @@ fun HomeScreen(
                             "Fare" -> onIntent(HomePageIntent.FareCalculation)
                             "Timing" -> onIntent(HomePageIntent.Timings)
                             "Settings" -> onIntent(HomePageIntent.Settings)
-                            "Plan Trip" -> onIntent(HomePageIntent.PlanTrip)
+                            "Plan trip" -> onIntent(HomePageIntent.PlanTrip)
                             "Parking" -> onIntent(HomePageIntent.Parking)
                             "Contacts" -> onIntent(HomePageIntent.Contacts)
                         }
@@ -77,7 +77,7 @@ fun HomeScreen(
 
                 Spacer(Modifier.height(16.dp))
                 DisplayText(
-                    "Water Metro", style = MaterialTheme.typography.titleMedium,
+                    "Water metro", style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
                 WaterMetroActionGrid(

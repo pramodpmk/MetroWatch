@@ -62,7 +62,7 @@ class TripRepositoryImpl(
         val intermediateStationCount = if (stationsInRange.size > 2) stationsInRange.size - 2 else 0
 
         // Line name
-        val lineName = departureStation.lineId.ifBlank { "Blue Line" }
+        val lineName = departureStation.lineId.ifBlank { "Blue line" }
 
         return TripDetails(
             distance = "$totalDistanceKm km",
@@ -103,7 +103,7 @@ class TripRepositoryImpl(
     }
 
     private fun formatTime(hour: Int, minute: Int): String {
-        val ampm = if (hour < 12) "AM" else "PM"
+        val ampm = if (hour < 12) "am" else "pm"
         val h = when {
             hour == 0 -> 12
             hour > 12 -> hour - 12

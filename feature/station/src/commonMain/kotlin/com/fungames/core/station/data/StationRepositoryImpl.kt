@@ -8,6 +8,7 @@ import com.fungames.core.station.domain.ParkingInfo
 import com.fungames.core.station.domain.ParkingPass
 import com.fungames.core.station.domain.ParkingRate
 import com.fungames.core.station.domain.Station
+import com.fungames.core.data.toSentenceCase
 import com.fungames.core.station.domain.StationRepository
 import com.fungames.core.station.domain.WaterMetroRoute
 import com.fungames.core.station.domain.WaterMetroStation
@@ -89,6 +90,7 @@ class StationRepositoryImpl(
                 id = it.id,
                 category = it.category,
                 name = it.name,
+                displayName = it.name.toSentenceCase(),
                 value = it.value
             )
         }

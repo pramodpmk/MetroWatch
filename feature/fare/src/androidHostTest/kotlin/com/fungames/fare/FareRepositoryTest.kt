@@ -61,7 +61,37 @@ class FareRepositoryTest {
         override suspend fun deleteAllTimetables() {}
         override suspend fun insertStations(stations: List<StationEntity>) {}
         override suspend fun deleteAllStations() {}
-        override suspend fun updateConfig(version: ConfigVersionEntity, stations: List<StationEntity>, distances: List<DistanceEntity>, fareSlabs: List<FareSlabEntity>, timetables: List<TimetableEntity>) {}
+        override suspend fun insertWaterMetroRoutes(routes: List<WaterMetroRouteEntity>) {}
+        override suspend fun deleteAllWaterMetroRoutes() {}
+        override suspend fun getWaterMetroRoutes(): List<WaterMetroRouteEntity> = emptyList()
+        override suspend fun insertWaterMetroStations(stations: List<WaterMetroStationEntity>) {}
+        override suspend fun deleteAllWaterMetroStations() {}
+        override suspend fun getWaterMetroStations(): List<WaterMetroStationEntity> = emptyList()
+        override suspend fun insertParkingRates(rates: List<ParkingRateEntity>) {}
+        override suspend fun deleteAllParkingRates() {}
+        override suspend fun getParkingRates(): List<ParkingRateEntity> = emptyList()
+        override suspend fun insertParkingPasses(passes: List<ParkingPassEntity>) {}
+        override suspend fun deleteAllParkingPasses() {}
+        override suspend fun getParkingPasses(): List<ParkingPassEntity> = emptyList()
+        override suspend fun insertParkingInfo(info: ParkingInfoEntity) {}
+        override suspend fun deleteAllParkingInfo() {}
+        override suspend fun getParkingInfo(): ParkingInfoEntity? = null
+        override suspend fun insertContacts(contacts: List<ContactEntity>) {}
+        override suspend fun deleteAllContacts() {}
+        override suspend fun getContacts(): List<ContactEntity> = emptyList()
+        override suspend fun updateConfig(
+            version: ConfigVersionEntity,
+            stations: List<StationEntity>,
+            distances: List<DistanceEntity>,
+            fareSlabs: List<FareSlabEntity>,
+            timetables: List<TimetableEntity>,
+            waterMetroRoutes: List<WaterMetroRouteEntity>,
+            waterMetroStations: List<WaterMetroStationEntity>,
+            parkingRates: List<ParkingRateEntity>,
+            parkingPasses: List<ParkingPassEntity>,
+            parkingInfo: ParkingInfoEntity?,
+            contacts: List<ContactEntity>
+        ) {}
     }
 
     @Test
