@@ -104,6 +104,16 @@ fun NavGraphBuilder.appGraph(
         }
     }
 
+    composable<Route.MetroRoutes> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.MetroRoutes) {
+                popUpTo<Route.MetroRoutes> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
     composable<Route.Parking> {
         LaunchedEffect(Unit) {
             navController.navigate(StationRoutes.Parking) {

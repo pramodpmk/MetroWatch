@@ -16,3 +16,5 @@ expect fun rememberPlatformActions(): PlatformActions
 expect fun BackPressHandler(enabled: Boolean = true, onBack: () -> Unit)
 
 expect fun getTimeMillis(): Long
+
+expect fun getLocalTime(): Pair<Int, Int>

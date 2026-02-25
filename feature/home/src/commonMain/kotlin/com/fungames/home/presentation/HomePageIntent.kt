@@ -26,5 +26,5 @@ sealed interface HomePageIntent {
 
     object Parking : HomePageIntent
 
-    object Contacts : HomePageIntent
+    object MetroRoutes : HomePageIntent
 }

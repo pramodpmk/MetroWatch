@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,10 @@ fun HomeScreen(
         onLocation = { lat, lon -> onIntent(HomePageIntent.LocationGranted(lat, lon)) },
         onDenied = { onIntent(HomePageIntent.LocationDenied) }
     )
+
+    LaunchedEffect(Unit) {
+        launchLocation()
+    }
 
     AppScaffold(
         toolBar = { },
@@ -70,7 +75,7 @@ fun HomeScreen(
                             "Settings" -> onIntent(HomePageIntent.Settings)
                             "Plan trip" -> onIntent(HomePageIntent.PlanTrip)
                             "Parking" -> onIntent(HomePageIntent.Parking)
-                            "Contacts" -> onIntent(HomePageIntent.Contacts)
+                            "Routes" -> onIntent(HomePageIntent.MetroRoutes)
                         }
                     }
                 )

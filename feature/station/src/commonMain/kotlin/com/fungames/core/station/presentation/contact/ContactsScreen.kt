@@ -28,9 +28,7 @@ fun ContactsScreen(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Emergency contacts",
-                navigationIcon = Icons.Default.ArrowBack,
-                onNavigationClick = { navController.popBackStack() }
+                title = "Emergency contacts"
             )
         }
     ) { paddingValues ->

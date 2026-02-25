@@ -8,6 +8,7 @@ import com.fungames.core.station.presentation.contact.ContactsRoute
 import com.fungames.core.station.presentation.parking.ParkingRoute
 import com.fungames.core.station.presentation.watermetro.WaterMetroStationsRoute
 import com.fungames.core.station.presentation.watermetro.WaterMetroRoutesRoute
+import com.fungames.core.station.presentation.metroroutes.MetroRoutesRoute
 import com.fungames.core.station.presentation.detail.StationDetailRoute
 import com.fungames.core.station.presentation.list.StationListRoute
 import com.fungames.core.station.presentation.picker.StationPickerRoute
@@ -30,6 +31,8 @@ sealed interface StationRoutes {
     data object WaterMetroStations : StationRoutes
     @Serializable
     data object WaterMetroRoutes : StationRoutes
+    @Serializable
+    data object MetroRoutes : StationRoutes
     @Serializable
     data object Parking : StationRoutes
 
@@ -71,6 +74,9 @@ fun NavGraphBuilder.stationsGraph(
     }
     composable<StationRoutes.WaterMetroRoutes> {
         WaterMetroRoutesRoute(navController)
+    }
+    composable<StationRoutes.MetroRoutes> {
+        MetroRoutesRoute(navController)
     }
     composable<StationRoutes.Parking> {
         ParkingRoute(navController)
