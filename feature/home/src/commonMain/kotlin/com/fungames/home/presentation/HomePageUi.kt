@@ -24,7 +24,7 @@ data class HomePageUi(
                 nextTrainTo = "",
                 nextTrainTime = "",
                 line = "",
-                platform = "",
+                stationId = "",
                 locationLatitude = 0,
                 locationLongitude = 0
             ),

@@ -162,8 +162,8 @@ fun NearestStationSection(
                 modifier = Modifier.weight(1f)
             )
             InfoCard(
-                label = "Platform",
-                value = station.platform,
+                label = "Station id",
+                value = station.stationId,
                 valueColor = Color.DarkGray,
                 modifier = Modifier.weight(1f)
             )
@@ -206,7 +206,7 @@ fun ActionGrid(
         ActionItemData("Plan trip", Icons.Default.Navigation, Color(0xFF00C853)),
         ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
         ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00)),
-        ActionItemData("Contacts", Icons.Default.Phone, Color(0xFFFF4081)),
+        ActionItemData("Routes", Icons.Default.Route, Color(0xFFFF4081)),
         ActionItemData("Parking", Icons.Default.LocalParking, Color(0xFF00BFA5))
     )
 

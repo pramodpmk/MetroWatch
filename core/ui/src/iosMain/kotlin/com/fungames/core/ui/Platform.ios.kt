@@ -28,3 +28,13 @@ actual fun BackPressHandler(enabled: Boolean, onBack: () -> Unit) {
 }
 
 actual fun getTimeMillis(): Long = (NSDate().timeIntervalSince1970 * 1000).toLong()
+
+actual fun getLocalTime(): Pair<Int, Int> {
+    val date = NSDate()
+    val calendar = platform.Foundation.NSCalendar.currentCalendar
+    val components = calendar.components(
+        platform.Foundation.NSCalendarUnitHour or platform.Foundation.NSCalendarUnitMinute,
+        fromDate = date
+    )
+    return components.hour.toInt() to components.minute.toInt()
+}

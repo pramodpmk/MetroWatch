@@ -31,3 +31,8 @@ actual fun BackPressHandler(enabled: Boolean, onBack: () -> Unit) {
 }
 
 actual fun getTimeMillis(): Long = android.os.SystemClock.elapsedRealtime()
+
+actual fun getLocalTime(): Pair<Int, Int> {
+    val calendar = java.util.Calendar.getInstance()
+    return calendar.get(java.util.Calendar.HOUR_OF_DAY) to calendar.get(java.util.Calendar.MINUTE)
+}

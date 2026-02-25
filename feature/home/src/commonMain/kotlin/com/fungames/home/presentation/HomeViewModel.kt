@@ -2,8 +2,10 @@ package com.fungames.home.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fungames.core.data.db.ConfigDao
 import com.fungames.core.data.db.StationDao
 import com.fungames.core.navigation.Route
+import com.fungames.core.ui.getLocalTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +23,8 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 class HomeViewModel(
-    private val stationDao: StationDao
+    private val stationDao: StationDao,
+    private val configDao: ConfigDao
 ) : ViewModel() {
 
     private val _homeState = MutableStateFlow<HomePageUi>(HomePageUi.initData())
@@ -93,8 +96,8 @@ class HomeViewModel(
                     _homeNavigationEffect.emit(Route.Parking)
                 }
 
-                is HomePageIntent.Contacts -> {
-                    _homeNavigationEffect.emit(Route.Contacts)
+                is HomePageIntent.MetroRoutes -> {
+                    _homeNavigationEffect.emit(Route.MetroRoutes)
                 }
             }
         }
@@ -128,6 +131,27 @@ class HomeViewModel(
                     "${tenths / 10}.${tenths % 10} km away"
                 }
 
+                val currentTime = getLocalTime()
+                val currentMinutes = currentTime.first * 60 + currentTime.second
+
+                val timetable = withContext(Dispatchers.IO) { configDao.getTimetableByMode(nearest.mode) }
+                var nextTrainTimeStr = ""
+                if (timetable != null) {
+                    val startMinutes = parseTimeToMinutes(timetable.startTime)
+                    val endMinutes = parseTimeToMinutes(timetable.endTime)
+                    val frequency = timetable.frequencyMinutes
+
+                    if (currentMinutes < startMinutes) {
+                        nextTrainTimeStr = timetable.startTime
+                    } else if (currentMinutes >= endMinutes) {
+                        nextTrainTimeStr = "Tomorrow"
+                    } else {
+                        val minutesSinceStart = currentMinutes - startMinutes
+                        val nextIn = frequency - (minutesSinceStart % frequency)
+                        nextTrainTimeStr = formatMinutesToTime(currentMinutes + nextIn)
+                    }
+                }
+
                 _homeState.value = _homeState.value.copy(
                     locationText = nearest.nameEn,
                     locationLatitude = lat,
@@ -138,9 +162,9 @@ class HomeViewModel(
                         stationCode = nearest.id,
                         distanceToStation = distanceText,
                         nextTrainTo = "",
-                        nextTrainTime = "",
+                        nextTrainTime = nextTrainTimeStr,
                         line = nearest.lineId,
-                        platform = "",
+                        stationId = nearest.id,
                         locationLatitude = nearest.latitude.toLong(),
                         locationLongitude = nearest.longitude.toLong()
                     ),
@@ -153,6 +177,33 @@ class HomeViewModel(
                 )
             }
         }
+    }
+
+    private fun parseTimeToMinutes(timeStr: String): Int {
+        val normalized = timeStr.lowercase().replace("am", " am").replace("pm", " pm").trim()
+        val parts = normalized.split(Regex("\\s+"))
+        if (parts.size < 2) return 0
+        val timeParts = parts[0].split(":")
+        if (timeParts.size < 2) return 0
+        var hour = timeParts[0].toIntOrNull() ?: 0
+        val minute = timeParts[1].toIntOrNull() ?: 0
+        val ampm = parts[1]
+
+        if (ampm == "pm" && hour < 12) hour += 12
+        if (ampm == "am" && hour == 12) hour = 0
+        return hour * 60 + minute
+    }
+
+    private fun formatMinutesToTime(minutes: Int): String {
+        val hour = (minutes / 60) % 24
+        val min = minutes % 60
+        val ampm = if (hour < 12) "am" else "pm"
+        val h = when {
+            hour == 0 -> 12
+            hour > 12 -> hour - 12
+            else -> hour
+        }
+        return "${h.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')} $ampm"
     }
 
     private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {

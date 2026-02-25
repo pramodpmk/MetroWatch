@@ -34,6 +34,9 @@ sealed interface Route {
     data object WaterMetroRoutes : Route
 
     @Serializable
+    data object MetroRoutes : Route
+
+    @Serializable
     data object Parking : Route
 
     @Serializable
