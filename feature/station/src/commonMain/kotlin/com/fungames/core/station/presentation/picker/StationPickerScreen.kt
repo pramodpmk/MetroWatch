@@ -29,7 +29,7 @@ fun StationPickerScreen(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Select Station",
+                title = "Select station",
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = { navHostController.popBackStack() }
             )

@@ -103,7 +103,7 @@ class TripRepositoryImpl(
     }
 
     private fun formatTime(hour: Int, minute: Int): String {
-        val ampm = if (hour < 12) "AM" else "PM"
+        val ampm = if (hour < 12) "am" else "pm"
         val h = when {
             hour == 0 -> 12
             hour > 12 -> hour - 12

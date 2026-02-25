@@ -16,9 +16,9 @@ class TimingTableViewModel : ViewModel() {
 
     init {
         _timingTableState.value = listOf(
-            TimingInfo("Monday to Saturday", "06:00 AM - 10:00 PM"),
-            TimingInfo("Sunday", "08:00 AM - 10:00 PM"),
-            TimingInfo("Public Holidays", "08:00 AM - 10:00 PM")
+            TimingInfo("Monday to Saturday", "06:00 am - 10:00 pm"),
+            TimingInfo("Sunday", "08:00 am - 10:00 pm"),
+            TimingInfo("Public holidays", "08:00 am - 10:00 pm")
         )
     }
 }

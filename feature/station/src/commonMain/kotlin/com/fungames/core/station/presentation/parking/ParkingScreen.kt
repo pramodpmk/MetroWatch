@@ -36,7 +36,7 @@ fun ParkingScreen(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Parking Rates",
+                title = "Parking rates",
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = { navController.popBackStack() }
             )
@@ -69,7 +69,7 @@ fun ParkingScreen(
 
                     item {
                         DisplayText(
-                            text = "Hourly Rates",
+                            text = "Hourly rates",
                             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                         )
                     }
@@ -92,7 +92,7 @@ fun ParkingScreen(
                     if (info.notes.isNotEmpty()) {
                         item {
                             DisplayText(
-                                text = "Important Notes",
+                                text = "Important notes",
                                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                             )
                             Spacer(modifier = Modifier.height(8.dp))
@@ -119,11 +119,11 @@ fun ParkingHeader(info: com.fungames.core.station.domain.ParkingInfo) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             DisplayText(
-                text = "Applicable For: ${info.applicableFor}",
+                text = "Applicable for: ${info.applicableFor}",
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
             )
             DisplayText(
-                text = "Effective From: ${info.effectiveFrom}",
+                text = "Effective from: ${info.effectiveFrom}",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -151,8 +151,8 @@ fun ParkingRateItem(rate: com.fungames.core.station.domain.ParkingRate, currency
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            DisplayText("First 2 Hours: $currency ${rate.firstTwoHours}")
-            DisplayText("Every Extra Hour: $currency ${rate.everyExtraHour}")
+            DisplayText("First 2 hours: $currency ${rate.firstTwoHours}")
+            DisplayText("Every extra hour: $currency ${rate.everyExtraHour}")
             rate.note?.let {
                 Spacer(modifier = Modifier.height(4.dp))
                 DisplayText(it, style = MaterialTheme.typography.labelSmall, color = Color.Gray)

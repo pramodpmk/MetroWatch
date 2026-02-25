@@ -58,7 +58,7 @@ fun FareCalculatorScreen(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Fare Calculator",
+                title = "Fare calculator",
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = { navController.popBackStack() }
             )
@@ -128,7 +128,7 @@ fun FareCalculationCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "CALCULATE FARE",
+                            text = "Calculate fare",
                             color = BrandBlue,
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp
@@ -149,7 +149,7 @@ fun FareCalculationCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "ONE WAY",
+                            text = "One way",
                             color = Color.White,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
@@ -170,8 +170,8 @@ fun FareCalculationCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "DEPARTURE", fontSize = 10.sp, color = Color.Gray)
-                    Text(text = "ARRIVAL", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "Departure", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "Arrival", fontSize = 10.sp, color = Color.Gray)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -217,7 +217,7 @@ fun FareCalculationCard(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = BrandBlue)
                 ) {
-                    Text(text = "CALCULATE FARE", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(text = "Calculate fare", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -228,7 +228,7 @@ fun FareCalculationCard(
 fun FareDetailsSection(uiState: FareUiState) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "FARE & JOURNEY DETAILS",
+            text = "Fare & journey details",
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             color = BrandBlue,
@@ -272,7 +272,7 @@ fun FareDetailsSection(uiState: FareUiState) {
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
-                        Text(text = "Total Fare", fontSize = 12.sp, color = Color.Gray)
+                        Text(text = "Total fare", fontSize = 12.sp, color = Color.Gray)
                     }
                 }
 

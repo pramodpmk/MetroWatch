@@ -57,7 +57,7 @@ fun TrainTimingScreen(
 
             item {
                 DisplayText(
-                    text = "General Timings",
+                    text = "General timings",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(top = 8.dp)
                 )
@@ -73,7 +73,7 @@ fun TrainTimingScreen(
 @Composable
 fun TimingToolBar(onBackClick: () -> Unit) {
     BrandToolBar(
-        title = "Metro Timing",
+        title = "Metro timing",
         navigationIcon = Icons.Default.ArrowBack,
         onNavigationClick = onBackClick
     )

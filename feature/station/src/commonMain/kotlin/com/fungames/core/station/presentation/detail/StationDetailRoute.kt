@@ -43,7 +43,7 @@ fun StationDetailRoute(
     AppScaffold(
         toolBar = {
             TopAppBar(
-                title = { DisplayText(state.station?.name ?: "Station Details") },
+                title = { DisplayText(state.station?.name ?: "Station details") },
                 navigationIcon = {
                     IconButton(onClick = { navHostController.popBackStack() }) {
                         Icon(
@@ -75,7 +75,7 @@ fun StationDetailRoute(
                         val mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=${station.latitude},${station.longitude}&zoom=15&size=600x300&sensor=false"
                         AsyncImage(
                             model = mapUrl,
-                            contentDescription = "Station Map",
+                            contentDescription = "Station map",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp),
@@ -104,19 +104,19 @@ fun StationDetailRoute(
 
                             StationDetailItem(
                                 icon = Icons.Default.Language,
-                                label = "Malayalam Name",
+                                label = "Malayalam name",
                                 value = station.nameMl ?: ""
                             )
 
                             StationDetailItem(
                                 icon = Icons.Default.Language,
-                                label = "Hindi Name",
+                                label = "Hindi name",
                                 value = station.nameHi ?: ""
                             )
 
                             StationDetailItem(
                                 icon = Icons.Default.Route,
-                                label = "Line ID",
+                                label = "Line id",
                                 value = station.lineId
                             )
 
@@ -128,7 +128,7 @@ fun StationDetailRoute(
 
                             StationDetailItem(
                                 icon = Icons.Default.Accessible,
-                                label = "Wheelchair Accessible",
+                                label = "Wheelchair accessible",
                                 value = if (station.wheelchairAccessible) "Yes" else "No"
                             )
                         }

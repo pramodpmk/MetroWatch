@@ -190,7 +190,7 @@ class SyncRepository(
         val contacts = mutableListOf<ContactEntity>()
         dto.contacts?.ernakulam_phone_registry?.let { reg ->
             reg.emergency.forEach { contacts.add(ContactEntity(category = "Emergency", name = it.key, value = it.value)) }
-            reg.government_offices.forEach { contacts.add(ContactEntity(category = "Government Offices", name = it.key, value = it.value)) }
+            reg.government_offices.forEach { contacts.add(ContactEntity(category = "Government offices", name = it.key, value = it.value)) }
             reg.police.forEach { contacts.add(ContactEntity(category = "Police", name = it.key, value = it.value)) }
             reg.utilities.forEach { contacts.add(ContactEntity(category = "Utilities", name = it.key, value = it.value)) }
             reg.hospitals.forEach { contacts.add(ContactEntity(category = "Hospitals", name = it.key, value = it.value)) }

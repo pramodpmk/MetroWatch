@@ -56,7 +56,7 @@ fun SettingsScreen(
             ) {
                 SettingsSection(title = "Support") {
                     SettingsItem(
-                        title = "Give Feedback",
+                        title = "Give feedback",
                         icon = Icons.Outlined.Email,
                         onClick = {
                             try {
@@ -67,12 +67,12 @@ fun SettingsScreen(
                         }
                     )
                     SettingsItem(
-                        title = "Rate Us",
+                        title = "Rate us",
                         icon = Icons.Outlined.Star,
                         onClick = { uriHandler.openUri("https://play.google.com/store/apps/details?id=com.fungames.reminderapp") }
                     )
                     SettingsItem(
-                        title = "Share App",
+                        title = "Share app",
                         icon = Icons.Outlined.Share,
                         onClick = {
                             uriHandler.openUri("https://example.com/share?text=Check out this app!")
@@ -82,31 +82,31 @@ fun SettingsScreen(
 
                 SettingsSection(title = "Information") {
                     SettingsItem(
-                        title = "Policy & Guidelines",
+                        title = "Policy & guidelines",
                         icon = Icons.Outlined.Lock,
                         onClick = {
                             onNavigate(
                                 Route.WebView(
-                                    title = "Policy & Guidelines",
+                                    title = "Policy & guidelines",
                                     url = "https://dk9nc3xontwyb.cloudfront.net/privacy"
                                 )
                             )
                         }
                     )
                     SettingsItem(
-                        title = "Terms & Conditions",
+                        title = "Terms & conditions",
                         icon = Icons.Outlined.Lock,
                         onClick = {
                             onNavigate(
                                 Route.WebView(
-                                    title = "Terms & Conditions",
+                                    title = "Terms & conditions",
                                     url = "https://dk9nc3xontwyb.cloudfront.net/tnC"
                                 )
                             )
                         }
                     )
                     SettingsItem(
-                        title = "About Us",
+                        title = "About us",
                         icon = Icons.Outlined.Info,
                         onClick = { uriHandler.openUri("https://dk9nc3xontwyb.cloudfront.net/aboutUs") }
                     )

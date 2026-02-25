@@ -58,7 +58,7 @@ fun PlanTripScreen(
     AppScaffold(
         toolBar = {
             BrandToolBar(
-                title = "Plan Trip",
+                title = "Plan trip",
                 navigationIcon = Icons.Default.ArrowBack,
                 onNavigationClick = { navController.popBackStack() }
             )
@@ -107,7 +107,7 @@ fun PlanTripScreen(
                 Spacer(modifier = Modifier.height(24.dp))
                 Column(modifier = Modifier.fillMaxWidth()) {
                     DisplayText(
-                        text = "AVAILABLE TRAINS",
+                        text = "Available trains",
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.sp
@@ -150,7 +150,7 @@ fun TripCalculationCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "PLAN TRIP",
+                        text = "Plan trip",
                         color = BrandBlue,
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp
@@ -163,8 +163,8 @@ fun TripCalculationCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "FROM", fontSize = 10.sp, color = Color.Gray)
-                    Text(text = "TO", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "From", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "To", fontSize = 10.sp, color = Color.Gray)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -210,7 +210,7 @@ fun TripCalculationCard(
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = BrandBlue)
                 ) {
-                    Text(text = "PLAN TRIP", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(text = "Plan trip", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -221,7 +221,7 @@ fun TripCalculationCard(
 fun TripSummaryCard(uiState: PlanTripUiState) {
     Column(modifier = Modifier.fillMaxWidth()) {
         DisplayText(
-            text = "TRIP DETAILS",
+            text = "Trip details",
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 1.sp
@@ -253,7 +253,7 @@ fun TripSummaryCard(uiState: PlanTripUiState) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TripDetailItem(label = "Intermediate Stations", value = "${uiState.numberOfStations}")
+                    TripDetailItem(label = "Intermediate stations", value = "${uiState.numberOfStations}")
                     TripDetailItem(label = "Line", value = uiState.lineName)
                 }
             }
@@ -316,7 +316,7 @@ fun TripTimingItem(timing: TripTiming) {
                         text = timing.departureTime,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
-                    DisplayText(text = "DEPARTURE", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                    DisplayText(text = "Departure", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
                 }
 
                 Icon(
@@ -331,7 +331,7 @@ fun TripTimingItem(timing: TripTiming) {
                         text = timing.arrivalTime,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
-                    DisplayText(text = "ARRIVAL", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
+                    DisplayText(text = "Arrival", style = MaterialTheme.typography.labelSmall, color = Color.Gray)
                 }
             }
         }

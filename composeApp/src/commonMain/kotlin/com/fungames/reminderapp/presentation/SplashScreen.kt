@@ -30,7 +30,7 @@ fun SplashScreen(
         contentAlignment = Alignment.Center
     ) {
         DisplayText(
-            text = "Metro App",
+            text = "Metro app",
             color = BrandWhite,
             style = MaterialTheme.typography.headlineLarge
         )
