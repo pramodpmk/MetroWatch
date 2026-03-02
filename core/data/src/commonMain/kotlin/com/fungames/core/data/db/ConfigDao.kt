@@ -20,6 +20,9 @@ interface ConfigDao {
     @Query("SELECT * FROM timetables WHERE mode = :mode LIMIT 1")
     suspend fun getTimetableByMode(mode: String): TimetableEntity?
 
+    @Query("SELECT * FROM timetables WHERE mode = :mode")
+    suspend fun getTimetablesByMode(mode: String): List<TimetableEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertConfigVersion(version: ConfigVersionEntity)
 

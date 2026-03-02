@@ -2,9 +2,9 @@ package com.fungames.feature.timings.presentation.detail
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -63,46 +63,54 @@ fun TrainTimingDetail(
             )
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            TimingCalculationCard(
-                uiState = uiState,
-                onFromClick = {
-                    viewModel.setPickingFrom(true)
-                    onNavigate(Route.StationPicker)
-                },
-                onToClick = {
-                    viewModel.setPickingFrom(false)
-                    onNavigate(Route.StationPicker)
-                },
-                onSwapStations = { viewModel.swapStations() },
-                onCalculateTimings = { viewModel.calculateTimings() }
-            )
-
-            if (uiState.isLoading) {
-                Spacer(modifier = Modifier.height(24.dp))
-                CircularProgressIndicator(color = BrandBlue)
-            }
-
-            if (uiState.error != null) {
-                Spacer(modifier = Modifier.height(24.dp))
-                DisplayText(
-                    text = uiState.error!!,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodyMedium
+            item {
+                TimingCalculationCard(
+                    uiState = uiState,
+                    onFromClick = {
+                        viewModel.setPickingFrom(true)
+                        onNavigate(Route.StationPicker)
+                    },
+                    onToClick = {
+                        viewModel.setPickingFrom(false)
+                        onNavigate(Route.StationPicker)
+                    },
+                    onSwapStations = { viewModel.swapStations() },
+                    onCalculateTimings = { viewModel.calculateTimings() }
                 )
             }
 
-            if (uiState.showDetails) {
-                Spacer(modifier = Modifier.height(24.dp))
+            if (uiState.isLoading) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = BrandBlue)
+                    }
+                }
+            }
 
-                Column(modifier = Modifier.fillMaxWidth()) {
+            if (uiState.error != null) {
+                item {
+                    DisplayText(
+                        text = uiState.error!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(top = 24.dp)
+                    )
+                }
+            }
+
+            if (uiState.showDetails) {
+                item {
                     DisplayText(
                         text = "Available trains",
                         style = MaterialTheme.typography.titleSmall.copy(
@@ -110,13 +118,13 @@ fun TrainTimingDetail(
                             letterSpacing = 1.sp
                         ),
                         color = BrandBlue,
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
                     )
+                }
 
-                    uiState.timings.forEach { timing ->
-                        TrainTimingItem(timing)
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
+                items(uiState.timings, key = { it.trainNumber }) { timing ->
+                    TrainTimingItem(timing)
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }
