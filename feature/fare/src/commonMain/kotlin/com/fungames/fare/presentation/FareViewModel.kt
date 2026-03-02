@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class FareUiState(
-    val departureStation: String = "Seepz",
-    val arrivalStation: String = "CSMI airport-T1",
+    val departureStation: String = "",
+    val arrivalStation: String = "",
     val distance: String = "",
     val fare: String = "",
     val showDetails: Boolean = false,

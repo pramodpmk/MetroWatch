@@ -172,10 +172,10 @@ fun TimingCalculationCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = uiState.fromStation,
+                        text = if (uiState.fromStation.isEmpty()) "Select station" else uiState.fromStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = BrandBlue,
+                        color = if (uiState.fromStation.isEmpty()) Color.Gray else BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onFromClick() }
                     )
 
@@ -188,10 +188,10 @@ fun TimingCalculationCard(
                     }
 
                     Text(
-                        text = uiState.toStation,
+                        text = if (uiState.toStation.isEmpty()) "Select station" else uiState.toStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = BrandBlue,
+                        color = if (uiState.toStation.isEmpty()) Color.Gray else BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onToClick() },
                         textAlign = TextAlign.End
                     )
@@ -201,6 +201,7 @@ fun TimingCalculationCard(
 
                 Button(
                     onClick = onCalculateTimings,
+                    enabled = uiState.fromStation.isNotEmpty() && uiState.toStation.isNotEmpty(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),

@@ -137,32 +137,6 @@ fun FareCalculationCard(
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
-
-                Surface(
-                    modifier = Modifier
-                        .padding(top = 12.dp, end = 12.dp),
-                    shape = RoundedCornerShape(20.dp),
-                    color = NearestStationLabelColor
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "One way",
-                            color = Color.White,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(
-                            imageVector = Icons.Default.SwapHoriz,
-                            contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
             }
 
             Column(modifier = Modifier.padding(24.dp)) {
@@ -182,10 +156,10 @@ fun FareCalculationCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = uiState.departureStation,
+                        text = if (uiState.departureStation.isEmpty()) "Select station" else uiState.departureStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = BrandBlue,
+                        color = if (uiState.departureStation.isEmpty()) Color.Gray else BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onDepartureClick() }
                     )
 
@@ -198,10 +172,10 @@ fun FareCalculationCard(
                     }
 
                     Text(
-                        text = uiState.arrivalStation,
+                        text = if (uiState.arrivalStation.isEmpty()) "Select station" else uiState.arrivalStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = BrandBlue,
+                        color = if (uiState.arrivalStation.isEmpty()) Color.Gray else BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onArrivalClick() },
                         textAlign = androidx.compose.ui.text.style.TextAlign.End
                     )
@@ -211,6 +185,7 @@ fun FareCalculationCard(
 
                 Button(
                     onClick = onCalculateFare,
+                    enabled = uiState.departureStation.isNotEmpty() && uiState.arrivalStation.isNotEmpty(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
