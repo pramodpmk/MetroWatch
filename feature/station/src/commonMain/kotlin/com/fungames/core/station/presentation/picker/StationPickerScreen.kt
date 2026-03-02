@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.fungames.core.station.domain.Station
+import com.fungames.core.ui.components.AppScaffold
+import com.fungames.core.ui.components.BrandToolBar
+import com.fungames.core.ui.theme.BrandBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,18 +26,12 @@ fun StationPickerScreen(
     navHostController: NavHostController,
     onStationSelected: (Station) -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { DisplayText("Select Station") },
-                navigationIcon = {
-                    IconButton(onClick = { navHostController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
+    AppScaffold(
+        toolBar = {
+            BrandToolBar(
+                title = "Select station",
+                navigationIcon = Icons.Default.ArrowBack,
+                onNavigationClick = { navHostController.popBackStack() }
             )
         }
     ) { paddingValues ->
@@ -60,7 +57,9 @@ fun StationPickerScreen(
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.surface,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    focusedBorderColor = BrandBlue,
+                    focusedLeadingIconColor = BrandBlue
                 )
             )
 
@@ -134,7 +133,7 @@ private fun StationPickerItem(
             )
             Spacer(modifier = Modifier.height(4.dp))
             DisplayText(
-                text = "Code: ${station.code}",
+                text = "ID: ${station.id}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

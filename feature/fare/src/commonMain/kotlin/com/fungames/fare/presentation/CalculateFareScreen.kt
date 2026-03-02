@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
+import androidx.navigation.NavHostController
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,12 +23,18 @@ import androidx.compose.ui.unit.sp
 import com.fungames.core.navigation.LocalNavigationResults
 import com.fungames.core.navigation.Route
 import com.fungames.core.navigation.result.NavigationKeys
+import com.fungames.core.ui.components.AppScaffold
+import com.fungames.core.ui.components.BrandToolBar
+import com.fungames.core.ui.theme.BrandBlue
+import com.fungames.core.ui.theme.LightBlueBg
+import com.fungames.core.ui.theme.NearestStationLabelColor
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun FareCalculatorScreen(
+    navController: NavHostController,
     onNavigate: (Route) -> Unit,
     viewModel: FareViewModel = koinViewModel()
 ) {
@@ -47,35 +55,45 @@ fun FareCalculatorScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        FareCalculationCard(
-            uiState = uiState,
-            onDepartureClick = {
-                viewModel.setPickingDeparture(true)
-                onNavigate(Route.StationPicker)
-            },
-            onArrivalClick = {
-                viewModel.setPickingDeparture(false)
-                onNavigate(Route.StationPicker)
-            },
-            onSwapStations = { viewModel.swapStations() },
-            onCalculateFare = { viewModel.calculateFare() }
-        )
-
-        if (uiState.isLoading) {
-            Spacer(modifier = Modifier.height(24.dp))
-            CircularProgressIndicator(color = Color(0xFF00838F))
+    AppScaffold(
+        toolBar = {
+            BrandToolBar(
+                title = "Fare calculator",
+                navigationIcon = Icons.Default.ArrowBack,
+                onNavigationClick = { navController.popBackStack() }
+            )
         }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            FareCalculationCard(
+                uiState = uiState,
+                onDepartureClick = {
+                    viewModel.setPickingDeparture(true)
+                    onNavigate(Route.StationPicker)
+                },
+                onArrivalClick = {
+                    viewModel.setPickingDeparture(false)
+                    onNavigate(Route.StationPicker)
+                },
+                onSwapStations = { viewModel.swapStations() },
+                onCalculateFare = { viewModel.calculateFare() }
+            )
 
-        if (uiState.showDetails) {
-            Spacer(modifier = Modifier.height(24.dp))
-            FareDetailsSection(uiState = uiState)
+            if (uiState.isLoading) {
+                Spacer(modifier = Modifier.height(24.dp))
+                CircularProgressIndicator(color = BrandBlue)
+            }
+
+            if (uiState.showDetails) {
+                Spacer(modifier = Modifier.height(24.dp))
+                FareDetailsSection(uiState = uiState)
+            }
         }
     }
 }
@@ -91,7 +109,7 @@ fun FareCalculationCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFE0F7F9)), // Light cyan
+        colors = CardDefaults.cardColors(containerColor = LightBlueBg),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column {
@@ -110,8 +128,8 @@ fun FareCalculationCard(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "CALCULATE FARE",
-                            color = Color(0xFF00838F),
+                            text = "Calculate fare",
+                            color = BrandBlue,
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp
                         )
@@ -124,14 +142,14 @@ fun FareCalculationCard(
                     modifier = Modifier
                         .padding(top = 12.dp, end = 12.dp),
                     shape = RoundedCornerShape(20.dp),
-                    color = Color(0xFF009688) // Primary teal
+                    color = NearestStationLabelColor
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "ONE WAY",
+                            text = "One way",
                             color = Color.White,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
@@ -152,8 +170,8 @@ fun FareCalculationCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "DEPARTURE", fontSize = 10.sp, color = Color.Gray)
-                    Text(text = "ARRIVAL", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "Departure", fontSize = 10.sp, color = Color.Gray)
+                    Text(text = "Arrival", fontSize = 10.sp, color = Color.Gray)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -167,7 +185,7 @@ fun FareCalculationCard(
                         text = uiState.departureStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF512DA8), // Purple-ish
+                        color = BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onDepartureClick() }
                     )
 
@@ -175,7 +193,7 @@ fun FareCalculationCard(
                         Icon(
                             imageVector = Icons.Default.SwapHoriz,
                             contentDescription = "Swap",
-                            tint = Color(0xFF00838F)
+                            tint = BrandBlue
                         )
                     }
 
@@ -183,7 +201,7 @@ fun FareCalculationCard(
                         text = uiState.arrivalStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF512DA8),
+                        color = BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onArrivalClick() },
                         textAlign = androidx.compose.ui.text.style.TextAlign.End
                     )
@@ -197,9 +215,9 @@ fun FareCalculationCard(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00838F))
+                    colors = ButtonDefaults.buttonColors(containerColor = BrandBlue)
                 ) {
-                    Text(text = "CALCULATE FARE", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(text = "Calculate fare", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -210,10 +228,10 @@ fun FareCalculationCard(
 fun FareDetailsSection(uiState: FareUiState) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "FARE & JOURNEY DETAILS",
+            text = "Fare & journey details",
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF00838F),
+            color = BrandBlue,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
@@ -254,7 +272,7 @@ fun FareDetailsSection(uiState: FareUiState) {
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
-                        Text(text = "Total Fare", fontSize = 12.sp, color = Color.Gray)
+                        Text(text = "Total fare", fontSize = 12.sp, color = Color.Gray)
                     }
                 }
 

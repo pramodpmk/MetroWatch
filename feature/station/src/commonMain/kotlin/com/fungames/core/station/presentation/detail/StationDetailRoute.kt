@@ -43,7 +43,7 @@ fun StationDetailRoute(
     AppScaffold(
         toolBar = {
             TopAppBar(
-                title = { DisplayText(state.station?.name ?: "Station Details") },
+                title = { DisplayText(state.station?.name ?: "Station details") },
                 navigationIcon = {
                     IconButton(onClick = { navHostController.popBackStack() }) {
                         Icon(
@@ -72,10 +72,10 @@ fun StationDetailRoute(
                     item {
                         // Static Map Image Header
                         // Using a placeholder service for static maps since we don't have a real API key
-                        val mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=${station.latInf},${station.lngInf}&zoom=15&size=600x300&sensor=false"
+                        val mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=${station.latitude},${station.longitude}&zoom=15&size=600x300&sensor=false"
                         AsyncImage(
                             model = mapUrl,
-                            contentDescription = "Station Map",
+                            contentDescription = "Station map",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp),
@@ -95,7 +95,7 @@ fun StationDetailRoute(
                             )
 
                             DisplayText(
-                                text = "Code: ${station.code}",
+                                text = "ID: ${station.id}",
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -103,33 +103,33 @@ fun StationDetailRoute(
                             Spacer(modifier = Modifier.height(24.dp))
 
                             StationDetailItem(
-                                icon = Icons.Default.Train,
-                                label = "Next Train",
-                                value = station.nextTrain
+                                icon = Icons.Default.Language,
+                                label = "Malayalam name",
+                                value = station.nameMl ?: ""
                             )
 
                             StationDetailItem(
-                                icon = Icons.Default.LocalParking,
-                                label = "Parking Availability",
-                                value = station.parkingAvailability
+                                icon = Icons.Default.Language,
+                                label = "Hindi name",
+                                value = station.nameHi ?: ""
                             )
 
                             StationDetailItem(
-                                icon = Icons.Default.DoorSliding,
-                                label = "Gates",
-                                value = station.gates
+                                icon = Icons.Default.Route,
+                                label = "Line id",
+                                value = station.lineId
                             )
 
                             StationDetailItem(
-                                icon = Icons.Default.Phone,
-                                label = "Contact Details",
-                                value = station.contactDetails
+                                icon = Icons.Default.FormatListNumbered,
+                                label = "Sequence",
+                                value = station.sequence.toString()
                             )
 
                             StationDetailItem(
-                                icon = Icons.Default.Home,
-                                label = "Address",
-                                value = station.address
+                                icon = Icons.Default.Accessible,
+                                label = "Wheelchair accessible",
+                                value = if (station.wheelchairAccessible) "Yes" else "No"
                             )
                         }
                     }

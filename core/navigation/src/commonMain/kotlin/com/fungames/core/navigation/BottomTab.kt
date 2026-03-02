@@ -4,7 +4,6 @@ enum class BottomTab(
     val label: String,
 ) {
     HOME("Home"),
-    TIMINGS("Timings"),
-    FARE("Fare"),
+    CONTACTS("Contacts"),
     SETTINGS("Settings")
 }

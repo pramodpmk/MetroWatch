@@ -20,44 +20,24 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fungames.core.ui.components.BrandToolBar
 import com.fungames.core.ui.components.DisplayText
 import com.fungames.core.ui.components.RowGrid
-
-val BrandBlue = Color(0xFF4B00FF)
-val LightBlueBg = Color(0xFFE8F0FF)
-val NearestStationLabelColor = Color(0xFF6200EE)
-val NextTrainGreen = Color(0xFF00C853)
+import com.fungames.core.ui.theme.BrandBlue
+import com.fungames.core.ui.theme.LightBlueBg
+import com.fungames.core.ui.theme.NearestStationLabelColor
+import com.fungames.core.ui.theme.NextTrainGreen
 
 @Composable
 fun HomeToolBar(
     text: String,
     onLocationClick: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(BrandBlue)
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .padding(16.dp)
+    BrandToolBar(
+        title = "MetroTime",
+        navigationIcon = Icons.Default.DirectionsSubway
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.DirectionsSubway,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            DisplayText(
-                text = "MetroTime",
-                color = Color.White,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-
+        Spacer(modifier = Modifier.height(16.dp))
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,7 +102,7 @@ fun NearestStationSection(
         ) {
             Column {
                 DisplayText(
-                    text = "Nearest Station",
+                    text = "Nearest station",
                     color = NearestStationLabelColor,
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium)
                 )
@@ -176,14 +156,14 @@ fun NearestStationSection(
                 modifier = Modifier.weight(1f)
             )
             InfoCard(
-                label = "Next Train",
+                label = "Next train",
                 value = station.nextTrainTime,
                 valueColor = NextTrainGreen,
                 modifier = Modifier.weight(1f)
             )
             InfoCard(
-                label = "Platform",
-                value = station.platform,
+                label = "Station id",
+                value = station.stationId,
                 valueColor = Color.DarkGray,
                 modifier = Modifier.weight(1f)
             )
@@ -223,14 +203,37 @@ fun ActionGrid(
 ) {
     val actions = listOf(
         ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
-        ActionItemData("Plan Trip", Icons.Default.Navigation, Color(0xFF00C853)),
-        ActionItemData("Timing Table", Icons.Default.Schedule, Color(0xFFD500F9)),
-        ActionItemData("Fare Calculator", Icons.Default.Calculate, Color(0xFFFF6D00)),
-        ActionItemData("Places", Icons.Default.Place, Color(0xFFFF4081)),
-        ActionItemData("Contact", Icons.Default.Call, Color(0xFF00BFA5)),
-        ActionItemData("Saved Routes", Icons.Default.Bookmark, Color(0xFF7C4DFF)),
-        ActionItemData("Alerts", Icons.Default.Notifications, Color(0xFFFF5252)),
-        ActionItemData("Settings", Icons.Default.Settings, Color(0xFF78909C))
+        ActionItemData("Plan trip", Icons.Default.Navigation, Color(0xFF00C853)),
+        ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
+        ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00)),
+        ActionItemData("Routes", Icons.Default.Route, Color(0xFFFF4081)),
+        ActionItemData("Parking", Icons.Default.LocalParking, Color(0xFF00BFA5))
+    )
+
+    RowGrid(
+        items = actions,
+        columns = 3,
+        horizontalSpacing = 16.dp,
+        verticalSpacing = 16.dp,
+        modifier = Modifier.padding(16.dp)
+    ) { action ->
+        ActionItem(
+            action = action,
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { onActionClick(action.label) }
+        )
+    }
+}
+
+@Composable
+fun WaterMetroActionGrid(
+    onActionClick: (String) -> Unit
+) {
+    val actions = listOf(
+        ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
+        ActionItemData("Routes", Icons.Default.DirectionsBoat, Color(0xFF00C853)),
+        ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
+        ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00))
     )
 
     RowGrid(

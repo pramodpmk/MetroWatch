@@ -23,6 +23,30 @@ sealed interface Route {
 
     @Serializable
     data object StationPicker : Route
+
+    @Serializable
+    data object PlanTrip : Route
+
+    @Serializable
+    data object WaterMetroStations : Route
+
+    @Serializable
+    data object WaterMetroRoutes : Route
+
+    @Serializable
+    data object MetroRoutes : Route
+
+    @Serializable
+    data object Parking : Route
+
+    @Serializable
+    data object Contacts : Route
+
+    @Serializable
+    data object Splash : Route
+
+    @Serializable
+    data class WebView(val title: String, val url: String) : Route
 }
 
 @Serializable

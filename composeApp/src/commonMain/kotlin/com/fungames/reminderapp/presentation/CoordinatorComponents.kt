@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -35,6 +37,14 @@ import com.fungames.feature.timings.navigation.timingsGraph
 import com.fungames.home.navigation.HomeRoutes
 import com.fungames.home.navigation.homeGraph
 import com.fungames.reminderapp.navigation.appGraph
+import androidx.navigation.toRoute
+import com.fungames.core.navigation.Route
+import com.fungames.core.station.navigation.StationRoutes
+import com.fungames.core.ui.BackPressHandler
+import com.fungames.core.ui.getTimeMillis
+import com.fungames.core.ui.rememberPlatformActions
+import com.fungames.core.ui.components.WebViewScreen
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
@@ -45,15 +55,13 @@ fun TabHost(
     tab: BottomTab
 ) {
     val homeController = rememberNavController()
-    val timingController = rememberNavController()
-    val fareController = rememberNavController()
     val settingsController = rememberNavController()
+    val contactsController = rememberNavController()
     val navControllers = remember {
         linkedMapOf<BottomTab, NavHostController>(
             BottomTab.HOME to homeController,
-            BottomTab.TIMINGS to timingController,
-            BottomTab.FARE to fareController,
-            BottomTab.SETTINGS to settingsController
+            BottomTab.CONTACTS to contactsController,
+            BottomTab.SETTINGS to settingsController,
         )
     }
 
@@ -63,31 +71,18 @@ fun TabHost(
         modifier = modifier,
         navController = navController,
         startDestination = when (tab) {
-            BottomTab.TIMINGS -> TimingRoutes.Timings
             BottomTab.HOME -> HomeRoutes.HomePage
-                BottomTab.FARE -> FareRoutes.CalculateFare
+            BottomTab.CONTACTS -> StationRoutes.Contacts
             BottomTab.SETTINGS -> SettingsRoutes.Settings
         }
     ) { // Screens directly tied to bottom navigation goes here
-        timingsGraph(
-            navController,
-            onNavigate = { target ->
-                // Use appNavHostController for root-level routes (like StationPicker)
-                // that are defined in RootNavHost, not in tab-level navigation
-                appNavHostController.navigate(target)
-            }
-        )
         stationsGraph(navController)
         homeGraph(navController) {
             appNavHostController.navigate(it)
         }
-        fareGraph(
-            navController,
-            onNavigate = { target ->
-                appNavHostController.navigate(target)
-            }
-        )
-        settingsGraph(navController)
+        settingsGraph(navController) {
+            appNavHostController.navigate(it)
+        }
     }
 }
 
@@ -101,8 +96,20 @@ fun RootNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = HomeDestination.Tabs
+        startDestination = Route.Splash
     ) {
+        composable<Route.Splash> {
+            SplashScreen(
+                viewModel = koinViewModel(),
+                onSyncComplete = {
+                    navController.navigate(HomeDestination.Tabs) {
+                        popUpTo(Route.Splash) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
         // All screens displayed over (without) bottom navigation goes here
         composable<HomeDestination.Tabs> {
             HomeScaffold(navController)
@@ -123,7 +130,17 @@ fun RootNavHost() {
                 navController.navigate(target)
             }
         )
-        settingsGraph(navController)
+        settingsGraph(navController) { target ->
+            navController.navigate(target)
+        }
+        composable<Route.WebView> { backStackEntry ->
+            val webView = backStackEntry.toRoute<Route.WebView>()
+            WebViewScreen(
+                title = webView.title,
+                url = webView.url,
+                onBack = { navController.popBackStack() }
+            )
+        }
         appGraph(navController)
     }
 }
@@ -137,6 +154,23 @@ fun HomeScaffold(
         mutableStateOf(BottomTab.HOME)
     }
 
+    val platformActions = rememberPlatformActions()
+    var lastBackPressTime by remember { mutableStateOf(0L) }
+
+    BackPressHandler(enabled = true) {
+        if (selectedTab != BottomTab.HOME) {
+            selectedTab = BottomTab.HOME
+        } else {
+            val currentTime = getTimeMillis()
+            if (currentTime - lastBackPressTime < 2000) {
+                platformActions.exitApp()
+            } else {
+                lastBackPressTime = currentTime
+                platformActions.showToast("Press back again to quit")
+            }
+        }
+    }
+
     Scaffold(
         bottomBar = {
             NavigationBar {
@@ -144,7 +178,13 @@ fun HomeScaffold(
                     NavigationBarItem(
                         selected = selectedTab == tab,
                         onClick = { selectedTab = tab },
-                        icon = { Icon(Icons.Outlined.AccountBox, null) },
+                        icon = {
+                            when(tab) {
+                                BottomTab.HOME -> Icon(Icons.Outlined.Home, null)
+                                BottomTab.CONTACTS -> Icon(Icons.Outlined.AccountBox, null)
+                            else -> Icon(Icons.Outlined.Settings, null)
+                            }
+                               },
                         label = { DisplayText(tab.label) }
                     )
                 }

@@ -28,18 +28,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import com.fungames.core.navigation.Route
 import com.fungames.core.ui.components.AppScaffold
+import com.fungames.core.ui.components.BrandToolBar
+import com.fungames.core.ui.theme.BrandBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    onNavigate: (Route) -> Unit = {}
+) {
     val uriHandler = LocalUriHandler.current
 
     AppScaffold(
         toolBar = {
-            MediumTopAppBar(
-                title = { Text("Settings") },
-                windowInsets = WindowInsets.statusBars
+            BrandToolBar(
+                title = "Settings"
             )
         },
         bottomBar = { },
@@ -52,17 +56,23 @@ fun SettingsScreen() {
             ) {
                 SettingsSection(title = "Support") {
                     SettingsItem(
-                        title = "Give Feedback",
+                        title = "Give feedback",
                         icon = Icons.Outlined.Email,
-                        onClick = { uriHandler.openUri("mailto:feedback@example.com") }
+                        onClick = {
+                            try {
+                                uriHandler.openUri("mailto:inbox.metrowatch@gmail.com")
+                            } catch (_: Exception) {
+                                // No mail app installed — silently ignore
+                            }
+                        }
                     )
                     SettingsItem(
-                        title = "Rate Us",
+                        title = "Rate us",
                         icon = Icons.Outlined.Star,
                         onClick = { uriHandler.openUri("https://play.google.com/store/apps/details?id=com.fungames.reminderapp") }
                     )
                     SettingsItem(
-                        title = "Share App",
+                        title = "Share app",
                         icon = Icons.Outlined.Share,
                         onClick = {
                             uriHandler.openUri("https://example.com/share?text=Check out this app!")
@@ -72,14 +82,33 @@ fun SettingsScreen() {
 
                 SettingsSection(title = "Information") {
                     SettingsItem(
-                        title = "Policy & Guidelines",
+                        title = "Policy & guidelines",
                         icon = Icons.Outlined.Lock,
-                        onClick = { uriHandler.openUri("https://example.com/policy") }
+                        onClick = {
+                            onNavigate(
+                                Route.WebView(
+                                    title = "Policy & guidelines",
+                                    url = "https://dk9nc3xontwyb.cloudfront.net/privacy"
+                                )
+                            )
+                        }
                     )
                     SettingsItem(
-                        title = "About Us",
+                        title = "Terms & conditions",
+                        icon = Icons.Outlined.Lock,
+                        onClick = {
+                            onNavigate(
+                                Route.WebView(
+                                    title = "Terms & conditions",
+                                    url = "https://dk9nc3xontwyb.cloudfront.net/tnC"
+                                )
+                            )
+                        }
+                    )
+                    SettingsItem(
+                        title = "About us",
                         icon = Icons.Outlined.Info,
-                        onClick = { uriHandler.openUri("https://example.com/about") }
+                        onClick = { uriHandler.openUri("https://dk9nc3xontwyb.cloudfront.net/aboutUs") }
                     )
                     ListItem(
                         headlineContent = { Text("Version") },
@@ -101,7 +130,7 @@ fun SettingsSection(
         Text(
             text = title,
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
+            color = BrandBlue,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
         content()
@@ -116,7 +145,7 @@ fun SettingsItem(
 ) {
     ListItem(
         headlineContent = { Text(title) },
-        leadingContent = { Icon(icon, contentDescription = null) },
+        leadingContent = { Icon(icon, contentDescription = null, tint = BrandBlue) },
         trailingContent = {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

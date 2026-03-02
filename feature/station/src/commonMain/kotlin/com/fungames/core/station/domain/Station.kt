@@ -1,14 +1,17 @@
 package com.fungames.core.station.domain
 
 data class Station(
-    val id: Int,
-    val name: String,
-    val code: String,
-    val latInf: Double,
-    val lngInf: Double,
-    val nextTrain: String = "",
-    val parkingAvailability: String = "",
-    val gates: String = "",
-    val contactDetails: String = "",
-    val address: String = ""
-)
+    val id: String,
+    val nameEn: String,
+    val nameMl: String?,
+    val nameHi: String?,
+    val latitude: Double,
+    val longitude: Double,
+    val lineId: String,
+    val sequence: Int,
+    val mode: String,
+    val wheelchairAccessible: Boolean
+) {
+    // Helper property for UI compatibility
+    val name: String get() = nameEn
+}

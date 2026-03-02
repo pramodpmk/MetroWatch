@@ -8,7 +8,7 @@ data class NearestStation(
     val nextTrainTo: String,
     val nextTrainTime: String,
     val line: String = "",
-    val platform: String = "",
+    val stationId: String = "",
     val locationLatitude: Long,
     val locationLongitude: Long
 )

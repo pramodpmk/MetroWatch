@@ -15,9 +15,11 @@ fun NavGraphBuilder.appGraph(
     navController: NavHostController
 ) {
     composable<Route.Timings> {
-        navController.navigate(TimingRoutes.Timings) {
-            popUpTo<Route.Timings> {
-                inclusive = true
+        LaunchedEffect(Unit) {
+            navController.navigate(TimingRoutes.Timings) {
+                popUpTo<Route.Timings> {
+                    inclusive = true
+                }
             }
         }
     }
@@ -45,7 +47,7 @@ fun NavGraphBuilder.appGraph(
     composable<Route.FareCalculation> {
         LaunchedEffect(Unit) {
             navController.navigate(FareRoutes.CalculateFare) {
-                popUpTo<FareRoutes.CalculateFare> {
+                popUpTo<Route.FareCalculation> {
                     inclusive = true
                 }
             }
@@ -55,7 +57,17 @@ fun NavGraphBuilder.appGraph(
     composable<Route.Home> {
         LaunchedEffect(Unit) {
             navController.navigate(HomeRoutes.HomePage) {
-                popUpTo<HomeRoutes.HomePage> {
+                popUpTo<Route.Home> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.PlanTrip> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.PlanTrip) {
+                popUpTo<Route.PlanTrip> {
                     inclusive = true
                 }
             }
@@ -66,6 +78,56 @@ fun NavGraphBuilder.appGraph(
         LaunchedEffect(Unit) {
             navController.navigate(StationRoutes.StationPicker) {
                 popUpTo<Route.StationPicker> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.WaterMetroStations> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.WaterMetroStations) {
+                popUpTo<Route.WaterMetroStations> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.WaterMetroRoutes> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.WaterMetroRoutes) {
+                popUpTo<Route.WaterMetroRoutes> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.MetroRoutes> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.MetroRoutes) {
+                popUpTo<Route.MetroRoutes> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.Parking> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.Parking) {
+                popUpTo<Route.Parking> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    composable<Route.Contacts> {
+        LaunchedEffect(Unit) {
+            navController.navigate(StationRoutes.Contacts) {
+                popUpTo<Route.Contacts> {
                     inclusive = true
                 }
             }
