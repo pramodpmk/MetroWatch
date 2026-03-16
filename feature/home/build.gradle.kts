@@ -50,6 +50,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.play.services.location)
             // Added for Android Studio Preview support
             implementation(compose.uiTooling)
         }

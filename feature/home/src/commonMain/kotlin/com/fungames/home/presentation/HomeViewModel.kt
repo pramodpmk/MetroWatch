@@ -55,6 +55,13 @@ class HomeViewModel(
                     // Handled directly from the composable via rememberLocationPermissionLauncher
                 }
 
+                is HomePageIntent.LocationFetching -> {
+                    _homeState.value = _homeState.value.copy(
+                        locationText = "Fetching location...",
+                        nearestStationAvailable = false
+                    )
+                }
+
                 is HomePageIntent.LocationGranted -> {
                     findNearestStation(homeIntent.lat, homeIntent.lon)
                 }

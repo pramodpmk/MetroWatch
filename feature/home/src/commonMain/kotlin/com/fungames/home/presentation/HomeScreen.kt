@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.fungames.core.ui.AppLogger
 import com.fungames.core.ui.components.AppScaffold
 import com.fungames.core.ui.components.DisplayText
 import com.fungames.home.location.rememberLocationPermissionLauncher
@@ -28,12 +29,24 @@ fun HomeScreen(
     val homeState = homeStateFlow.collectAsState()
 
     val launchLocation = rememberLocationPermissionLauncher(
-        onLocation = { lat, lon -> onIntent(HomePageIntent.LocationGranted(lat, lon)) },
-        onDenied = { onIntent(HomePageIntent.LocationDenied) }
+        onLocation = { lat, lon ->
+            AppLogger.traceLog("onLocation")
+            onIntent(HomePageIntent.LocationGranted(lat, lon))
+        },
+        onDenied = {
+            AppLogger.traceLog("onDenied")
+            onIntent(HomePageIntent.LocationDenied)
+        }
     )
 
-    LaunchedEffect(Unit) {
+    val startLocationFetch = {
+        AppLogger.traceLog("startLocationFetch")
+        onIntent(HomePageIntent.LocationFetching)
         launchLocation()
+    }
+
+    LaunchedEffect(Unit) {
+        startLocationFetch()
     }
 
     AppScaffold(
@@ -56,13 +69,15 @@ fun HomeScreen(
             ) {
                 HomeToolBar(
                     text = homeState.value.locationText,
-                    onLocationClick = { launchLocation() }
+                    onLocationClick = { startLocationFetch() }
                 )
 
                 if (homeState.value.nearestStationAvailable) {
                     NearestStationSection(
                         station = homeState.value.nearestStation,
-                        onStationClick = { onIntent(HomePageIntent.ClickOnStation(homeState.value.nearestStation)) }
+                        onStationClick = {
+                            onIntent(HomePageIntent.ClickOnStation(homeState.value.nearestStation))
+                        }
                     )
                 }
 
