@@ -132,7 +132,7 @@ fun NearestStationSection(
                     .size(48.dp)
                     .background(BrandBlue, CircleShape)
                     .clickable {
-                        //onStationClick()
+                        onStationClick()
                     },
                 contentAlignment = Alignment.Center
             ) {

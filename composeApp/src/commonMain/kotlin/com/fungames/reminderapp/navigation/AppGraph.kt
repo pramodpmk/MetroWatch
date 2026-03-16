@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.fungames.core.navigation.Route
 import com.fungames.core.station.navigation.StationRoutes
 import com.fungames.fare.navigation.FareRoutes
@@ -34,9 +35,10 @@ fun NavGraphBuilder.appGraph(
         }
     }
 
-    composable<Route.StationDetail> {
+    composable<Route.StationDetail> { backStackEntry ->
+        val route = backStackEntry.toRoute<Route.StationDetail>()
         LaunchedEffect(Unit) {
-            navController.navigate(StationRoutes.StationDetails) {
+            navController.navigate(StationRoutes.StationDetails(route.stationId)) {
                 popUpTo<Route.StationDetail> {
                     inclusive = true
                 }

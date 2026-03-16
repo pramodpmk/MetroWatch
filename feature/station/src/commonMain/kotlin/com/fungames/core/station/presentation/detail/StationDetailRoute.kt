@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -66,6 +67,7 @@ fun StationDetailRoute(
                 )
             } else if (state.station != null) {
                 val station = state.station
+                val uriHandler = LocalUriHandler.current
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -100,7 +102,27 @@ fun StationDetailRoute(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
 
-                            Spacer(modifier = Modifier.height(24.dp))
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Button(
+                                onClick = {
+                                    val url = "https://www.google.com/maps/dir/?api=1" +
+                                        "&destination=${station.latitude},${station.longitude}" +
+                                        "&travelmode=transit"
+                                    uriHandler.openUri(url)
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Navigation,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                DisplayText("Navigate to station")
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
 
                             StationDetailItem(
                                 icon = Icons.Default.Language,

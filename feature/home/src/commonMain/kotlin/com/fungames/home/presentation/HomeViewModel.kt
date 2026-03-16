@@ -48,7 +48,7 @@ class HomeViewModel(
         viewModelScope.launch {
             when (homeIntent) {
                 is HomePageIntent.ClickOnStation -> {
-                    _homeNavigationEffect.emit(Route.StationDetail)
+                    _homeNavigationEffect.emit(Route.StationDetail(homeIntent.station.stationId))
                 }
 
                 is HomePageIntent.ClickedOnLocation -> {
