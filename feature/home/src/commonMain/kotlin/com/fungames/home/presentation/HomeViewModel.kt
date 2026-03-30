@@ -85,6 +85,10 @@ class HomeViewModel(
                     _homeNavigationEffect.emit(Route.Timings)
                 }
 
+                is HomePageIntent.WaterMetroTiming -> {
+                    _homeNavigationEffect.emit(Route.WaterMetroTimings)
+                }
+
                 is HomePageIntent.Settings -> {}
 
                 is HomePageIntent.PlanTrip -> {
@@ -105,6 +109,10 @@ class HomeViewModel(
 
                 is HomePageIntent.MetroRoutes -> {
                     _homeNavigationEffect.emit(Route.MetroRoutes)
+                }
+
+                is HomePageIntent.WaterMetroFare -> {
+                    _homeNavigationEffect.emit(Route.WaterMetroFare)
                 }
             }
         }

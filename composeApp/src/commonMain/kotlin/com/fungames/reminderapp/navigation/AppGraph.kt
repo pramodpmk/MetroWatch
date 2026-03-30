@@ -24,6 +24,24 @@ fun NavGraphBuilder.appGraph(
             }
         }
     }
+    composable<Route.WaterMetroTimings> {
+        LaunchedEffect(Unit) {
+            navController.navigate(TimingRoutes.WaterMetroTimings) {
+                popUpTo<Route.WaterMetroTimings> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+    composable<Route.WaterMetroFare> {
+        LaunchedEffect(Unit) {
+            navController.navigate(FareRoutes.WaterMetroFareRoute) {
+                popUpTo<Route.WaterMetroFare> {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     composable<Route.StationList> {
         LaunchedEffect(Unit) {

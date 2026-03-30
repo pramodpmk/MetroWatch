@@ -29,4 +29,8 @@ sealed interface HomePageIntent {
     object Parking : HomePageIntent
 
     object MetroRoutes : HomePageIntent
+
+    object WaterMetroTiming : HomePageIntent
+
+    object WaterMetroFare : HomePageIntent
 }

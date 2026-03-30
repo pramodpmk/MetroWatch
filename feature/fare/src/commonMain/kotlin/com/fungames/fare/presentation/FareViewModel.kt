@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fungames.domain.DomainState
 import com.fungames.fare.domain.CalculateFareUseCase
+import com.fungames.fare.domain.GeneralFare
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,13 +28,33 @@ class FareViewModel(
     private val _uiState = MutableStateFlow(FareUiState())
     val uiState: StateFlow<FareUiState> = _uiState.asStateFlow()
 
-    private val _timingTableState = MutableStateFlow<String>("")
-    val timingTableState: StateFlow<String> = _timingTableState
+    private val _generalFareState = MutableStateFlow<GeneralFareUiState>(
+        GeneralFareUiState()
+    )
+    val generalFareState: StateFlow<GeneralFareUiState> = _generalFareState
 
-    fun userIntent() {
-        viewModelScope.launch {
-            _timingTableState.value = "Latest"
-        }
+    init {
+        _generalFareState.value = _generalFareState.value.copy(
+            isLoading = false,
+            fareList = listOf(
+                GeneralFare(
+                    "Kakkanad - Vyttila",
+                    "₹ 30.00"
+                ),
+                GeneralFare(
+                    "Vyttila - Kakkanad",
+                    "₹ 30.00"
+                ),
+                GeneralFare(
+                    "High Court - Fort Kochi",
+                    "₹ 40.00"
+                ),
+                GeneralFare(
+                    "Fort Kochi - High Court",
+                    "₹ 40.00"
+                )
+            )
+        )
     }
 
     fun calculateFare() {

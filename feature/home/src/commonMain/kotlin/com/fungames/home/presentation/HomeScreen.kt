@@ -105,8 +105,8 @@ fun HomeScreen(
                         when (label) {
                             "Stations" -> onIntent(HomePageIntent.WaterMetroStations)
                             "Routes" -> onIntent(HomePageIntent.WaterMetroRoutes)
-                            "Fare" -> onIntent(HomePageIntent.FareCalculation)
-                            "Timing" -> onIntent(HomePageIntent.Timings)
+                            "Fare" -> onIntent(HomePageIntent.WaterMetroFare)
+                            "Timing" -> onIntent(HomePageIntent.WaterMetroTiming)
                         }
                     }
                 )

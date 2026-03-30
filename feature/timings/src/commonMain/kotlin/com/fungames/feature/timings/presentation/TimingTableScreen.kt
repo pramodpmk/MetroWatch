@@ -71,9 +71,12 @@ fun TrainTimingScreen(
 }
 
 @Composable
-fun TimingToolBar(onBackClick: () -> Unit) {
+fun TimingToolBar(
+    onBackClick: () -> Unit,
+    title: String = "Metro Timing"
+    ) {
     BrandToolBar(
-        title = "Metro timing",
+        title = title,
         navigationIcon = Icons.Default.ArrowBack,
         onNavigationClick = onBackClick
     )
