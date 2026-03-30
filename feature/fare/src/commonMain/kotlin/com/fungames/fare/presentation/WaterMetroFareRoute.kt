@@ -11,5 +11,5 @@ fun WaterMetroFareRoute(
     onNavigate: (Route) -> Unit,
     viewModel: FareViewModel = koinViewModel()
 ) {
-
+    WaterMetroTimingScreen(navHostController, onNavigate, viewModel)
 }

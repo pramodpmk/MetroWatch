@@ -143,6 +143,13 @@ fun TimingCard(timing: TimingInfo) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            Icon(
+                imageVector = Icons.Default.Timer,
+                contentDescription = null,
+                tint = LightBlueBg.copy(alpha = 0.5f),
+                modifier = Modifier.size(30.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
             Column {
                 DisplayText(
                     text = timing.title,
@@ -158,13 +165,6 @@ fun TimingCard(timing: TimingInfo) {
                     )
                 )
             }
-
-            Icon(
-                imageVector = Icons.Default.Schedule,
-                contentDescription = null,
-                tint = LightBlueBg.copy(alpha = 0.5f),
-                modifier = Modifier.size(40.dp)
-            )
         }
     }
 }
