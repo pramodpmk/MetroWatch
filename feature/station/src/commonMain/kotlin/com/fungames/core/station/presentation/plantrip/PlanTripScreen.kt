@@ -3,9 +3,9 @@ package com.fungames.core.station.presentation.plantrip
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -64,48 +64,59 @@ fun PlanTripScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(vertical = 16.dp)
         ) {
-            TripCalculationCard(
-                uiState = uiState,
-                onDepartureClick = {
-                    viewModel.setPickingDeparture(true)
-                    onNavigate(Route.StationPicker)
-                },
-                onArrivalClick = {
-                    viewModel.setPickingDeparture(false)
-                    onNavigate(Route.StationPicker)
-                },
-                onSwapStations = { viewModel.swapStations() },
-                onPlanTrip = { viewModel.calculateTrip() }
-            )
-
-            if (uiState.isLoading) {
-                Spacer(modifier = Modifier.height(24.dp))
-                CircularProgressIndicator(color = BrandBlue)
-            }
-
-            if (uiState.error != null) {
-                Spacer(modifier = Modifier.height(24.dp))
-                DisplayText(
-                    text = uiState.error!!,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodyMedium
+            item {
+                TripCalculationCard(
+                    uiState = uiState,
+                    onDepartureClick = {
+                        viewModel.setPickingDeparture(true)
+                        onNavigate(Route.StationPicker)
+                    },
+                    onArrivalClick = {
+                        viewModel.setPickingDeparture(false)
+                        onNavigate(Route.StationPicker)
+                    },
+                    onSwapStations = { viewModel.swapStations() },
+                    onPlanTrip = { viewModel.calculateTrip() }
                 )
             }
 
-            if (uiState.showDetails) {
-                Spacer(modifier = Modifier.height(24.dp))
-                TripSummaryCard(uiState = uiState)
+            if (uiState.isLoading) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = BrandBlue)
+                    }
+                }
+            }
 
-                Spacer(modifier = Modifier.height(24.dp))
-                Column(modifier = Modifier.fillMaxWidth()) {
+            if (uiState.error != null) {
+                item {
+                    DisplayText(
+                        text = uiState.error!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(top = 24.dp)
+                    )
+                }
+            }
+
+            if (uiState.showDetails) {
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    TripSummaryCard(uiState = uiState)
+                }
+
+                item {
                     DisplayText(
                         text = "Available trains",
                         style = MaterialTheme.typography.titleSmall.copy(
@@ -113,13 +124,13 @@ fun PlanTripScreen(
                             letterSpacing = 1.sp
                         ),
                         color = BrandBlue,
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
                     )
+                }
 
-                    uiState.timings.forEach { timing ->
-                        TripTimingItem(timing)
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
+                items(uiState.timings, key = { it.trainNumber }) { timing ->
+                    TripTimingItem(timing)
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }
@@ -175,10 +186,10 @@ fun TripCalculationCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = uiState.departureStation,
+                        text = if (uiState.departureStation.isEmpty()) "Select station" else uiState.departureStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = BrandBlue,
+                        color = if (uiState.departureStation.isEmpty()) Color.Gray else BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onDepartureClick() }
                     )
 
@@ -191,10 +202,10 @@ fun TripCalculationCard(
                     }
 
                     Text(
-                        text = uiState.arrivalStation,
+                        text = if (uiState.arrivalStation.isEmpty()) "Select station" else uiState.arrivalStation,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = BrandBlue,
+                        color = if (uiState.arrivalStation.isEmpty()) Color.Gray else BrandBlue,
                         modifier = Modifier.weight(1f).clickable { onArrivalClick() },
                         textAlign = TextAlign.End
                     )
@@ -204,6 +215,7 @@ fun TripCalculationCard(
 
                 Button(
                     onClick = onPlanTrip,
+                    enabled = uiState.departureStation.isNotEmpty() && uiState.arrivalStation.isNotEmpty(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),

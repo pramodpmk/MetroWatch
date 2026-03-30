@@ -113,7 +113,13 @@ fun SettingsScreen(
                     ListItem(
                         headlineContent = { Text("Version") },
                         supportingContent = { Text("1.0.0") },
-                        leadingContent = { Icon(Icons.Outlined.Verified, contentDescription = null) }
+                        leadingContent = {
+                            Icon(
+                                Icons.Outlined.Verified,
+                                contentDescription = null,
+                                tint = BrandBlue
+                            )
+                        }
                     )
                 }
             }

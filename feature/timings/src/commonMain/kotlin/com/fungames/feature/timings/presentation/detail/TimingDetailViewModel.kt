@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
 data class TimingDetailUiState(
-    val fromStation: String = "Station A",
-    val toStation: String = "Station B",
+    val fromStation: String = "",
+    val toStation: String = "",
     val timings: List<TrainTiming> = emptyList(),
     val isPickingFrom: Boolean = true,
     val isLoading: Boolean = false,

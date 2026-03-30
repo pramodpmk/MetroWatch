@@ -6,6 +6,8 @@ sealed interface HomePageIntent {
 
     object ClickedOnLocation : HomePageIntent
 
+    object LocationFetching : HomePageIntent
+
     data class LocationGranted(val lat: Double, val lon: Double) : HomePageIntent
 
     object LocationDenied : HomePageIntent
@@ -27,4 +29,8 @@ sealed interface HomePageIntent {
     object Parking : HomePageIntent
 
     object MetroRoutes : HomePageIntent
+
+    object WaterMetroTiming : HomePageIntent
+
+    object WaterMetroFare : HomePageIntent
 }

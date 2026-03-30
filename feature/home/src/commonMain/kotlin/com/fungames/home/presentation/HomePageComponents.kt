@@ -131,7 +131,9 @@ fun NearestStationSection(
                 modifier = Modifier
                     .size(48.dp)
                     .background(BrandBlue, CircleShape)
-                    .clickable { onStationClick() },
+                    .clickable {
+                        onStationClick()
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

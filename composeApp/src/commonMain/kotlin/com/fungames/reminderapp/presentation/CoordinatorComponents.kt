@@ -116,7 +116,7 @@ fun RootNavHost() {
         }
         stationsGraph(navController)
         homeGraph(navController) {
-
+            navController.navigate(it)
         }
         timingsGraph(
             navController,

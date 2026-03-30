@@ -13,7 +13,7 @@ sealed interface Route {
     data object StationList : Route
 
     @Serializable
-    data object StationDetail : Route
+    data class StationDetail(val stationId: String) : Route
 
     @Serializable
     data object FareCalculation : Route
@@ -32,6 +32,12 @@ sealed interface Route {
 
     @Serializable
     data object WaterMetroRoutes : Route
+
+    @Serializable
+    data object WaterMetroTimings : Route
+
+    @Serializable
+    data object WaterMetroFare : Route
 
     @Serializable
     data object MetroRoutes : Route

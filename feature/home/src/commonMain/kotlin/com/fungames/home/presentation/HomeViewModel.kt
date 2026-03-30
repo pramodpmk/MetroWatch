@@ -48,11 +48,18 @@ class HomeViewModel(
         viewModelScope.launch {
             when (homeIntent) {
                 is HomePageIntent.ClickOnStation -> {
-                    _homeNavigationEffect.emit(Route.StationDetail)
+                    _homeNavigationEffect.emit(Route.StationDetail(homeIntent.station.stationId))
                 }
 
                 is HomePageIntent.ClickedOnLocation -> {
                     // Handled directly from the composable via rememberLocationPermissionLauncher
+                }
+
+                is HomePageIntent.LocationFetching -> {
+                    _homeState.value = _homeState.value.copy(
+                        locationText = "Fetching location...",
+                        nearestStationAvailable = false
+                    )
                 }
 
                 is HomePageIntent.LocationGranted -> {
@@ -78,6 +85,10 @@ class HomeViewModel(
                     _homeNavigationEffect.emit(Route.Timings)
                 }
 
+                is HomePageIntent.WaterMetroTiming -> {
+                    _homeNavigationEffect.emit(Route.WaterMetroTimings)
+                }
+
                 is HomePageIntent.Settings -> {}
 
                 is HomePageIntent.PlanTrip -> {
@@ -98,6 +109,10 @@ class HomeViewModel(
 
                 is HomePageIntent.MetroRoutes -> {
                     _homeNavigationEffect.emit(Route.MetroRoutes)
+                }
+
+                is HomePageIntent.WaterMetroFare -> {
+                    _homeNavigationEffect.emit(Route.WaterMetroFare)
                 }
             }
         }
