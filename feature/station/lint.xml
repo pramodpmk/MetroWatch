@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!--
+        kotlinx.datetime.DayOfWeek is a typealias to java.time.DayOfWeek on JVM.
+        java.time requires API 26 but is covered by core library desugaring enabled in the app module.
+    -->
+    <issue id="NewApi">
+        <ignore path="src/commonMain/kotlin/com/fungames/core/station/data/TripRepositoryImpl.kt" />
+    </issue>
+</lint>

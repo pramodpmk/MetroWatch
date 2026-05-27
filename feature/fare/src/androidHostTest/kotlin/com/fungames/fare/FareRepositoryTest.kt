@@ -57,6 +57,7 @@ class FareRepositoryTest {
         override suspend fun insertFareSlabs(slabs: List<FareSlabEntity>) {}
         override suspend fun deleteAllFareSlabs() {}
         override suspend fun getTimetableByMode(mode: String): TimetableEntity? = null
+        override suspend fun getTimetablesByMode(mode: String): List<TimetableEntity> = emptyList()
         override suspend fun insertTimetables(timetables: List<TimetableEntity>) {}
         override suspend fun deleteAllTimetables() {}
         override suspend fun insertStations(stations: List<StationEntity>) {}

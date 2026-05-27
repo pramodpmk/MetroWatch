@@ -10,6 +10,6 @@ fun getDatabase(
     return builder
         .fallbackToDestructiveMigration(true)
         .setDriver(BundledSQLiteDriver())
-        .setQueryCoroutineContext(Dispatchers.IO)
+        .setQueryCoroutineContext(Dispatchers.Default)
         .build()
 }
