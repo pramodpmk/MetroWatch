@@ -20,7 +20,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "Metro Watch"
             isStatic = true
         }
     }
@@ -77,11 +77,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.reminderapp"
+    namespace = "com.metrowatch.kochi"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.fungames.reminderapp"
+        applicationId = "com.metrowatch.kochi"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

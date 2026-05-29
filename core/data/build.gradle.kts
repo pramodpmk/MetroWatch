@@ -54,7 +54,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.core.data"
+    namespace = "com.metrowatch.kochi.data"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
