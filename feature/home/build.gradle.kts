@@ -58,7 +58,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.home"
+    namespace = "com.metrowatch.kochi.home"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

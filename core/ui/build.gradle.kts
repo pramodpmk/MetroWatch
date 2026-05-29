@@ -47,7 +47,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.core.ui"
+    namespace = "com.metrowatch.kochi.ui"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

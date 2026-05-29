@@ -37,7 +37,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.core.navigation"
+    namespace = "com.metrowatch.kochi.navigation"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

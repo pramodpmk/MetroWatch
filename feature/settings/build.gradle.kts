@@ -61,7 +61,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.feature.settings"
+    namespace = "com.metrowatch.kochi.settings"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

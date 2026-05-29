@@ -64,7 +64,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.feature.timings"
+    namespace = "com.metrowatch.kochi.timings"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

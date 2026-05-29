@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -21,7 +20,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "Metro Watch"
             isStatic = true
         }
     }
@@ -78,11 +77,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.fungames.reminderapp"
+    namespace = "com.metrowatch.kochi"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.fungames.reminderapp"
+        applicationId = "com.metrowatch.kochi"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -101,9 +100,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 }
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
