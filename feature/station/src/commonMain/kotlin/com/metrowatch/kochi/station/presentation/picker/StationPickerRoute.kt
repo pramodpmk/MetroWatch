@@ -26,12 +26,8 @@ fun StationPickerRoute(
         onSearchQueryChange = { query -> viewModel.onSearchQueryChange(query) },
         navHostController = navHostController,
         onStationSelected = { station ->
-            navigationResults.set(
-                NavigationKeys.STATION_PICKER_RESULT,
-                station.name
-            )
-            // TODO : Set the navigation result here
-            //onStationPickerResult?.invoke(result)
+            navigationResults.set(NavigationKeys.STATION_PICKER_RESULT, station.name)
+            navigationResults.set(NavigationKeys.STATION_PICKER_ID_RESULT, station.id)
             navHostController.popBackStack()
         }
     )

@@ -3,9 +3,9 @@ package com.metrowatch.kochi.station.presentation.plantrip
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.metrowatch.kochi.station.domain.PlanTripUseCase
-import com.metrowatch.kochi.station.domain.TripDetails
 import com.metrowatch.kochi.station.domain.TripTiming
 import com.metrowatch.kochi.domain.DomainState
+import com.metrowatch.kochi.ui.getLocalTime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +14,9 @@ import kotlinx.coroutines.launch
 
 data class PlanTripUiState(
     val departureStation: String = "",
+    val departureStationId: String = "",
     val arrivalStation: String = "",
+    val arrivalStationId: String = "",
     val distance: String = "",
     val fare: String = "",
     val numberOfStations: Int = 0,
@@ -23,7 +25,8 @@ data class PlanTripUiState(
     val showDetails: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val isPickingDeparture: Boolean = true
+    val isPickingDeparture: Boolean = true,
+    val lastUpdatedTime: String = ""
 )
 
 class PlanTripViewModel(
@@ -52,7 +55,8 @@ class PlanTripViewModel(
                                 lineName = details.lineName,
                                 timings = details.timings,
                                 showDetails = true,
-                                error = null
+                                error = null,
+                                lastUpdatedTime = currentTimeString()
                             )
                         }
                     }
@@ -68,7 +72,9 @@ class PlanTripViewModel(
         _uiState.update {
             it.copy(
                 departureStation = it.arrivalStation,
-                arrivalStation = it.departureStation
+                departureStationId = it.arrivalStationId,
+                arrivalStation = it.departureStation,
+                arrivalStationId = it.departureStationId
             )
         }
     }
@@ -77,13 +83,24 @@ class PlanTripViewModel(
         _uiState.update { it.copy(isPickingDeparture = isDeparture) }
     }
 
-    fun updateStation(name: String) {
+    fun updateStation(name: String, id: String = "") {
         _uiState.update { state ->
             if (state.isPickingDeparture) {
-                state.copy(departureStation = name)
+                state.copy(departureStation = name, departureStationId = id)
             } else {
-                state.copy(arrivalStation = name)
+                state.copy(arrivalStation = name, arrivalStationId = id)
             }
         }
+    }
+
+    private fun currentTimeString(): String {
+        val (h24, min) = getLocalTime()
+        val ampm = if (h24 < 12) "AM" else "PM"
+        val h = when {
+            h24 == 0 -> 12
+            h24 > 12 -> h24 - 12
+            else -> h24
+        }
+        return "${h.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')} $ampm"
     }
 }
