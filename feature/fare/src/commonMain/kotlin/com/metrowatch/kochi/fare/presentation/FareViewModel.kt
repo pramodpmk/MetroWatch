@@ -14,8 +14,13 @@ import kotlinx.coroutines.launch
 data class FareUiState(
     val departureStation: String = "",
     val arrivalStation: String = "",
+    val departureStationCode: String = "",
+    val arrivalStationCode: String = "",
     val distance: String = "",
     val fare: String = "",
+    val stops: String = "",
+    val estimatedTime: String = "",
+    val lineId: String = "",
     val showDetails: Boolean = false,
     val isLoading: Boolean = false,
     val isPickingDeparture: Boolean = true
@@ -71,6 +76,11 @@ class FareViewModel(
                                 isLoading = false,
                                 distance = result.data.distance,
                                 fare = result.data.fare,
+                                departureStationCode = result.data.departureCode,
+                                arrivalStationCode = result.data.arrivalCode,
+                                stops = "${result.data.stops} Stops",
+                                estimatedTime = "${result.data.estimatedTimeMin} min",
+                                lineId = result.data.lineId,
                                 showDetails = true
                             )
                         }

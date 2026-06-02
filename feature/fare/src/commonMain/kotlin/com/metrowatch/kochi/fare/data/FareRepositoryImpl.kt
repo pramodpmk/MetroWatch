@@ -4,6 +4,7 @@ import com.metrowatch.kochi.data.db.ConfigDao
 import com.metrowatch.kochi.data.db.StationDao
 import com.metrowatch.kochi.fare.domain.FareDetails
 import com.metrowatch.kochi.fare.domain.FareRepository
+import kotlin.math.roundToInt
 
 class FareRepositoryImpl(
     private val stationDao: StationDao,
@@ -40,9 +41,15 @@ class FareRepositoryImpl(
             ?: slabs.lastOrNull()
 
         return matchingSlab?.let {
+            val estimatedTimeMin = (distanceKm / 35.0 * 60).roundToInt()
             FareDetails(
                 distance = "$distanceKm km",
-                fare = "₹${it.fare}"
+                fare = "₹${it.fare.toInt()}.00",
+                departureCode = departureStation.id,
+                arrivalCode = arrivalStation.id,
+                stops = stationsInRange.size,
+                estimatedTimeMin = estimatedTimeMin,
+                lineId = departureStation.lineId
             )
         }
     }
