@@ -46,7 +46,7 @@ fun TrainTimingScreen(
                 .background(Color(0xFFF8F8F8))
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             item {
@@ -56,15 +56,45 @@ fun TrainTimingScreen(
             }
 
             item {
-                DisplayText(
-                    text = "General timings",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+                Column(modifier = Modifier.padding(top = 8.dp)) {
+                    Text(
+                        text = "General timings",
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Box(
+                        modifier = Modifier
+                            .width(36.dp)
+                            .height(3.dp)
+                            .background(BrandBlue, RoundedCornerShape(2.dp))
+                    )
+                }
             }
 
             items(timings.value) { timing ->
                 TimingCard(timing)
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null,
+                        tint = BrandBlue.copy(alpha = 0.7f),
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Timings are subject to change. Please check announcements for updates.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }
@@ -74,7 +104,7 @@ fun TrainTimingScreen(
 fun TimingToolBar(
     onBackClick: () -> Unit,
     title: String = "Metro Timing"
-    ) {
+) {
     BrandToolBar(
         title = title,
         navigationIcon = Icons.Default.ArrowBack,
@@ -135,34 +165,53 @@ fun TimingCard(timing: TimingInfo) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Timer,
-                contentDescription = null,
-                tint = LightBlueBg.copy(alpha = 0.5f),
-                modifier = Modifier.size(30.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                DisplayText(
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.White, RoundedCornerShape(10.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = null,
+                    tint = BrandBlue,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(14.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
                     text = timing.title,
                     style = MaterialTheme.typography.labelMedium,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                DisplayText(
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
                     text = timing.timing,
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = BrandBlue
-                    )
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(Color.White, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AccessTime,
+                    contentDescription = null,
+                    tint = BrandBlue.copy(alpha = 0.7f),
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
