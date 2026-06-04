@@ -62,6 +62,9 @@ sealed interface Route {
     data object Home : Route
 
     @Serializable
+    data object WaterMetroHome : Route
+
+    @Serializable
     data object Contacts : Route
 
     @Serializable

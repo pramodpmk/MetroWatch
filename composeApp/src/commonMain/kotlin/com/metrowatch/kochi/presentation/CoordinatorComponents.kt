@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DirectionsBoat
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
@@ -36,6 +37,7 @@ import com.metrowatch.kochi.timings.navigation.TimingRoutes
 import com.metrowatch.kochi.timings.navigation.timingsGraph
 import com.metrowatch.kochi.home.navigation.HomeRoutes
 import com.metrowatch.kochi.home.navigation.homeGraph
+import com.metrowatch.kochi.home.navigation.waterMetroHomeGraph
 import com.metrowatch.kochi.navigation.appGraph
 import androidx.navigation.toRoute
 import com.metrowatch.kochi.navigation.Route
@@ -55,11 +57,13 @@ fun TabHost(
     tab: BottomTab
 ) {
     val homeController = rememberNavController()
+    val waterMetroController = rememberNavController()
     val settingsController = rememberNavController()
     val contactsController = rememberNavController()
     val navControllers = remember {
         linkedMapOf<BottomTab, NavHostController>(
             BottomTab.HOME to homeController,
+            BottomTab.WATER_METRO to waterMetroController,
             BottomTab.CONTACTS to contactsController,
             BottomTab.SETTINGS to settingsController,
         )
@@ -72,12 +76,16 @@ fun TabHost(
         navController = navController,
         startDestination = when (tab) {
             BottomTab.HOME -> HomeRoutes.HomePage
+            BottomTab.WATER_METRO -> HomeRoutes.WaterMetroHomePage
             BottomTab.CONTACTS -> StationRoutes.Contacts
             BottomTab.SETTINGS -> SettingsRoutes.Settings
         }
     ) { // Screens directly tied to bottom navigation goes here
         stationsGraph(navController)
         homeGraph(navController) {
+            appNavHostController.navigate(it)
+        }
+        waterMetroHomeGraph {
             appNavHostController.navigate(it)
         }
         settingsGraph(navController) {
@@ -179,12 +187,13 @@ fun HomeScaffold(
                         selected = selectedTab == tab,
                         onClick = { selectedTab = tab },
                         icon = {
-                            when(tab) {
+                            when (tab) {
                                 BottomTab.HOME -> Icon(Icons.Outlined.Home, null)
+                                BottomTab.WATER_METRO -> Icon(Icons.Default.DirectionsBoat, null)
                                 BottomTab.CONTACTS -> Icon(Icons.Outlined.AccountBox, null)
-                            else -> Icon(Icons.Outlined.Settings, null)
+                                BottomTab.SETTINGS -> Icon(Icons.Outlined.Settings, null)
                             }
-                               },
+                        },
                         label = { DisplayText(tab.label) }
                     )
                 }

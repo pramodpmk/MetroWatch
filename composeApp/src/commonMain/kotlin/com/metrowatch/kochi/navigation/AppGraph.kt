@@ -84,6 +84,16 @@ fun NavGraphBuilder.appGraph(
         }
     }
 
+    composable<Route.WaterMetroHome> {
+        LaunchedEffect(Unit) {
+            navController.navigate(HomeRoutes.WaterMetroHomePage) {
+                popUpTo<Route.WaterMetroHome> {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
     composable<Route.PlanTrip> {
         LaunchedEffect(Unit) {
             navController.navigate(StationRoutes.PlanTrip) {

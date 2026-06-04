@@ -22,6 +22,7 @@ sealed interface Screen {
 
 val TopLevelRoutes = setOf(
     HomeRoutes.HomePage::class,
+    HomeRoutes.WaterMetroHomePage::class,
     TimingRoutes.Timings::class,
     FareRoutes.CalculateFare::class
 )

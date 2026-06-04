@@ -4,6 +4,7 @@ import HomeRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.metrowatch.kochi.home.presentation.WaterMetroHomeRoute
 import com.metrowatch.kochi.navigation.Route
 import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
@@ -14,6 +15,8 @@ sealed interface HomeRoutes {
     @Serializable
     data object HomePage : HomeRoutes
 
+    @Serializable
+    data object WaterMetroHomePage : HomeRoutes
 }
 
 @OptIn(KoinExperimentalAPI::class)
@@ -26,6 +29,18 @@ fun NavGraphBuilder.homeGraph(
             navController,
             onNavigate,
             koinViewModel()
+        )
+    }
+}
+
+@OptIn(KoinExperimentalAPI::class)
+fun NavGraphBuilder.waterMetroHomeGraph(
+    onNavigate: (Route) -> Unit
+) {
+    composable<HomeRoutes.WaterMetroHomePage> {
+        WaterMetroHomeRoute(
+            onNavigate = onNavigate,
+            viewModel = koinViewModel()
         )
     }
 }
