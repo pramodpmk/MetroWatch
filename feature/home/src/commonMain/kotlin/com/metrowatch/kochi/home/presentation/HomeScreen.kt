@@ -1,5 +1,6 @@
 package com.metrowatch.kochi.home.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,15 +8,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.metrowatch.kochi.ui.AppLogger
 import com.metrowatch.kochi.ui.components.AppScaffold
-import com.metrowatch.kochi.ui.components.DisplayText
 import com.metrowatch.kochi.home.location.rememberLocationPermissionLauncher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,11 +55,13 @@ fun HomeScreen(
         bottomBar = { },
     ) { paddingValues ->
         if (homeState.value.pageState == PageState.Loading) {
-            androidx.compose.foundation.layout.Box(
-                modifier = Modifier.fillMaxSize().padding(paddingValues),
-                contentAlignment = androidx.compose.ui.Alignment.Center
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentAlignment = Alignment.Center
             ) {
-                androidx.compose.material3.CircularProgressIndicator()
+                CircularProgressIndicator()
             }
         } else {
             Column(
@@ -72,6 +75,8 @@ fun HomeScreen(
                     onLocationClick = { startLocationFetch() }
                 )
 
+                Spacer(Modifier.height(12.dp))
+
                 if (homeState.value.nearestStationAvailable) {
                     NearestStationSection(
                         station = homeState.value.nearestStation,
@@ -79,37 +84,37 @@ fun HomeScreen(
                             onIntent(HomePageIntent.ClickOnStation(homeState.value.nearestStation))
                         }
                     )
+                    Spacer(Modifier.height(16.dp))
                 }
 
-                ActionGrid(
+                PlanJourneySection(
+                    fromStation = if (homeState.value.nearestStationAvailable)
+                        homeState.value.nearestStation.stationName else "",
+                    onPlanJourney = { onIntent(HomePageIntent.PlanTrip) },
+                    onPlanOnMap = { onIntent(HomePageIntent.PlanTrip) }
+                )
+
+                Spacer(Modifier.height(20.dp))
+
+                QuickActionsSection(
                     onActionClick = { label ->
                         when (label) {
                             "Stations" -> onIntent(HomePageIntent.ViewAllStations)
-                            "Fare" -> onIntent(HomePageIntent.FareCalculation)
-                            "Timing" -> onIntent(HomePageIntent.Timings)
-                            "Settings" -> onIntent(HomePageIntent.Settings)
-                            "Plan trip" -> onIntent(HomePageIntent.PlanTrip)
-                            "Parking" -> onIntent(HomePageIntent.Parking)
                             "Routes" -> onIntent(HomePageIntent.MetroRoutes)
+                            "Timings" -> onIntent(HomePageIntent.Timings)
+                            "Fare" -> onIntent(HomePageIntent.FareCalculation)
+                            "Parking" -> onIntent(HomePageIntent.Parking)
                         }
                     }
                 )
 
-                Spacer(Modifier.height(16.dp))
-                DisplayText(
-                    "Water metro", style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                Spacer(Modifier.height(20.dp))
+
+                WaterMetroSection(
+                    onExplore = { onIntent(HomePageIntent.WaterMetroStations) }
                 )
-                WaterMetroActionGrid(
-                    onActionClick = { label ->
-                        when (label) {
-                            "Stations" -> onIntent(HomePageIntent.WaterMetroStations)
-                            "Routes" -> onIntent(HomePageIntent.WaterMetroRoutes)
-                            "Fare" -> onIntent(HomePageIntent.WaterMetroFare)
-                            "Timing" -> onIntent(HomePageIntent.WaterMetroTiming)
-                        }
-                    }
-                )
+
+                Spacer(Modifier.height(24.dp))
             }
         }
     }

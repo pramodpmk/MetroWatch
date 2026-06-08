@@ -1,17 +1,18 @@
 package com.metrowatch.kochi.home.presentation
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,10 +24,15 @@ import androidx.compose.ui.unit.sp
 import com.metrowatch.kochi.ui.components.BrandToolBar
 import com.metrowatch.kochi.ui.components.DisplayText
 import com.metrowatch.kochi.ui.components.RowGrid
+import com.metrowatch.kochi.ui.getLocalTime
 import com.metrowatch.kochi.ui.theme.BrandBlue
-import com.metrowatch.kochi.ui.theme.LightBlueBg
-import com.metrowatch.kochi.ui.theme.NearestStationLabelColor
 import com.metrowatch.kochi.ui.theme.NextTrainGreen
+
+private fun greeting(hour: Int) = when {
+    hour < 12 -> "Good Morning!"
+    hour < 17 -> "Good Afternoon!"
+    else -> "Good Evening!"
+}
 
 @Composable
 fun HomeToolBar(
@@ -35,53 +41,90 @@ fun HomeToolBar(
 ) {
     BrandToolBar(
         title = "MetroTime",
-        navigationIcon = Icons.Default.DirectionsSubway
+        navigationIcon = Icons.Default.DirectionsSubway,
+        trailingIcon = Icons.Default.Notifications,
+        onTrailingClick = {}
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
-                .clickable { onLocationClick() },
-            color = Color.White.copy(alpha = 0.15f)
+        val (hour, _) = remember { getLocalTime() }
+
+        Spacer(Modifier.height(4.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom
         ) {
-            Row(
-                modifier = Modifier.padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.LocationOn,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
                 DisplayText(
-                    text = text,
+                    text = greeting(hour),
                     color = Color.White,
-                    modifier = Modifier.weight(1f)
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                 )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                Spacer(Modifier.height(10.dp))
+                Surface(
                     modifier = Modifier
-                        .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(4.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { onLocationClick() },
+                    color = Color.White.copy(alpha = 0.18f)
                 ) {
-                    DisplayText(
-                        text = "Change",
-                        color = Color.White,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(16.dp)
-                    )
+                    Row(
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        DisplayText(
+                            text = if (text.isEmpty()) "Fetching location…" else text,
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Spacer(Modifier.width(6.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .background(Color.White.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            DisplayText(
+                                text = "Change",
+                                color = Color.White,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                    }
                 }
             }
+
+            Icon(
+                imageVector = Icons.Default.DirectionsSubway,
+                contentDescription = null,
+                tint = Color.White.copy(alpha = 0.22f),
+                modifier = Modifier
+                    .padding(start = 6.dp)
+                    .size(80.dp)
+            )
         }
+
+        Spacer(Modifier.height(6.dp))
     }
+}
+
+private fun parseTrainTime(nextTrainTime: String): Pair<String, String> = when {
+    nextTrainTime.contains("min") -> Pair(nextTrainTime.replace("min", "").trim(), "min")
+    nextTrainTime == "Tomorrow" -> Pair("--", "Tomorrow")
+    else -> Pair(nextTrainTime, "")
 }
 
 @Composable
@@ -89,213 +132,421 @@ fun NearestStationSection(
     station: NearestStation,
     onStationClick: () -> Unit
 ) {
-    Column(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .background(LightBlueBg)
-            .padding(16.dp)
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onStationClick() }
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
-                DisplayText(
-                    text = "Nearest station",
-                    color = NearestStationLabelColor,
-                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium)
-                )
-                DisplayText(
-                    text = station.stationName,
-                    color = Color.Black,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
-                )
+            Column(modifier = Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = Icons.Default.LocationOn,
+                        imageVector = Icons.Default.DirectionsSubway,
                         contentDescription = null,
-                        tint = Color.Gray,
+                        tint = BrandBlue,
                         modifier = Modifier.size(14.dp)
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(Modifier.width(4.dp))
                     DisplayText(
-                        text = station.distanceToStation,
+                        text = "Next train from",
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
+
+                Spacer(Modifier.height(4.dp))
+
+                DisplayText(
+                    text = station.stationName,
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                )
+
+                Spacer(Modifier.height(6.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (station.line.isNotEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .background(Color(0xFFE91E63), RoundedCornerShape(4.dp))
+                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                        ) {
+                            DisplayText(
+                                text = station.line,
+                                color = Color.White,
+                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold)
+                            )
+                        }
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    DisplayText(
+                        text = station.nextTrainTo,
                         color = Color.Gray,
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
             }
 
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(BrandBlue, CircleShape)
-                    .clickable {
-                        onStationClick()
-                    },
-                contentAlignment = Alignment.Center
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                DisplayText(
+                    text = "Arriving in",
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.labelSmall
+                )
+                val (timeValue, timeUnit) = remember(station.nextTrainTime) {
+                    parseTrainTime(station.nextTrainTime)
+                }
+                DisplayText(
+                    text = timeValue,
+                    color = NextTrainGreen,
+                    style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.ExtraBold)
+                )
+                if (timeUnit.isNotEmpty()) {
+                    DisplayText(
+                        text = timeUnit,
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                if (station.stationId.isNotEmpty()) {
+                    Spacer(Modifier.height(4.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(Color(0xFFF5F5F5), RoundedCornerShape(4.dp))
+                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                    ) {
+                        DisplayText(
+                            text = "Platform ${station.stationId}",
+                            color = Color.DarkGray,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PlanJourneySection(
+    fromStation: String,
+    onPlanJourney: () -> Unit,
+    onPlanOnMap: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                DisplayText(
+                    text = "Where are you going?",
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.weight(1f)
+                )
+                TextButton(
+                    onClick = onPlanOnMap,
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Map,
+                        contentDescription = null,
+                        tint = BrandBlue,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    DisplayText(
+                        text = "Plan on Map",
+                        color = BrandBlue,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    DisplayText(
+                        text = "From",
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .background(BrandBlue, CircleShape)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        DisplayText(
+                            text = if (fromStation.isEmpty()) "Your location" else fromStation,
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+                        )
+                    }
+
+                    Spacer(Modifier.height(12.dp))
+                    HorizontalDivider(color = Color(0xFFEEEEEE))
+                    Spacer(Modifier.height(12.dp))
+
+                    DisplayText(
+                        text = "To",
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .background(Color(0xFFBDBDBD), CircleShape)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        DisplayText(
+                            text = "Search destination station",
+                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+
+                Spacer(Modifier.width(12.dp))
+
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .background(Color(0xFFF5F5F5), CircleShape)
+                        .clip(CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.SwapVert,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+
+            Button(
+                onClick = onPlanJourney,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = BrandBlue)
+            ) {
+                DisplayText(
+                    text = "Plan Journey",
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
+                )
+                Spacer(Modifier.width(8.dp))
                 Icon(
-                    imageVector = Icons.Default.DirectionsSubway,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun QuickActionsSection(onActionClick: (String) -> Unit) {
+    val actions = listOf(
+        QuickActionData("Stations", "Explore all", Icons.Default.Map, Color(0xFF536DFE)),
+        QuickActionData("Routes", "Metro & Water", Icons.Default.Route, Color(0xFF00C853)),
+        QuickActionData("Timings", "First & Last train", Icons.Default.Schedule, Color(0xFFD500F9)),
+        QuickActionData("Fare", "Calculate fare", Icons.Default.Calculate, Color(0xFFFF6D00)),
+        QuickActionData("Parking", "Find parking", Icons.Default.LocalParking, Color(0xFF00BFA5)),
+        QuickActionData("Service updates", "Latest info", Icons.Default.Info, Color(0xFF2196F3))
+    )
+
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            DisplayText(
+                text = "Quick actions",
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.weight(1f)
+            )
+            TextButton(
+                onClick = { onActionClick("Stations") },
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
+            ) {
+                DisplayText(
+                    text = "View all",
+                    color = BrandBlue,
+                    style = MaterialTheme.typography.labelSmall
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = BrandBlue,
+                    modifier = Modifier.size(14.dp)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(12.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            InfoCard(
-                label = "Line",
-                value = station.line,
-                valueColor = Color(0xFF7B1FA2),
-                modifier = Modifier.weight(1f)
-            )
-            InfoCard(
-                label = "Next train",
-                value = station.nextTrainTime,
-                valueColor = NextTrainGreen,
-                modifier = Modifier.weight(1f)
-            )
-            InfoCard(
-                label = "Station id",
-                value = station.stationId,
-                valueColor = Color.DarkGray,
-                modifier = Modifier.weight(1f)
-            )
+        RowGrid(
+            items = actions,
+            columns = 3,
+            horizontalSpacing = 10.dp,
+            verticalSpacing = 10.dp
+        ) { action ->
+            QuickActionItem(action = action, onClick = { onActionClick(action.label) })
         }
     }
 }
 
-@Composable
-fun InfoCard(
-    label: String,
-    value: String,
-    valueColor: Color,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
-        color = Color.White
-    ) {
-        Column(
-            modifier = Modifier.padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            DisplayText(text = label, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
-            DisplayText(
-                text = value,
-                color = valueColor,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-    }
-}
-
-@Composable
-fun ActionGrid(
-    onActionClick: (String) -> Unit
-) {
-    val actions = listOf(
-        ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
-        ActionItemData("Plan trip", Icons.Default.Navigation, Color(0xFF00C853)),
-        ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
-        ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00)),
-        ActionItemData("Routes", Icons.Default.Route, Color(0xFFFF4081)),
-        ActionItemData("Parking", Icons.Default.LocalParking, Color(0xFF00BFA5))
-    )
-
-    RowGrid(
-        items = actions,
-        columns = 3,
-        horizontalSpacing = 16.dp,
-        verticalSpacing = 16.dp,
-        modifier = Modifier.padding(16.dp)
-    ) { action ->
-        ActionItem(
-            action = action,
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { onActionClick(action.label) }
-        )
-    }
-}
-
-@Composable
-fun WaterMetroActionGrid(
-    onActionClick: (String) -> Unit
-) {
-    val actions = listOf(
-        ActionItemData("Stations", Icons.Default.Map, Color(0xFF536DFE)),
-        ActionItemData("Routes", Icons.Default.DirectionsBoat, Color(0xFF00C853)),
-        ActionItemData("Timing", Icons.Default.Schedule, Color(0xFFD500F9)),
-        ActionItemData("Fare", Icons.Default.Calculate, Color(0xFFFF6D00))
-    )
-
-    RowGrid(
-        items = actions,
-        columns = 3,
-        horizontalSpacing = 16.dp,
-        verticalSpacing = 16.dp,
-        modifier = Modifier.padding(16.dp)
-    ) { action ->
-        ActionItem(
-            action = action,
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { onActionClick(action.label) }
-        )
-    }
-}
-
-data class ActionItemData(
+data class QuickActionData(
     val label: String,
+    val subtitle: String,
     val icon: ImageVector,
     val color: Color
 )
 
 @Composable
-fun ActionItem(
-    action: ActionItemData,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
+fun QuickActionItem(action: QuickActionData, onClick: () -> Unit) {
     Card(
-        modifier = modifier
-            .aspectRatio(1f)
+        modifier = Modifier
+            .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.padding(10.dp),
+            horizontalAlignment = Alignment.Start
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
-                    .background(action.color, CircleShape),
+                    .size(36.dp)
+                    .background(action.color.copy(alpha = 0.12f), RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = action.icon,
                     contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    tint = action.color,
+                    modifier = Modifier.size(20.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
             DisplayText(
                 text = action.label,
-                style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                modifier = Modifier.padding(horizontal = 4.dp)
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+            )
+            DisplayText(
+                text = action.subtitle,
+                color = Color.Gray,
+                style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp)
+            )
+        }
+    }
+}
+
+@Composable
+fun WaterMetroActionGrid(onActionClick: (String) -> Unit) {
+    val actions = listOf(
+        QuickActionData("Stations", "Explore", Icons.Default.Map, Color(0xFF536DFE)),
+        QuickActionData("Routes", "View routes", Icons.Default.DirectionsBoat, Color(0xFF00C853)),
+        QuickActionData("Timing", "Schedules", Icons.Default.Schedule, Color(0xFFD500F9)),
+        QuickActionData("Fare", "Calculate", Icons.Default.Calculate, Color(0xFFFF6D00))
+    )
+
+    RowGrid(
+        items = actions,
+        columns = 3,
+        horizontalSpacing = 10.dp,
+        verticalSpacing = 10.dp,
+        modifier = Modifier.padding(16.dp)
+    ) { action ->
+        QuickActionItem(action = action, onClick = { onActionClick(action.label) })
+    }
+}
+
+@Composable
+fun WaterMetroSection(onExplore: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = BrandBlue),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                DisplayText(
+                    text = "Water Metro",
+                    color = Color.White,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+                Spacer(Modifier.height(4.dp))
+                DisplayText(
+                    text = "Scenic rides across Kochi",
+                    color = Color.White.copy(alpha = 0.8f),
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Spacer(Modifier.height(16.dp))
+                OutlinedButton(
+                    onClick = onExplore,
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, Color.White),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+                ) {
+                    DisplayText(
+                        text = "Explore Water Metro",
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(14.dp)
+                    )
+                }
+            }
+
+            Icon(
+                imageVector = Icons.Default.DirectionsBoat,
+                contentDescription = null,
+                tint = Color.White.copy(alpha = 0.28f),
+                modifier = Modifier.size(88.dp)
             )
         }
     }
