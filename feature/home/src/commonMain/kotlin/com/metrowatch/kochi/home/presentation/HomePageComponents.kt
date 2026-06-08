@@ -238,9 +238,14 @@ fun NearestStationSection(
 @Composable
 fun PlanJourneySection(
     fromStation: String,
+    toStation: String,
+    onSelectFrom: () -> Unit,
+    onSelectTo: () -> Unit,
     onPlanJourney: () -> Unit,
     onPlanOnMap: () -> Unit
 ) {
+    val canPlan = fromStation.isNotEmpty() && toStation.isNotEmpty()
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -285,47 +290,69 @@ fun PlanJourneySection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    DisplayText(
-                        text = "From",
-                        color = Color.Gray,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                    Spacer(Modifier.height(4.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    // From field
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onSelectFrom() }
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
                                 .background(BrandBlue, CircleShape)
                         )
                         Spacer(Modifier.width(8.dp))
-                        DisplayText(
-                            text = if (fromStation.isEmpty()) "Your location" else fromStation,
-                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
-                        )
+                        Column {
+                            DisplayText(
+                                text = "From",
+                                color = Color.Gray,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                            DisplayText(
+                                text = if (fromStation.isEmpty()) "Select departure station" else fromStation,
+                                color = if (fromStation.isEmpty()) Color.Gray else Color.Black,
+                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+                            )
+                        }
                     }
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(8.dp))
                     HorizontalDivider(color = Color(0xFFEEEEEE))
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(8.dp))
 
-                    DisplayText(
-                        text = "To",
-                        color = Color.Gray,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                    Spacer(Modifier.height(4.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    // To field
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onSelectTo() }
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Box(
                             modifier = Modifier
                                 .size(8.dp)
-                                .background(Color(0xFFBDBDBD), CircleShape)
+                                .background(
+                                    if (toStation.isEmpty()) Color(0xFFBDBDBD) else BrandBlue,
+                                    CircleShape
+                                )
                         )
                         Spacer(Modifier.width(8.dp))
-                        DisplayText(
-                            text = "Search destination station",
-                            color = Color.Gray,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Column {
+                            DisplayText(
+                                text = "To",
+                                color = Color.Gray,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                            DisplayText(
+                                text = if (toStation.isEmpty()) "Search destination station" else toStation,
+                                color = if (toStation.isEmpty()) Color.Gray else Color.Black,
+                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+                            )
+                        }
                     }
                 }
 
@@ -351,6 +378,7 @@ fun PlanJourneySection(
 
             Button(
                 onClick = onPlanJourney,
+                enabled = canPlan,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = BrandBlue)

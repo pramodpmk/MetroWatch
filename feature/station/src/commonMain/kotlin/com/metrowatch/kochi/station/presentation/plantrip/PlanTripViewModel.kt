@@ -83,6 +83,18 @@ class PlanTripViewModel(
         _uiState.update { it.copy(isPickingDeparture = isDeparture) }
     }
 
+    fun prefillAndCalculate(fromName: String, fromId: String, toName: String, toId: String) {
+        _uiState.update {
+            it.copy(
+                departureStation = fromName,
+                departureStationId = fromId,
+                arrivalStation = toName,
+                arrivalStationId = toId
+            )
+        }
+        calculateTrip()
+    }
+
     fun updateStation(name: String, id: String = "") {
         _uiState.update { state ->
             if (state.isPickingDeparture) {

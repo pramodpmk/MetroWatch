@@ -115,6 +115,30 @@ class HomeViewModel(
                 is HomePageIntent.WaterMetroFare -> {
                     _homeNavigationEffect.emit(Route.WaterMetroFare)
                 }
+
+                is HomePageIntent.SelectFromStation -> {
+                    _homeState.value = _homeState.value.copy(isPickingFromStation = true)
+                    _homeNavigationEffect.emit(Route.StationPicker)
+                }
+
+                is HomePageIntent.SelectToStation -> {
+                    _homeState.value = _homeState.value.copy(isPickingFromStation = false)
+                    _homeNavigationEffect.emit(Route.StationPicker)
+                }
+
+                is HomePageIntent.StationPickedForTrip -> {
+                    if (_homeState.value.isPickingFromStation) {
+                        _homeState.value = _homeState.value.copy(
+                            planFromStation = homeIntent.name,
+                            planFromId = homeIntent.id
+                        )
+                    } else {
+                        _homeState.value = _homeState.value.copy(
+                            planToStation = homeIntent.name,
+                            planToId = homeIntent.id
+                        )
+                    }
+                }
             }
         }
     }

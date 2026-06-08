@@ -33,4 +33,10 @@ sealed interface HomePageIntent {
     object WaterMetroTiming : HomePageIntent
 
     object WaterMetroFare : HomePageIntent
+
+    object SelectFromStation : HomePageIntent
+
+    object SelectToStation : HomePageIntent
+
+    data class StationPickedForTrip(val name: String, val id: String) : HomePageIntent
 }

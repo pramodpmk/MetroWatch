@@ -88,8 +88,13 @@ fun HomeScreen(
                 }
 
                 PlanJourneySection(
-                    fromStation = if (homeState.value.nearestStationAvailable)
-                        homeState.value.nearestStation.stationName else "",
+                    fromStation = homeState.value.planFromStation.ifEmpty {
+                        if (homeState.value.nearestStationAvailable)
+                            homeState.value.nearestStation.stationName else ""
+                    },
+                    toStation = homeState.value.planToStation,
+                    onSelectFrom = { onIntent(HomePageIntent.SelectFromStation) },
+                    onSelectTo = { onIntent(HomePageIntent.SelectToStation) },
                     onPlanJourney = { onIntent(HomePageIntent.PlanTrip) },
                     onPlanOnMap = { onIntent(HomePageIntent.PlanTrip) }
                 )

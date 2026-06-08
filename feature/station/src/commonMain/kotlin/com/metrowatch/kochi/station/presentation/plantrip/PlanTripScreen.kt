@@ -46,6 +46,17 @@ fun PlanTripScreen(
     val uiState by viewModel.uiState.collectAsState()
     val navigationResults = LocalNavigationResults.current
 
+    // Pre-fill from home screen PlanJourneySection — auto-submits when both stations are provided
+    LaunchedEffect(Unit) {
+        val fromName = navigationResults.consume<String>(NavigationKeys.PLAN_TRIP_FROM_NAME)
+            ?: return@LaunchedEffect
+        val fromId = navigationResults.consume<String>(NavigationKeys.PLAN_TRIP_FROM_ID) ?: ""
+        val toName = navigationResults.consume<String>(NavigationKeys.PLAN_TRIP_TO_NAME)
+            ?: return@LaunchedEffect
+        val toId = navigationResults.consume<String>(NavigationKeys.PLAN_TRIP_TO_ID) ?: ""
+        viewModel.prefillAndCalculate(fromName, fromId, toName, toId)
+    }
+
     LaunchedEffect(navigationResults.version) {
         val stationName = navigationResults.consume<String>(NavigationKeys.STATION_PICKER_RESULT)
         val stationId = navigationResults.consume<String>(NavigationKeys.STATION_PICKER_ID_RESULT)

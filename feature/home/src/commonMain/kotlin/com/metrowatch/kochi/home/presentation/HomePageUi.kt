@@ -7,7 +7,12 @@ data class HomePageUi(
     val nearestStation: NearestStation,
     val nearestStationAvailable: Boolean,
     val stationList: List<NearestStation>,
-    val pageState: PageState
+    val pageState: PageState,
+    val planFromStation: String = "",
+    val planFromId: String = "",
+    val planToStation: String = "",
+    val planToId: String = "",
+    val isPickingFromStation: Boolean = true
 ) {
 
     companion object {
