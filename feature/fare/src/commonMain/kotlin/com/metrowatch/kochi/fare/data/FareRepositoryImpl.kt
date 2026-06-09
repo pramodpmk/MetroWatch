@@ -1,56 +1,25 @@
 package com.metrowatch.kochi.fare.data
 
 import com.metrowatch.kochi.data.db.ConfigDao
+import com.metrowatch.kochi.data.db.FareSlabEntity
 import com.metrowatch.kochi.data.db.StationDao
-import com.metrowatch.kochi.fare.domain.FareDetails
+import com.metrowatch.kochi.data.db.StationEntity
 import com.metrowatch.kochi.fare.domain.FareRepository
-import kotlin.math.roundToInt
 
 class FareRepositoryImpl(
     private val stationDao: StationDao,
     private val configDao: ConfigDao
 ) : FareRepository {
-    override suspend fun getFareDetails(departureName: String, arrivalName: String): FareDetails? {
-        val departureStation = stationDao.getStationByName(departureName) ?: return null
-        val arrivalStation = stationDao.getStationByName(arrivalName) ?: return null
 
-        if (departureStation.lineId != arrivalStation.lineId) {
-            return null
-        }
+    override suspend fun getStationByName(name: String): StationEntity? =
+        stationDao.getStationByName(name)
 
-        val allStationsOnLine = stationDao.getStationsByLine(departureStation.lineId)
-            .sortedBy { it.sequence }
+    override suspend fun getStationsByLine(lineId: String): List<StationEntity> =
+        stationDao.getStationsByLine(lineId).sortedBy { it.sequence }
 
-        val startSeq = minOf(departureStation.sequence, arrivalStation.sequence)
-        val endSeq = maxOf(departureStation.sequence, arrivalStation.sequence)
+    override suspend fun getDistance(fromId: String, toId: String): Double? =
+        configDao.getDistance(fromId, toId)
 
-        val stationsInRange = allStationsOnLine.filter { it.sequence in startSeq..endSeq }
-
-        var distanceKm = 0.0
-        for (i in 0 until stationsInRange.size - 1) {
-            val s1 = stationsInRange[i]
-            val s2 = stationsInRange[i+1]
-            val stepDistance = configDao.getDistance(s1.id, s2.id) ?: return null
-            distanceKm += stepDistance
-        }
-
-        val slabs = configDao.getFareSlabs()
-
-        val matchingSlab = slabs.find { distanceKm >= it.minKm && distanceKm <= it.maxKm }
-            ?: slabs.find { it.maxKm == 0.0 && distanceKm >= it.minKm } // Handle cases with no upper bound
-            ?: slabs.lastOrNull()
-
-        return matchingSlab?.let {
-            val estimatedTimeMin = (distanceKm / 35.0 * 60).roundToInt()
-            FareDetails(
-                distance = "$distanceKm km",
-                fare = "₹${it.fare.toInt()}.00",
-                departureCode = departureStation.id,
-                arrivalCode = arrivalStation.id,
-                stops = stationsInRange.size,
-                estimatedTimeMin = estimatedTimeMin,
-                lineId = departureStation.lineId
-            )
-        }
-    }
+    override suspend fun getFareSlabs(): List<FareSlabEntity> =
+        configDao.getFareSlabs()
 }
