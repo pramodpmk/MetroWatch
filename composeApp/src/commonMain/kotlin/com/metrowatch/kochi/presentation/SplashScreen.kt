@@ -1,16 +1,20 @@
 package com.metrowatch.kochi.presentation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.metrowatch.kochi.ui.components.DisplayText
-import com.metrowatch.kochi.ui.theme.BrandBlue
+import androidx.compose.ui.unit.dp
 import com.metrowatch.kochi.ui.theme.BrandWhite
+import org.jetbrains.compose.resources.painterResource
+import reminderapp.composeapp.generated.resources.Res
+import reminderapp.composeapp.generated.resources.metromate_logo
 
 @Composable
 fun SplashScreen(
@@ -26,13 +30,13 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BrandBlue),
+            .background(BrandWhite),
         contentAlignment = Alignment.Center
     ) {
-        DisplayText(
-            text = "Metro app",
-            color = BrandWhite,
-            style = MaterialTheme.typography.headlineLarge
+        Image(
+            painter = painterResource(Res.drawable.metromate_logo),
+            contentDescription = "metro-mate-logo",
+            modifier = Modifier.size(192.dp)
         )
     }
 }
