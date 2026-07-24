@@ -1,6 +1,5 @@
 package com.metrowatch.kochi.navigation
 
-import HomeRoute
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -10,7 +9,6 @@ import com.metrowatch.kochi.navigation.Route
 import com.metrowatch.kochi.station.navigation.StationRoutes
 import com.metrowatch.kochi.fare.navigation.FareRoutes
 import com.metrowatch.kochi.timings.navigation.TimingRoutes
-import com.metrowatch.kochi.home.navigation.HomeRoutes
 
 fun NavGraphBuilder.appGraph(
     navController: NavHostController
@@ -68,26 +66,6 @@ fun NavGraphBuilder.appGraph(
         LaunchedEffect(Unit) {
             navController.navigate(FareRoutes.CalculateFare) {
                 popUpTo<Route.FareCalculation> {
-                    inclusive = true
-                }
-            }
-        }
-    }
-
-    composable<Route.Home> {
-        LaunchedEffect(Unit) {
-            navController.navigate(HomeRoutes.HomePage) {
-                popUpTo<Route.Home> {
-                    inclusive = true
-                }
-            }
-        }
-    }
-
-    composable<Route.WaterMetroHome> {
-        LaunchedEffect(Unit) {
-            navController.navigate(HomeRoutes.WaterMetroHomePage) {
-                popUpTo<Route.WaterMetroHome> {
                     inclusive = true
                 }
             }

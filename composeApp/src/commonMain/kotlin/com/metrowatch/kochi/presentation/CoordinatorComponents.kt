@@ -1,8 +1,10 @@
 package com.metrowatch.kochi.presentation
 
 import com.metrowatch.kochi.ui.components.DisplayText
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsBoat
@@ -31,68 +33,21 @@ import com.metrowatch.kochi.navigation.NavigationResults
 import com.metrowatch.kochi.station.navigation.stationsGraph
 import com.metrowatch.kochi.fare.navigation.FareRoutes
 import com.metrowatch.kochi.fare.navigation.fareGraph
-import com.metrowatch.kochi.settings.navigation.SettingsRoutes
-import com.metrowatch.kochi.settings.navigation.settingsGraph
+import com.metrowatch.kochi.settings.presentation.SettingsScreen
 import com.metrowatch.kochi.timings.navigation.TimingRoutes
 import com.metrowatch.kochi.timings.navigation.timingsGraph
-import com.metrowatch.kochi.home.navigation.HomeRoutes
-import com.metrowatch.kochi.home.navigation.homeGraph
-import com.metrowatch.kochi.home.navigation.waterMetroHomeGraph
+import com.metrowatch.kochi.home.presentation.WaterMetroHomeRoute
 import com.metrowatch.kochi.navigation.appGraph
 import androidx.navigation.toRoute
 import com.metrowatch.kochi.navigation.Route
-import com.metrowatch.kochi.station.navigation.StationRoutes
+import com.metrowatch.kochi.station.presentation.contact.ContactsRoute
 import com.metrowatch.kochi.ui.BackPressHandler
 import com.metrowatch.kochi.ui.getTimeMillis
 import com.metrowatch.kochi.ui.rememberPlatformActions
 import com.metrowatch.kochi.ui.components.WebViewScreen
 import org.koin.compose.viewmodel.koinViewModel
+import HomeRoute
 
-
-@Composable
-fun TabHost(
-    modifier: Modifier = Modifier,
-    padding: PaddingValues,
-    appNavHostController: NavHostController,
-    tab: BottomTab
-) {
-    val homeController = rememberNavController()
-    val waterMetroController = rememberNavController()
-    val settingsController = rememberNavController()
-    val contactsController = rememberNavController()
-    val navControllers = remember {
-        linkedMapOf<BottomTab, NavHostController>(
-            BottomTab.HOME to homeController,
-            BottomTab.WATER_METRO to waterMetroController,
-            BottomTab.CONTACTS to contactsController,
-            BottomTab.SETTINGS to settingsController,
-        )
-    }
-
-    val navController = navControllers.getValue(tab)
-
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = when (tab) {
-            BottomTab.HOME -> HomeRoutes.HomePage
-            BottomTab.WATER_METRO -> HomeRoutes.WaterMetroHomePage
-            BottomTab.CONTACTS -> StationRoutes.Contacts
-            BottomTab.SETTINGS -> SettingsRoutes.Settings
-        }
-    ) { // Screens directly tied to bottom navigation goes here
-        stationsGraph(navController)
-        homeGraph(navController) {
-            appNavHostController.navigate(it)
-        }
-        waterMetroHomeGraph {
-            appNavHostController.navigate(it)
-        }
-        settingsGraph(navController) {
-            appNavHostController.navigate(it)
-        }
-    }
-}
 
 @Composable
 fun RootNavHost() {
@@ -123,9 +78,6 @@ fun RootNavHost() {
             HomeScaffold(navController)
         }
         stationsGraph(navController)
-        homeGraph(navController) {
-            navController.navigate(it)
-        }
         timingsGraph(
             navController,
             onNavigate = { target ->
@@ -138,9 +90,6 @@ fun RootNavHost() {
                 navController.navigate(target)
             }
         )
-        settingsGraph(navController) { target ->
-            navController.navigate(target)
-        }
         composable<Route.WebView> { backStackEntry ->
             val webView = backStackEntry.toRoute<Route.WebView>()
             WebViewScreen(
@@ -201,11 +150,20 @@ fun HomeScaffold(
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { padding ->
-        TabHost(
-            modifier = Modifier.padding(padding),
-            padding = padding,
-            appNavHostController = appNavController,
-            tab = selectedTab
-        )
+        Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+            when (selectedTab) {
+                BottomTab.HOME -> HomeRoute(
+                    navHostController = appNavController,
+                    onNavigate = { appNavController.navigate(it) },
+                    viewModel = koinViewModel()
+                )
+                BottomTab.WATER_METRO -> WaterMetroHomeRoute(
+                    onNavigate = { appNavController.navigate(it) },
+                    viewModel = koinViewModel()
+                )
+                BottomTab.CONTACTS -> ContactsRoute(appNavController)
+                BottomTab.SETTINGS -> SettingsScreen(onNavigate = { appNavController.navigate(it) })
+            }
+        }
     }
 }
