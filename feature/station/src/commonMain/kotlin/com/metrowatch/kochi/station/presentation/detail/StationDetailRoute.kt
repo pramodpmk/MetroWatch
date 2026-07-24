@@ -49,7 +49,6 @@ fun StationDetailRoute(
     }
 
     val state = viewModel.stationDetailState.collectAsState().value
-    var isFavorite by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
         when {
@@ -79,12 +78,6 @@ fun StationDetailRoute(
                 icon = Icons.Default.ArrowBack,
                 contentDescription = "Back",
                 onClick = { navHostController.popBackStack() }
-            )
-            FloatingCircleButton(
-                icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = "Favorite",
-                tint = if (isFavorite) Color.Red else Color.Black,
-                onClick = { isFavorite = !isFavorite }
             )
         }
     }

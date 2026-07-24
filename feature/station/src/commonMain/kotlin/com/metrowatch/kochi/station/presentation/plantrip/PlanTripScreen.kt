@@ -352,12 +352,6 @@ private fun TripSummarySection(uiState: PlanTripUiState, modifier: Modifier = Mo
                 fontSize = 15.sp,
                 color = Color.Black
             )
-            Text(
-                text = "View route >",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Medium,
-                color = BrandBlue
-            )
         }
 
         Spacer(modifier = Modifier.height(12.dp))

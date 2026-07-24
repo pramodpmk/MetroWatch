@@ -316,21 +316,6 @@ fun FareJourneyDetailsSection(uiState: FareUiState) {
                 fontSize = 15.sp,
                 color = Color.Black
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Map,
-                    contentDescription = null,
-                    tint = BrandBlue,
-                    modifier = Modifier.size(14.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "View route map",
-                    color = BrandBlue,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))

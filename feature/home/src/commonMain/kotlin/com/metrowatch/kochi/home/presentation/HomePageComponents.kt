@@ -264,23 +264,6 @@ fun PlanJourneySection(
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.weight(1f)
                 )
-                TextButton(
-                    onClick = onPlanOnMap,
-                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Map,
-                        contentDescription = null,
-                        tint = BrandBlue,
-                        modifier = Modifier.size(14.dp)
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    DisplayText(
-                        text = "Plan on Map",
-                        color = BrandBlue,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                }
             }
 
             Spacer(Modifier.height(12.dp))
@@ -408,7 +391,6 @@ fun QuickActionsSection(onActionClick: (String) -> Unit) {
         QuickActionData("Timings", "First & Last train", Icons.Default.Schedule, Color(0xFFD500F9)),
         QuickActionData("Fare", "Calculate fare", Icons.Default.Calculate, Color(0xFFFF6D00)),
         QuickActionData("Parking", "Find parking", Icons.Default.LocalParking, Color(0xFF00BFA5)),
-        QuickActionData("Service updates", "Latest info", Icons.Default.Info, Color(0xFF2196F3))
     )
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -421,22 +403,6 @@ fun QuickActionsSection(onActionClick: (String) -> Unit) {
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier.weight(1f)
             )
-            TextButton(
-                onClick = { onActionClick("Stations") },
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
-            ) {
-                DisplayText(
-                    text = "View all",
-                    color = BrandBlue,
-                    style = MaterialTheme.typography.labelSmall
-                )
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = BrandBlue,
-                    modifier = Modifier.size(14.dp)
-                )
-            }
         }
 
         Spacer(Modifier.height(12.dp))
