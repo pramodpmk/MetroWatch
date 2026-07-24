@@ -54,7 +54,8 @@ class SyncRepository(
                 lineId = it.lineId,
                 sequence = it.sequence,
                 mode = it.mode,
-                wheelchairAccessible = it.wheelchairAccessible
+                wheelchairAccessible = it.wheelchairAccessible,
+                imageUrl = it.imageUrl
             )
         }
 

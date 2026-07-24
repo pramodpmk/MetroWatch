@@ -10,7 +10,8 @@ data class Station(
     val lineId: String,
     val sequence: Int,
     val mode: String,
-    val wheelchairAccessible: Boolean
+    val wheelchairAccessible: Boolean,
+    val imageUrl: String?
 ) {
     // Helper property for UI compatibility
     val name: String get() = nameEn

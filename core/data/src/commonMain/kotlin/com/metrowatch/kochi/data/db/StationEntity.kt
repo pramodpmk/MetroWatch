@@ -19,5 +19,7 @@ data class StationEntity(
 
     val mode: String,
 
-    val wheelchairAccessible: Boolean
+    val wheelchairAccessible: Boolean,
+
+    val imageUrl: String?
 )

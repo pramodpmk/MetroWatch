@@ -40,7 +40,8 @@ class StationListUseCase(
             lineId = "LINE1",
             sequence = 1,
             mode = "METRO",
-            wheelchairAccessible = true
+            wheelchairAccessible = true,
+            imageUrl = null
         ),
         Station(
             id = "AMBK",
@@ -52,7 +53,8 @@ class StationListUseCase(
             lineId = "LINE1",
             sequence = 2,
             mode = "METRO",
-            wheelchairAccessible = true
+            wheelchairAccessible = true,
+            imageUrl = null
         ),
         Station(
             id = "COMP",
@@ -64,7 +66,8 @@ class StationListUseCase(
             lineId = "LINE1",
             sequence = 3,
             mode = "METRO",
-            wheelchairAccessible = true
+            wheelchairAccessible = true,
+            imageUrl = null
         )
     )
 }

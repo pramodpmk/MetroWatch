@@ -106,7 +106,8 @@ class StationRepositoryImpl(
         lineId = lineId,
         sequence = sequence,
         mode = mode,
-        wheelchairAccessible = wheelchairAccessible
+        wheelchairAccessible = wheelchairAccessible,
+        imageUrl = imageUrl
     )
 
     private fun Station.toEntity() = StationEntity(
@@ -119,6 +120,7 @@ class StationRepositoryImpl(
         lineId = lineId,
         sequence = sequence,
         mode = mode,
-        wheelchairAccessible = wheelchairAccessible
+        wheelchairAccessible = wheelchairAccessible,
+        imageUrl = imageUrl
     )
 }

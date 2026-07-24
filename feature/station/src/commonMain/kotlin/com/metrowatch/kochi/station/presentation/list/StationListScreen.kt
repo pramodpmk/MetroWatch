@@ -174,16 +174,6 @@ private fun StationListHeader(
                         modifier = Modifier.weight(1f)
                     )
                 }
-
-                Image(
-                    painter = painterResource(Res.drawable.img_metro_train),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(TitleRowHeight)
-                        .align(Alignment.TopEnd),
-                    contentScale = ContentScale.FillHeight,
-                    colorFilter = ColorFilter.tint(BrandBlue, BlendMode.Multiply)
-                )
             }
 
             // Always visible: search bar

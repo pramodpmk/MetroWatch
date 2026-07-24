@@ -1,16 +1,20 @@
 package com.metrowatch.kochi
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.metrowatch.kochi.ui.theme.MetroTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import com.metrowatch.kochi.navigation.LocalNavigationResults
 import com.metrowatch.kochi.navigation.NavigationResults
 import com.metrowatch.kochi.fare.navigation.FareRoutes
 import com.metrowatch.kochi.timings.navigation.TimingRoutes
 import com.metrowatch.kochi.home.navigation.HomeRoutes
 import com.metrowatch.kochi.presentation.RootNavHost
+import com.metrowatch.kochi.ui.components.StatusBarScrim
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -39,7 +43,10 @@ fun App() {
         CompositionLocalProvider(
             LocalNavigationResults provides navigationResults
         ) {
-            RootNavHost()
+            Box(modifier = Modifier.fillMaxSize()) {
+                RootNavHost()
+                StatusBarScrim()
+            }
         }
     }
 }

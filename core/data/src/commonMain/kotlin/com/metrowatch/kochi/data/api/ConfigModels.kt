@@ -35,7 +35,8 @@ data class StationDto(
     val sequence: Int,
     val latitude: Double,
     val longitude: Double,
-    val wheelchairAccessible: Boolean
+    val wheelchairAccessible: Boolean,
+    val imageUrl: String? = null
 )
 
 @Serializable
