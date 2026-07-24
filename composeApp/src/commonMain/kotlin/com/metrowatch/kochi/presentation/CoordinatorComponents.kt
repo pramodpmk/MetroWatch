@@ -6,14 +6,21 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.DirectionsBoat
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.outlined.DirectionsBoat
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,6 +30,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.metrowatch.kochi.ui.theme.BrandBlue
+import com.metrowatch.kochi.ui.theme.BrandGray
+import com.metrowatch.kochi.ui.theme.BrandWhite
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -130,20 +143,42 @@ fun HomeScaffold(
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+                modifier = Modifier.clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)),
+                containerColor = BrandWhite,
+                tonalElevation = 8.dp
+            ) {
                 tabs.forEach { tab ->
+                    val selected = selectedTab == tab
                     NavigationBarItem(
-                        selected = selectedTab == tab,
+                        selected = selected,
                         onClick = { selectedTab = tab },
                         icon = {
-                            when (tab) {
-                                BottomTab.HOME -> Icon(Icons.Outlined.Home, null)
-                                BottomTab.WATER_METRO -> Icon(Icons.Default.DirectionsBoat, null)
-                                BottomTab.CONTACTS -> Icon(Icons.Outlined.AccountBox, null)
-                                BottomTab.SETTINGS -> Icon(Icons.Outlined.Settings, null)
-                            }
+                            Icon(
+                                imageVector = when (tab) {
+                                    BottomTab.HOME -> if (selected) Icons.Filled.Home else Icons.Outlined.Home
+                                    BottomTab.WATER_METRO -> if (selected) Icons.Filled.DirectionsBoat else Icons.Outlined.DirectionsBoat
+                                    BottomTab.CONTACTS -> if (selected) Icons.Filled.AccountBox else Icons.Outlined.AccountBox
+                                    BottomTab.SETTINGS -> if (selected) Icons.Filled.Settings else Icons.Outlined.Settings
+                                },
+                                contentDescription = null
+                            )
                         },
-                        label = { DisplayText(tab.label) }
+                        label = {
+                            DisplayText(
+                                text = tab.label,
+                                style = MaterialTheme.typography.labelMedium.copy(
+                                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+                                )
+                            )
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = BrandWhite,
+                            selectedTextColor = BrandBlue,
+                            indicatorColor = BrandBlue,
+                            unselectedIconColor = BrandGray,
+                            unselectedTextColor = BrandGray
+                        )
                     )
                 }
             }
